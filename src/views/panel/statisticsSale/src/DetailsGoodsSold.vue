@@ -1,0 +1,149 @@
+<template>
+    <div class="DetailsGoodsSold">
+        <el-form :model="filterParams">
+            <div class="filtrate-menu">
+                <el-form-item class="mr-10">
+                    <SelectTimeInterval type="date" v-model:start-date="filterParams.start_time" v-model:end-date="filterParams.end_time"></SelectTimeInterval>
+                </el-form-item>
+                <el-form-item class="mr-10">
+                    <el-input v-model="filterParams.keyword" placeholder="输入商品名称或商品编号"> </el-input>
+                </el-form-item>
+                <el-form-item class="mr-10">
+                    <el-button plain @click="handleSearch">搜索</el-button>
+                </el-form-item>
+                <el-form-item class="mr-10">
+                    <el-button plain @click="handleExport">导出EXCEL</el-button>
+                </el-form-item>
+            </div>
+        </el-form>
+
+        <div class="table-container">
+            <a-spin :spinning="loading">
+                <el-table :data="filterState" :total="total" @sort-change="onSortChange">
+                    <el-table-column label="商品名称" prop="product_id" :min-width="320">
+                        <template #default="{ row }">
+                            <div class="flex">
+                                <div v-if="row.pic_thumb" class="span-pic">
+                                    <a :href="urlFormat({ path: 'product', id: row.product_id })" target="_blank"
+                                        ><img :src="imageFormat(row.pic_thumb)" height="50" width="50"
+                                    /></a>
+                                </div>
+                                <div class="span-product-con">
+                                    <div class="span-product-name">{{ row.product_name }}</div>
+                                </div>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="product_sn" label="订单号"> </el-table-column>
+                    <el-table-column porp="quantity" label="购买数量">
+                        <template #default="{ row }">
+                            {{ row.quantity }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="单价">
+                        <template #default="{ row }">
+                            {{ priceFormat(row.price) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="小计">
+                        <template #default="{ row }">
+                            {{ priceFormat(row.price * row.quantity ?? 0) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="add_time" width="200" sortable="custom" label="下单时间">
+                        <template #default="{ row }">
+                            {{ row.order.add_time }}
+                        </template>
+                    </el-table-column>
+                    <template #empty>
+                        <div class="empty-warp">
+                            <div v-if="!loading" class="empty-bg">暂无数据</div>
+                        </div>
+                    </template>
+                </el-table>
+            </a-spin>
+            <div v-if="total > 0" class="pagination-con">
+                <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts" setup>
+import { onMounted, reactive, ref } from "vue";
+import { SelectTimeInterval } from "@/components/select";
+import { useConfigStore } from "@/store/config";
+import { imageFormat, urlFormat, priceFormat } from "@/utils/format";
+import { Pagination } from "@/components/list";
+import { getDays, formatDate } from "@/utils/util";
+import { formattedDate } from "@/utils/time";
+import { message } from "ant-design-vue";
+import type { SaleDetaillistFilterParams, SaleDetaillistFilterResult } from "@/types/panel/statisticsSale";
+import { getSaleDetaillist, exportSaleDetaillis } from "@/api/panel/statisticsSale";
+const config = useConfigStore();
+
+const loading = ref<boolean>(false);
+const filterState = ref<SaleDetaillistFilterResult[]>();
+const total = ref<number>(0);
+const filterParams = reactive<SaleDetaillistFilterParams>({
+    page: 1,
+    size: config.pageSize,
+    keyword: "",
+    start_time: formattedDate(getDays(30, "sub"), "YYYY-MM-DD"),
+    end_time: formattedDate(new Date(), "YYYY-MM-DD")
+});
+
+const getData = async () => {
+    loading.value = true;
+    try {
+        const result = await getSaleDetaillist(filterParams);
+        if (result.errcode === 0) {
+            filterState.value = result.filter_result;
+            total.value = result.total;
+        }
+    } catch (error: any) {
+        message.error(error.message);
+        console.error(error);
+    } finally {
+        loading.value = false;
+    }
+};
+
+const handleSearch = () => {
+    getData();
+};
+
+const handleExport = () => {
+    exportSaleDetaillis({ ...filterParams, is_export: "1" });
+};
+
+onMounted(() => {
+    getData();
+});
+
+// 修改排序
+const onSortChange = ({ prop, order }: { prop: string; order?: string }) => {
+    filterParams.sort_field = prop;
+    filterParams.sort_order = order == "ascending" ? "asc" : order == "descending" ? "desc" : "";
+    getData();
+};
+
+const loadFilter = () => {
+    getData()
+};
+</script>
+
+<style lang="less" scoped>
+.filtrate-menu {
+    display: flex;
+    // margin-bottom: 20px;
+
+    .mr-10 {
+        margin-right: 5px;
+    }
+}
+
+.span-product-name {
+    margin-left: 5px
+}
+</style>

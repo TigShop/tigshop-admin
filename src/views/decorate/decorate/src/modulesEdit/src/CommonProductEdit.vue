@@ -1,0 +1,100 @@
+<template>
+    <!-- 标题设置 -->
+    <div class="dec-edit-group">
+        <div class="dec-edit-group-title">
+            <div class="label">商品池选择</div>
+            <div class="value"></div>
+        </div>
+        <div class="dec-edit-group-con">
+            <el-radio-group class="dec-radio-group" v-model="products.product_select_type">
+                <el-radio-button :value="1">选商品</el-radio-button>
+                <el-radio-button :value="2">按分类</el-radio-button>
+                <el-radio-button :value="3">按标签</el-radio-button>
+            </el-radio-group>
+        </div>
+    </div>
+    <div class="dec-edit-group dec-edit-group-block" v-if="products.product_select_type == 1">
+        <div class="dec-edit-group-title">
+            <div class="label">添加商品</div>
+        </div>
+        <div class="dec-edit-group-con">
+            <div class="dec-goods-group">
+                <ProductSelect v-model:ids="products.product_ids" :isMultiple="true"></ProductSelect>
+            </div>
+        </div>
+        <div class="dec-edit-group-desc">
+            <div>提示：您可以通过拖拽进行商品排序</div>
+        </div>
+    </div>
+    <div class="dec-edit-group" v-if="products.product_select_type == 2">
+        <div class="dec-edit-group-title">
+            <div class="label">选择分类</div>
+        </div>
+        <div class="dec-edit-group-con">
+            <div class="dec-goods-group">
+                <SelectCategory v-model:category_id="products.product_category_id"></SelectCategory>
+            </div>
+        </div>
+    </div>
+    <div class="dec-edit-group" v-if="products.product_select_type == 3">
+        <div class="dec-edit-group-title">
+            <div class="label">选择标签</div>
+        </div>
+        <div class="dec-edit-group-con">
+            <div class="dec-select-group">
+                <ProductTagSelect v-model="products.product_tag"></ProductTagSelect>
+            </div>
+        </div>
+    </div>
+    <div class="dec-divider-line"></div>
+    <div class="dec-edit-group" v-if="products.product_select_type == 2 || products.product_select_type == 3">
+        <div class="dec-edit-group-title">
+            <div class="label">商品数量</div>
+        </div>
+        <div class="dec-edit-group-con">
+            <div class="dec-input-group">
+                <el-input
+                    type="number"
+                    style="width: 100px"
+                    :min="props.numberMin"
+                    :max="props.numberMax"
+                    :step="props.numberStep"
+                    v-model="products.product_number"
+                    @change="handleInput"
+                    placeholder=""
+                ></el-input>
+            </div>
+        </div>
+    </div>
+</template>
+<script lang="ts" setup>
+import { ref, onMounted } from "vue";
+import { ModuleProductsType } from "@/types/decorate/decorate.d";
+import { SelectCategory } from "@/components/select";
+import { ProductSelect, ProductTagSelect } from "@/components/decorate";
+const props = defineProps({
+    numberMin: { type: Number, default: 1 },
+    numberMax: { type: Number, default: null },
+    numberStep: { type: Number, default: 1 }
+});
+const products = defineModel<ModuleProductsType>("modelValue", { default: () => ({
+    product_select_type: 1
+}) });
+const defaultModule = {};
+const dealDefault = () => {
+    for (let i in defaultModule) {
+        if (typeof (products.value as any)[i] === "undefined") {
+            (products.value as any)[i] = (defaultModule as any)[i];
+        }
+    }
+};
+const handleInput = (newValue: number) => {
+    // 修正输入值为最接近的 step 值
+    const step = props.numberStep;
+    const correctedValue = Math.round(newValue / step) * step;
+    products.value.product_number = correctedValue;
+};
+onMounted(async () => {
+    dealDefault();
+});
+</script>
