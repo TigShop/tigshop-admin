@@ -76,7 +76,7 @@
                     </a-spin>
                     <div v-if="total > 0" class="pagination-con">
                         <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total"
-                                    @callback="loadFilter"/>
+                                    @callback="onChangePage"/>
                     </div>
                 </div>
                 <div v-if="selectedIds.length > 0" class="selected-action-warp">
@@ -126,11 +126,15 @@ const filterParams = reactive<RegionFilterParams>({   //初使化用于查询的
 });
 const parent_ids = ref<Array<number>>([])
 const parent_names = ref<Array<string>>([])
+
+const onChangePage = () => {
+    loadFilter()
+}
 // 获取列表的查询结果
 const loadFilter = async (parent_id?:number|object) => {
     loading.value = true;
     try {
-        if (parent_id&&typeof parent_id ==='number'){
+        if (parent_id && typeof parent_id === 'number'){
             filterParams.parent_id = parent_id
         }
         const result = await getRegionList({...filterParams});
