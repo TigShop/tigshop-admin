@@ -119,7 +119,26 @@
                       <el-form-item label="支付宝公钥" prop="alipay_rsa_public_key">
                         <el-input type="textarea" v-model="formState.alipay_rsa_public_key" :rows="5" />
                       </el-form-item>
+                    </div>
 
+                    <div v-show="activeKey === 'offline'" class="content">
+                      <el-form-item label="是否开启" prop="use_offline">
+                        <el-radio-group v-model="formState.use_offline" class="itemWidth">
+                          <el-radio :value="1">开启</el-radio>
+                          <el-radio :value="0">关闭</el-radio>
+                        </el-radio-group>
+                        <div class="extra">是否开启线下支付，如关闭则不显示线下支付选项</div>
+                      </el-form-item>
+                      <el-form-item label="汇款说明">
+                        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
+                            <el-tab-pane label="银行汇款" :name="1">
+                                <Editor v-model:html="formState.offline_pay_bank"></Editor>
+                            </el-tab-pane>
+                            <el-tab-pane label="企业汇款" :name="2">
+                                <Editor v-model:html="formState.offline_pay_company"></Editor>
+                            </el-tab-pane>
+                        </el-tabs>
+                      </el-form-item>
                     </div>
                 </el-form>
                 <div style="height: 20px"></div>
@@ -136,6 +155,7 @@
 <script lang="ts" setup>
 import "@/style/css/list.less";
 import { onMounted, ref, shallowRef } from "vue";
+import {Editor} from "@/components/editor/index"
 import { FormAddGallery } from "@/components/gallery";
 import { InputTag } from "@/components/form";
 import { SelectRegion } from "@/components/select";
@@ -148,6 +168,7 @@ import { Tickets } from "@element-plus/icons-vue";
 const formRef = shallowRef();
 // 基本参数定义
 const activeKey = ref<string>("base");
+const activeName = ref<number>(1)
 const confirmLoading = ref<boolean>(false);
 const formState = ref<PaymentFormState>({
     use_wechat: 1,
@@ -157,6 +178,9 @@ const formState = ref<PaymentFormState>({
     wechat_pay_key: "",
     wechat_mchid_type: 1,
 });
+const handleClick = (tab: any, event: Event) => {
+  console.log(tab, event)
+}
 const onTabChange = (val: string) => {
     activeKey.value = val;
 };

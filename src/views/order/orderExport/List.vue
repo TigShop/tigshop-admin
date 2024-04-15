@@ -260,4 +260,11 @@ const orderExport = async () => {
     margin-bottom: 20px;
     line-height: 24px;
 }
+.list-table-tool{
+    :deep(.el-tag){
+        border: none !important;
+        background-color: #f2f2f2 !important;
+        color: #666 !important;
+    }
+}
 </style>

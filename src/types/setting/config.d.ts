@@ -180,4 +180,6 @@ export interface PaymentFormState {
     alipay_appid?: string;
     alipay_rsa_private_key?: string;
     alipay_rsa_public_key?: string;
+    offline_pay_bank?: string;
+    offline_pay_company?: string;
 }
