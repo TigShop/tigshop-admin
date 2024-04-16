@@ -841,26 +841,47 @@
                             <el-radio-group v-model="formState.storage_type" class="itemWidth">
                                 <el-radio :value="0">本地存储</el-radio>
                                 <el-radio :value="1">阿里云OSS存储</el-radio>
-                                <el-radio :value="2">腾讯云OSS存储</el-radio>
+                                <el-radio :value="2">腾讯云COS存储</el-radio>
                             </el-radio-group>
                             <div class="extra">开启云存储后，图片会直接通过接口上传至指定云存储，不会再保存在本地。</div>
                         </el-form-item>
-                        <el-form-item label="图片存储路径" prop="storage_url">
-                            <el-input v-model="formState.storage_url" />
+                        <el-form-item label="图片存储路径" prop="storage_local_url" v-if="formState.storage_type == 0">
+                            <el-input v-model="formState.storage_local_url" />
+                            <div class="extra">参考格式： https://oss.tigshop.com/</div>
+                        </el-form-item>
+                        <el-form-item label="图片存储路径" prop="storage_oss_url" v-if="formState.storage_type == 1">
+                            <el-input v-model="formState.storage_oss_url" />
+                            <div class="extra">参考格式： https://oss.tigshop.com/</div>
+                        </el-form-item>
+                        <el-form-item label="图片存储路径" prop="storage_cos_url" v-if="formState.storage_type == 2">
+                            <el-input v-model="formState.storage_cos_url" />
                             <div class="extra">参考格式： https://oss.tigshop.com/</div>
                         </el-form-item>
                         <template v-if="formState.storage_type != 0">
-                            <el-form-item label="AccessKeyId" prop="storage_access_key_id">
-                                <el-input v-model="formState.storage_access_key_id" />
+                            <el-form-item label="AccessKeyId" prop="storage_oss_access_key_id" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_access_key_id" />
                             </el-form-item>
-                            <el-form-item label="AccessKeySecret" prop="storage_access_key_secret">
-                                <el-input v-model="formState.storage_access_key_secret" />
+                            <el-form-item label="SecretId" prop="storage_cos_secret_id" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_secret_id" />
                             </el-form-item>
-                            <el-form-item label="空间名称" prop="storage_bucket">
-                                <el-input v-model="formState.storage_bucket" />
+                            <el-form-item label="AccessKeySecret" prop="storage_oss_access_key_secret" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_access_key_secret" />
                             </el-form-item>
-                            <el-form-item label="空间地区" prop="storage_region">
-                                <el-input v-model="formState.storage_region" />
+                            <el-form-item label="KeySecret" prop="storage_cos_secret_key" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_secret_key" />
+                            </el-form-item>
+                            <el-form-item label="空间名称" prop="storage_oss_bucket" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_bucket" />
+                            </el-form-item>
+                            <el-form-item label="空间名称" prop="storage_cos_bucket" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_bucket" />
+                            </el-form-item>
+                            <el-form-item label="空间地区" prop="storage_oss_region" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_region" />
+                                <div class="extra"></div>
+                            </el-form-item>
+                            <el-form-item label="空间地区" prop="storage_cos_region" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_region" />
                                 <div class="extra"></div>
                             </el-form-item>
                         </template>
