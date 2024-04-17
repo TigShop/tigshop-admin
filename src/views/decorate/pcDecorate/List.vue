@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import List from "@/views/decorate/decorateHome/List.vue";
+import List from "@/views/decorate/mobileDecorate/List.vue";
 </script>

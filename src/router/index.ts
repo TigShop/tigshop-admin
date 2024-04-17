@@ -590,7 +590,7 @@ const router = createRouter({
                             children: [
                                 {
                                     path: "/decorate/mobile_decorate/list",
-                                    name: "decorateHomeManage",
+                                    name: "mobileDecorateManage",
                                     meta: { title: "页面管理" },
                                     component: () => import("@/views/decorate/mobileDecorate/List.vue"),
                                 },
@@ -599,6 +599,12 @@ const router = createRouter({
                                     name: "mobileCatNavManage",
                                     meta: { title: "首页分类栏" },
                                     component: () => import("@/views/decorate/mobileCatNav/List.vue"),
+                                },
+                                {
+                                    path: "/decorate/mobile_decorate/nav",
+                                    name: "mobileNavManage",
+                                    meta: { title: "导航栏设置" },
+                                    component: () => import("@/views/decorate/mobileDecorate/Nav.vue"),
                                 },
                             ],
                         },

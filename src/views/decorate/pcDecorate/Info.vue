@@ -22,8 +22,8 @@ import { ref, shallowRef, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { FormAddGallery } from "@/components/gallery";
-import { FormState } from "@/types/decorate/decorateHome.d";
-import { getExample, updateExample } from "@/api/decorate/decorateHome";
+import { FormState } from "@/types/decorate/mobileDecorate.d";
+import { getExample, updateExample } from "@/api/decorate/mobileDecorate";
 
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 

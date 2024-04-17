@@ -10,7 +10,7 @@
                 <div class="tab-box" v-if="type == 'pc_user_login'">
                     <div class="flex">
                         <div class="decorateWrap">
-                            <div><img src="@/style/images/decorate/example/pc_user_bg.jpg" /></div>
+                            <div><img class="img" src="@/style/images/decorate/example/pc_user_bg.jpg" /></div>
                         </div>
                         <div class="right-box-warp">
                             <div class="dec-spread-title">

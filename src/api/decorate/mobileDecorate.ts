@@ -2,7 +2,7 @@ import request from "@/utils/request";
 // 获取装修页面列表
 export const getDecorateList = (params: object) => {
     return request({
-        url: "decorate/decorate_home/index/",
+        url: "decorate/mobile_decorate/index/",
         method: "get",
         params,
     });
@@ -10,7 +10,7 @@ export const getDecorateList = (params: object) => {
 // 装修页面列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: "decorate/decorate_home/batch/?type=" + type,
+        url: "decorate/mobile_decorate/batch/?type=" + type,
         method: "post",
         data,
     });
@@ -18,7 +18,7 @@ export const batchSubmit = (type: string, data: object) => {
 // 装修页面列表页面删除项
 export const delDecorate = (data: object) => {
     return request({
-        url: "decorate/decorate_home/del/",
+        url: "decorate/mobile_decorate/del/",
         method: "post",
         data,
     });
@@ -26,7 +26,7 @@ export const delDecorate = (data: object) => {
 // 装修页面列表页面更新项
 export const updateDecorateFiled = (data: object) => {
     return request({
-        url: "decorate/decorate_home/update_field/",
+        url: "decorate/mobile_decorate/update_field/",
         method: "post",
         data,
     });
@@ -34,7 +34,7 @@ export const updateDecorateFiled = (data: object) => {
 // 获取装修页面详情
 export const getDecorate = (action: string, params: object) => {
     return request({
-        url: "decorate/decorate_home/" + action + "/",
+        url: "decorate/mobile_decorate/" + action + "/",
         method: "get",
         params,
     });
@@ -42,7 +42,7 @@ export const getDecorate = (action: string, params: object) => {
 // 更新装修页面
 export const updateDecorate = (operation: string, data: object) => {
     return request({
-        url: "decorate/decorate_home/" + operation + "/",
+        url: "decorate/mobile_decorate/" + operation + "/",
         method: "post",
         data,
     });

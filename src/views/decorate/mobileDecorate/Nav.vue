@@ -2,19 +2,54 @@
     <div class="container">
         <div class="content_wrapper decoratePgaeWrap">
             <div class="flex box-wrapper">
-                <div class="left-wrapper">
-                    <div class="left-box tab-name">
-                        <div :class="'left-cont tab-item ' + (type == 'pc_user_login' ? 'current' : '')">会员登录背景</div>
-                    </div>
-                </div>
                 <div class="tab-box" v-if="type == 'pc_user_login'">
                     <div class="flex">
                         <div class="decorateWrap">
-                            <div><img src="@/style/images/decorate/example/pc_user_bg.jpg" /></div>
+                            <div class="decorate-page-window" style="background-position: center top; height: 600px; margin-top: 10px">
+                                <div class="theme-modules-warp">
+                                    <div class="list-item modules-item modules-item-topbar" draggable="false">
+                                        <div class="module-ad-con module-topbar-warp">
+                                            <div class="module-topbar-con">
+                                                <div class="module-topbar-title-con"><div class="title-item" style="">页面标题</div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="list-item modules-item modules-item-bottom_nav module-item-active">
+                                        <div class="module-ad-con">
+                                            <div class="bottom-nav-con">
+                                                <div class="bottom-nav-item">
+                                                    <div class="item-content">
+                                                        <a class="item-img-a">
+                                                            <img
+                                                                class="item-img"
+                                                                src="https://demo2.lyecs.com/img/gallery/demo/1680247587QG2y44h7a7f0M1dx9T!!pic.png" />
+                                                        </a>
+                                                        <a class="item-text-a">
+                                                            <span class="item-text">首页</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="bottom-nav-item">
+                                                    <div class="item-content">
+                                                        <a class="item-img-a">
+                                                            <img
+                                                                class="item-img"
+                                                                src="https://demo2.lyecs.com/img/gallery/demo/1680247587QG2y44h7a7f0M1dx9T!!pic.png" />
+                                                        </a>
+                                                        <a class="item-text-a">
+                                                            <span class="item-text">首页</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="right-box-warp">
                             <div class="dec-spread-title">
-                                <div class="title">登录页广告设置</div>
+                                <div class="title">底部导航设置</div>
                             </div>
                             <a-spin :spinning="loading">
                                 <div class="dec-edit-group">
@@ -109,4 +144,35 @@ const onSubmit = async () => {
     }
 };
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.modules-item-bottom_nav {
+    background: #fff;
+}
+.modules-item-bottom_nav .bottom-nav-con {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    text-align: center;
+}
+.modules-item-bottom_nav .bottom-nav-item {
+    flex: 1;
+}
+.modules-item-bottom_nav .item-content .item-img-a {
+    display: block;
+}
+.modules-item-bottom_nav .item-content .item-text-a {
+    color: #222;
+    margin-top: 3px;
+    display: block;
+}
+.modules-item-bottom_nav .item-content .item-img-a img {
+    width: 25px;
+    height: 25px;
+}
+.bottom-nav-con {
+    background: #fff;
+    height: 54px;
+    padding: 5px 0;
+    box-sizing: border-box;
+}
+</style>

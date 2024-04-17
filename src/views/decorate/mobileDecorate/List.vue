@@ -12,7 +12,7 @@
                                         @okCallback="loadFilter"
                                         title="添加页面"
                                         width="600px"
-                                        path="decorate/decorateHome/Info"
+                                        path="decorate/mobileDecorate/Info"
                                         :params="{ act: 'add' }">
                                         <el-button type="primary">添加页面</el-button>
                                     </DialogForm>
@@ -131,8 +131,8 @@ import { DeleteRecord, Switch, Pagination } from "@/components/list";
 import { Image } from "@/components/image";
 import { message } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
-import { FilterState, FilterParams } from "@/types/decorate/decorateHome.d";
-import { getDecorateList, batchSubmit, updateDecorateFiled, delDecorate, updateDecorate } from "@/api/decorate/decorateHome";
+import { FilterState, FilterParams } from "@/types/decorate/mobileDecorate.d";
+import { getDecorateList, batchSubmit, updateDecorateFiled, delDecorate, updateDecorate } from "@/api/decorate/mobileDecorate";
 import { Tag } from "@/components/form";
 const props = defineProps({
     decorateType: {

@@ -12,7 +12,7 @@
                                         @okCallback="loadFilter"
                                         title="新建页面"
                                         width="600px"
-                                        path="decorate/decorateHome/Info"
+                                        path="decorate/mobileDecorate/Info"
                                         :params="{ act: 'add' }">
                                         <el-button type="primary">新建页面</el-button>
                                     </DialogForm>
@@ -107,8 +107,8 @@ import { DeleteRecord, Switch, Pagination } from "@/components/list";
 import { Image } from "@/components/image";
 import { message } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
-import { FilterState, FilterParams } from "@/types/decorate/decorateHome.d";
-import { getExampleList, batchSubmit, updateExampleFiled, delExample } from "@/api/decorate/decorateHome";
+import { FilterState, FilterParams } from "@/types/decorate/mobileDecorate.d";
+import { getExampleList, batchSubmit, updateExampleFiled, delExample } from "@/api/decorate/mobileDecorate";
 const config: any = useConfigStore();
 // 基本参数定义
 const filterState = ref<FilterState[]>();
