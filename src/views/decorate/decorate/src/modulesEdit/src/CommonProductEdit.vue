@@ -46,26 +46,30 @@
             </div>
         </div>
     </div>
-    <div class="dec-divider-line"></div>
     <div class="dec-edit-group" v-if="products.product_select_type == 2 || products.product_select_type == 3">
         <div class="dec-edit-group-title">
             <div class="label">商品数量</div>
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-input-group">
-                <el-input
-                    type="number"
-                    style="width: 100px"
-                    :min="props.numberMin"
-                    :max="props.numberMax"
-                    :step="props.numberStep"
-                    v-model="products.product_number"
-                    @change="handleInput"
-                    placeholder=""
-                ></el-input>
+                <div class="flex" style="justify-content: flex-end; flex-wrap: wrap">
+                    <el-input
+                        type="number"
+                        style="width: 100px"
+                        :min="props.numberMin"
+                        :max="props.numberMax"
+                        :step="props.numberStep"
+                        v-model="products.product_number"
+                        @change="handleInput"
+                        placeholder=""></el-input>
+                    <div v-if="products.product_number! > 20" class="yellow" style="width: 100%; text-align: right; margin-top: 10px">
+                        后台编辑时最多只显示20个商品
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <div class="dec-divider-line"></div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
@@ -75,11 +79,13 @@ import { ProductSelect, ProductTagSelect } from "@/components/decorate";
 const props = defineProps({
     numberMin: { type: Number, default: 1 },
     numberMax: { type: Number, default: null },
-    numberStep: { type: Number, default: 1 }
+    numberStep: { type: Number, default: 1 },
 });
-const products = defineModel<ModuleProductsType>("modelValue", { default: () => ({
-    product_select_type: 1
-}) });
+const products = defineModel<ModuleProductsType>("modelValue", {
+    default: () => ({
+        product_select_type: 1,
+    }),
+});
 const defaultModule = {};
 const dealDefault = () => {
     for (let i in defaultModule) {

@@ -255,9 +255,9 @@ button .iconfont {
   color: #999;
 }
 .empty-warp .empty-bg::before {
-  content: '';
+  content: "";
   height: 150px;
-  background: url('images/common/empty-bg.png') center center;
+  background: url("images/common/empty-bg.png") center center;
   background-size: 160px 160px;
   background-repeat: no-repeat;
   width: 100%;

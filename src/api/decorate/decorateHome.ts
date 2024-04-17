@@ -1,50 +1,49 @@
-import request from '@/utils/request';
-import { FilterResult, FormResult } from '@/types/product/example.d';
-// 获取示例模板列表
-export const getExampleList = (params: object) => {
-    return request<FilterResult>({
-        url: 'decorate/decorate_home/index/',
-        method: 'get',
+import request from "@/utils/request";
+// 获取装修页面列表
+export const getDecorateList = (params: object) => {
+    return request({
+        url: "decorate/decorate_home/index/",
+        method: "get",
         params,
     });
-}
-// 示例模板列表页面批量操作
+};
+// 装修页面列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: 'decorate/decorate_home/batch/?type=' + type,
-        method: 'post',
+        url: "decorate/decorate_home/batch/?type=" + type,
+        method: "post",
         data,
     });
-}
-// 示例模板列表页面删除项
-export const delExample = (data: object) => {
+};
+// 装修页面列表页面删除项
+export const delDecorate = (data: object) => {
     return request({
-        url: 'decorate/decorate_home/del/',
-        method: 'post',
+        url: "decorate/decorate_home/del/",
+        method: "post",
         data,
     });
-}
-// 示例模板列表页面更新项
-export const updateExampleFiled = (data: object) => {
+};
+// 装修页面列表页面更新项
+export const updateDecorateFiled = (data: object) => {
     return request({
-        url: 'decorate/decorate_home/update_field/',
-        method: 'post',
+        url: "decorate/decorate_home/update_field/",
+        method: "post",
         data,
     });
-}
-// 获取示例模板详情
-export const getExample = (action: string, params: object) => {
-    return request<FormResult>({
-        url: 'decorate/decorate_home/' + action + '/',
-        method: 'get',
-        params
-    });
-}
-// 更新示例模板
-export const updateExample = (operation: string, data: object) => {
+};
+// 获取装修页面详情
+export const getDecorate = (action: string, params: object) => {
     return request({
-        url: 'decorate/decorate_home/' + operation + '/',
-        method: 'post',
-        data
+        url: "decorate/decorate_home/" + action + "/",
+        method: "get",
+        params,
     });
-}
+};
+// 更新装修页面
+export const updateDecorate = (operation: string, data: object) => {
+    return request({
+        url: "decorate/decorate_home/" + operation + "/",
+        method: "post",
+        data,
+    });
+};

@@ -1,24 +1,27 @@
 <template>
-    <Component v-if="loaded" v-model:module="module"></Component>
+    <Component v-if="loaded" v-model:module="props.module"></Component>
 </template>
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, shallowRef, onMounted } from "vue";
+import { ref, defineAsyncComponent, shallowRef, onMounted, watch } from "vue";
 import { toPascalCase } from "@/utils/util";
 const props = defineProps({
     module: Object,
     moduleType: {
         type: String,
-        default: ""
-    }
+        default: "",
+    },
 });
-const module = ref(props.module);
-const moduleType = ref(props.moduleType);
 const Component = shallowRef();
 const loaded = ref(false);
-moduleType.value = toPascalCase(moduleType.value);
+const _import = (path: string) => defineAsyncComponent(() => import(`./modules/${path}.vue`));
 onMounted(async () => {
-    const _import = (path: string) => defineAsyncComponent(() => import(`./modules/${path}.vue`));
-    Component.value = _import(moduleType.value);
+    Component.value = _import(toPascalCase(props.moduleType));
     loaded.value = true;
 });
+watch(
+    () => props.moduleType,
+    (newVal) => {
+        Component.value = _import(toPascalCase(props.moduleType));
+    }
+);
 </script>

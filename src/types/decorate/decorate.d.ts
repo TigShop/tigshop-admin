@@ -11,7 +11,9 @@ export interface EditResult {
             moduleList?: ModuleType[];
             pageModule?: ModuleType;
         };
+        decorate_title?: string;
     };
+    has_draft_data: boolean;
 }
 export interface ModuleType {
     module: {};
@@ -85,6 +87,7 @@ export interface ModuleActivityType {
     box_padding_top?: number;
     box_padding_bottom?: number;
     title?: ModuleTitleType;
+    waterfall?: number;
 }
 // 结构
 export interface ModuleFrameType {

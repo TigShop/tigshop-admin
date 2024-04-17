@@ -7,10 +7,16 @@
                         <div class="list-table-tool-row">
                             <div class="list-table-tool-col">
                                 <el-space>
-                                    <DialogForm isDrawer @okCallback="loadFilter" title="添加首页模板" width="600px" path="decorate/decorateHome/Info" :params="{ act: 'add' }">
-                                        <el-button type="primary">添加首页模板</el-button>
+                                    <DialogForm
+                                        isDrawer
+                                        @okCallback="loadFilter"
+                                        title="新建页面"
+                                        width="600px"
+                                        path="decorate/decorateHome/Info"
+                                        :params="{ act: 'add' }">
+                                        <el-button type="primary">新建页面</el-button>
                                     </DialogForm>
-                                    <el-input name="keyword" v-model="filterParams.keyword" placeholder="输入首页模板名称">
+                                    <el-input name="keyword" v-model="filterParams.keyword" placeholder="输入页面名称">
                                         <template #append>
                                             <el-button @click="onSearchSubmit"><span class="iconfont icon-chakan1"></span></el-button>
                                         </template>
@@ -23,21 +29,28 @@
                 </div>
                 <div class="table-container">
                     <a-spin :spinning="loading">
-                        <el-table :data="filterState" row-key="decorate_id" @selection-change="onSelectChange" :total="total" @sort-change="onSortChange" :loading="loading">
+                        <el-table
+                            :data="filterState"
+                            row-key="decorate_id"
+                            @selection-change="onSelectChange"
+                            :total="total"
+                            @sort-change="onSortChange"
+                            :loading="loading">
                             <el-table-column type="selection" width="32" />
-                            <el-table-column label="首页模板名称" prop="decorate_id" sortable="custom">
+                            <el-table-column label="页面名称" prop="decorate_id" sortable="custom">
                                 <template #default="{ row }">
                                     <div style="position: relative">
                                         <el-space>
-                                            <el-tag v-if="row.status == 1" type="success" :hit="false" effect="light" size="small" disable-transitions>发布</el-tag>
+                                            <el-tag v-if="row.status == 1" type="success" :hit="false" effect="light" size="small" disable-transitions
+                                                >发布</el-tag
+                                            >
                                             <PopForm
-                                                label="首页模板名称"
+                                                label="页面名称"
                                                 type="textarea"
                                                 :requestApi="updateExampleFiled"
                                                 v-model:org-value="row.decorate_title"
                                                 :params="{ id: row.decorate_id, field: 'decorate_title' }"
-                                                :max="50"
-                                            >
+                                                :max="50">
                                                 <div>{{ row.decorate_title }}</div>
                                             </PopForm>
                                         </el-space>
@@ -96,7 +109,7 @@ import { message } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
 import { FilterState, FilterParams } from "@/types/decorate/decorateHome.d";
 import { getExampleList, batchSubmit, updateExampleFiled, delExample } from "@/api/decorate/decorateHome";
-const config:any = useConfigStore();
+const config: any = useConfigStore();
 // 基本参数定义
 const filterState = ref<FilterState[]>();
 const loading = ref<boolean>(true);
@@ -108,7 +121,7 @@ const filterParams = reactive<FilterParams>({
     size: config.get("page_size"),
     sort_field: "",
     sort_order: "",
-    keyword: ""
+    keyword: "",
 });
 // 获取列表的查询结果
 const loadFilter = async () => {

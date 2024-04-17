@@ -152,6 +152,7 @@ const defaultModule = ref({
     box_padding_top: 5,
     box_padding_bottom: 5,
     img_padding: 1,
+    waterfall: 0,
     frame: defaultFrame,
     title: defaultTitle,
     products: defaultProducts,
@@ -179,7 +180,7 @@ onMounted(() => {
 });
 const _getproductList = async () => {
     try {
-        const result = await getProductList({ ...module.value.products });
+        const result = await getProductList({ ...module.value.products, waterfall: module.value.waterfall });
         productList.value = result.product_list;
     } catch (error) {
     } finally {
