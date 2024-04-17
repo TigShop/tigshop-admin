@@ -67,7 +67,18 @@
                             </el-table-column>
                             <el-table-column label="操作" fixed="right" :width="220">
                                 <template #default="{ row }">
-                                    <router-link :to="{ path: '/decorate/index', query: { id: row.decorate_id } }" target="_blank" class="btn-link"
+                                    <router-link
+                                        v-if="props.decorateType === 1"
+                                        :to="{ path: '/decorate/index', query: { id: row.decorate_id } }"
+                                        target="_blank"
+                                        class="btn-link"
+                                        >编辑</router-link
+                                    >
+                                    <router-link
+                                        v-if="props.decorateType === 2"
+                                        :to="{ path: '/decorate/pc', query: { id: row.decorate_id } }"
+                                        target="_blank"
+                                        class="btn-link"
                                         >编辑</router-link
                                     >
                                     <el-divider direction="vertical" />
@@ -76,8 +87,10 @@
                                         <el-divider direction="vertical" />
                                     </template>
                                     <a class="btn-link" @click="onCopy(row)">复制</a>
-                                    <el-divider direction="vertical" />
-                                    <DeleteRecord @afterDelete="loadFilter" :requestApi="delDecorate" :params="{ id: row.decorate_id }">删除</DeleteRecord>
+                                    <template v-if="row.is_home == 0">
+                                        <el-divider direction="vertical" />
+                                        <DeleteRecord @afterDelete="loadFilter" :requestApi="delDecorate" :params="{ id: row.decorate_id }">删除</DeleteRecord>
+                                    </template>
                                 </template>
                             </el-table-column>
                             <template #empty>
@@ -121,6 +134,12 @@ import { useConfigStore } from "@/store/config";
 import { FilterState, FilterParams } from "@/types/decorate/decorateHome.d";
 import { getDecorateList, batchSubmit, updateDecorateFiled, delDecorate, updateDecorate } from "@/api/decorate/decorateHome";
 import { Tag } from "@/components/form";
+const props = defineProps({
+    decorateType: {
+        type: Number,
+        default: 1,
+    },
+});
 const config: any = useConfigStore();
 // 基本参数定义
 const filterState = ref<FilterState[]>();
@@ -130,6 +149,7 @@ const selectedIds = ref<number[]>([]);
 const advancedSearch = ref<boolean>(false);
 const filterParams = reactive<FilterParams>({
     page: 1,
+    decorate_type: props.decorateType,
     size: config.get("page_size"),
     sort_field: "",
     sort_order: "",

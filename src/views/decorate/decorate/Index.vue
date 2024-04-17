@@ -1,5 +1,5 @@
 <template>
-    <div class="decorate-page">
+    <div class="decorate-page" :class="{ 'decorate-page-pc': props.decorateType === 2 }">
         <div class="decorate-topbar-warp">
             <div class="decorate-topbar-con">
                 <div class="topbar-left">
@@ -13,7 +13,9 @@
                 </el-space>
             </div>
         </div>
-        <ToolBar v-model:modules="modules"></ToolBar>
+
+        <ToolBar v-model:modules="modules" v-if="props.decorateType === 1"></ToolBar>
+        <PcToolBar v-model:modules="modules" v-if="props.decorateType === 2"></PcToolBar>
         <perfect-scrollbar class="decorate-page-wrap">
             <Alert v-if="hasDraftData" class="decorate-page-alert" message="该页面有一条草稿记录，您可以还原草稿继续编辑。" type="warning" show-icon closable>
                 <template #action>
@@ -52,7 +54,7 @@
                                     (!element.is_show ? 'modules-item-hide ' : '') +
                                     ' modules-item-' +
                                     element.type +
-                                    (index === editModuleIndex ? ' module-item-active' : '')
+                                    (index === editModuleIndex && editVisiable === 'list' ? ' module-item-active' : '')
                                 "
                                 draggable="false"
                                 @click="onEditComponent(index)">
@@ -112,6 +114,7 @@ import { useRouter } from "vue-router";
 import request from "@/utils/request";
 import { loadDraftData, saveDraft } from "@/api/decorate/decorate";
 import ToolBar from "./src/ToolBar.vue";
+import PcToolBar from "./src/PcToolBar.vue";
 import Modules from "./src/Modules.vue";
 import Page from "./src/modules/Page.vue";
 import PageEdit from "./src/modulesEdit/PageEdit.vue";
@@ -119,10 +122,16 @@ import draggable from "vuedraggable";
 import { message, Alert } from "ant-design-vue";
 import { cloneDeep } from "lodash";
 import { toPascalCase } from "@/utils/util";
-import { urlWapFormat } from "@/utils/format";
+import { urlWapFormat, urlFormat } from "@/utils/format";
 import { ModulesType, EditResult } from "@/types/decorate/decorate.d";
 import "./src/css/decorate.less";
 import "./src/css/module.less";
+const props = defineProps({
+    decorateType: {
+        type: Number,
+        default: 1,
+    },
+});
 const query = useRouter().currentRoute.value.query;
 const id = ref<number>(Number(query.id));
 const decorateTitle = ref<string>("");
@@ -152,6 +161,7 @@ onMounted(() => {
         method: "get",
         params: {
             id: id.value,
+            decorate_type: props.decorateType,
         },
     }).then((result) => {
         modules.value.moduleList = result.item.data.moduleList ?? [];
@@ -285,8 +295,12 @@ const onPreview = async () => {
         hasDraftData.value = false;
         // 1秒后执行
         setTimeout(() => {
-            window.open(urlWapFormat("/?preview=1&id=" + id.value));
-        }, 1000);
+            if (props.decorateType == 1) {
+                window.open(urlWapFormat("/?preview=1&id=" + id.value));
+            } else if (props.decorateType == 2) {
+                window.open(urlFormat("/?preview=1&id=" + id.value));
+            }
+        }, 800);
     } catch (error: any) {
         message.error(error.message);
     } finally {

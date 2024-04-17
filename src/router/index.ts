@@ -589,10 +589,10 @@ const router = createRouter({
                             meta: { title: "移动端装修" },
                             children: [
                                 {
-                                    path: "/decorate/decorate_home/list",
+                                    path: "/decorate/mobile_decorate/list",
                                     name: "decorateHomeManage",
                                     meta: { title: "页面管理" },
-                                    component: () => import("@/views/decorate/decorateHome/List.vue"),
+                                    component: () => import("@/views/decorate/mobileDecorate/List.vue"),
                                 },
                                 {
                                     path: "/decorate/mobile_cat_nav/list",

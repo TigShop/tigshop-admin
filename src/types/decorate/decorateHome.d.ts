@@ -2,9 +2,10 @@
 export interface FilterParams {
     page: number;
     size: number;
-    sort_field: string,
-    sort_order: string,
+    sort_field: string;
+    sort_order: string;
     keyword?: string;
+    decorate_type?: number;
 }
 
 // 获取列表返回参数类型
@@ -20,7 +21,6 @@ export interface FilterState {
     decorate_title?: string;
     sort_order?: number;
 }
-
 
 // 获取详情返回参数类型
 export interface FormResult {
