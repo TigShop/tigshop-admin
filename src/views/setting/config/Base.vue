@@ -686,7 +686,7 @@
                                 <div class="extra">设置流程：1、注册账号；2、会话->渠道设置->网站渠道，点击新增网站；3、在编辑里获取sign的值</div>
                             </div>
                             <div v-if="formState.kefu_type == 2">
-                                <div class="extra">提示：企业微信客服不支持PC端直接访问，所以PC端会以弹窗的方式显示扫描二维码；</div>
+                                <div class="extra">提示：PC端打开企业微信客服会唤起PC端微信，如果未安装PC端微信也可查看二维码后扫码使用;</div>
                                 <div class="extra">企业微信客服设置地址：https://work.weixin.qq.com/wework_admin/frame#/apps</div>
                                 <div class="extra">设置流程：1、注册账号；2、应用管理->应用->微信客服->客服帐号->创建账号；3、客服账号获取帐号ID</div>
                             </div>
@@ -717,13 +717,12 @@
                         <div v-if="formState.kefu_type == 3">
                             <el-form-item label="客服链接" prop="kefu_code">
                                 <el-input v-model="formState.kefu_code" />
-                                <div class="extra">如果是脚本控制的链接，请在此处填入： javascript:;</div>
+                                <div class="extra">如果是脚本控制的链接，请在此处填入： 请填写http开头的客服链接;</div>
                             </el-form-item>
                             <el-form-item label="客服链接打开方式" prop="kefu_code_blank">
                                 <el-radio-group v-model="formState.kefu_code_blank">
-                                    <el-radio :value="0">当前页面</el-radio>
-                                    <el-radio :value="1">新页面</el-radio>
-                                    <el-radio :value="2">新页面弹窗</el-radio>
+                                    <el-radio :value="0">打开链接地址</el-radio>
+                                    <el-radio :value="1">内嵌弹窗打开</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </div>

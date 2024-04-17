@@ -47,12 +47,12 @@ export interface CouponFormState {
     coupon_discount?: number;
     min_order_amount?: number;
     is_new_user?: number;
-    send_start_date: string;
-    send_end_date: string;
-    use_end_date: string;
-    use_start_date: string;
-    send_date: string[];
-    use_date: string[];
+    send_start_date?: string;
+    send_end_date?: string;
+    use_end_date?: string;
+    use_start_date?: string;
+    send_date?: string[];
+    use_date?: string[];
     send_range?: number;
     send_range_data?: [];
     enabled_overlay?: number;

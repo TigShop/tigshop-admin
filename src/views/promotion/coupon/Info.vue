@@ -212,6 +212,17 @@ const validateUseDate = (rule: any, value: any, callback: any) => {
         callback();
     }
 };
+const validateDiscount = (rule: any, value: any, callback: any) => {
+    if (!formState.value.coupon_discount) {
+        callback(new Error("请输入优惠券折扣！"));
+        return;
+    } else if (formState.value.coupon_discount < 0.1 || formState.value.coupon_discount > 9.9) {
+        callback(new Error("请输入0.1到9.9之间的数值"));
+        return;
+    } else {
+        callback();
+    }
+};
 interface RuleForm {
     coupon_name: string;
     coupon_money: number;
@@ -223,7 +234,7 @@ interface RuleForm {
 const rules = reactive<FormRules<RuleForm>>({
     coupon_name: [{ required: true, message: "请输入优惠券名称！", trigger: "blur" }],
     coupon_money: [{ required: true, message: "请输入优惠券金额！", trigger: "blur" }],
-    coupon_discount: [{ required: true, message: "请输入优惠券折扣！", trigger: "blur" }],
+    coupon_discount: [{ required: true, validator: validateDiscount, trigger: "blur" }],
     min_order_amount: [{ required: true, message: "请输入订单满金额！", trigger: "blur" }],
     send_date: [{ required: true, validator: validateSendDate, trigger: "blur" }],
     use_date: [{ required: true, validator: validateUseDate, trigger: "blur" }],

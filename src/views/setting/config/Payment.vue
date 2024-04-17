@@ -130,7 +130,7 @@
                         <div class="extra">是否开启线下支付，如关闭则不显示线下支付选项</div>
                       </el-form-item>
                       <el-form-item label="汇款说明">
-                        <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
+                        <el-tabs type="border-card" v-model="activeName">
                             <el-tab-pane label="银行汇款" :name="1">
                                 <Editor v-model:html="formState.offline_pay_bank"></Editor>
                             </el-tab-pane>
@@ -178,9 +178,6 @@ const formState = ref<PaymentFormState>({
     wechat_pay_key: "",
     wechat_mchid_type: 1,
 });
-const handleClick = (tab: any, event: Event) => {
-  console.log(tab, event)
-}
 const onTabChange = (val: string) => {
     activeKey.value = val;
 };
