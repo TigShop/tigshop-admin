@@ -36,7 +36,7 @@
                         </el-form-item>
                         <el-form-item label="商城LOGO" prop="shop_logo">
                             <FormAddGallery v-model:photo="formState.shop_logo" />
-                            <div class="extra">请根据首页模板设置对应大小的LOGO，高清需要上传双倍大小</div>
+                            <div class="extra">请根据页面设置对应大小的LOGO，高清需要上传双倍大小</div>
                         </el-form-item>
                         <el-form-item label="ico图标上传" prop="ico_img">
                             <FormAddGallery v-model:photo="formState.ico_img" />
@@ -49,11 +49,11 @@
                         <div class="title">全局设置</div>
                         <el-form-item label="PC端域名" prop="pc_domain">
                             <el-input v-model="formState.pc_domain" maxlength="40" placeholder="" />
-                            <div class="extra">格式参考：www.tigshop.com（不要带http//或https://，后面不要带“/”），填写后查看商城或查看商品默认跳PC端</div>
+                            <div class="extra">格式参考：https://www.tigshop.com（没有https则填http，后面不要带“/”），填写后查看商城或查看商品默认跳PC端</div>
                         </el-form-item>
                         <el-form-item label="H5端域名" prop="h5_domain">
                             <el-input v-model="formState.h5_domain" maxlength="40" placeholder="" />
-                            <div class="extra">格式参考：m.tigshop.com（不要带http//或https://，后面不要带“/”），PC端域名未填写时，会跳转H5端</div>
+                            <div class="extra">格式参考：https://m.tigshop.com（没有https则填http，后面不要带“/”），PC端域名未填写时，会跳转H5端</div>
                         </el-form-item>
                         <el-form-item label="是否开启商品缓存" prop="is_open_goods_cache">
                             <el-radio-group v-model="formState.is_open_goods_cache" class="itemWidth">

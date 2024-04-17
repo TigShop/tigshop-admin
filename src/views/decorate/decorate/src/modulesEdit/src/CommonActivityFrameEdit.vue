@@ -1,9 +1,9 @@
 <template>
     <!-- 结构设置 -->
-    <div class="dec-edit-group dec-edit-group-block"  v-if="type != 'product'">
+    <div class="dec-edit-group dec-edit-group-block" v-if="type != 'product'">
         <div class="dec-edit-group-title">
             <div class="label">选择模板</div>
-            <div class="value">{{ selectLabel.style[frame.style || ''] }}</div>
+            <div class="value">{{ selectLabel.style[frame.style || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.style">
@@ -19,7 +19,7 @@
     <div class="dec-edit-group dec-edit-group-block">
         <div class="dec-edit-group-title">
             <div class="label">商品卡样式</div>
-            <div class="value">{{ selectLabel.goods_style[frame.goods_style || ''] }}</div>
+            <div class="value">{{ selectLabel.goods_style[frame.goods_style || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.goods_style">
@@ -30,10 +30,22 @@
             </el-radio-group>
         </div>
     </div>
+    <div class="dec-edit-group" v-if="frame.style === 2">
+        <div class="dec-edit-group-title">
+            <div class="label">瀑布流</div>
+            <div class="value">{{ selectLabel.waterfall[frame.waterfall || 0] }}</div>
+        </div>
+        <div class="dec-edit-group-con">
+            <el-radio-group class="dec-radio-group" v-model="frame.waterfall">
+                <el-radio-button :value="1">启用</el-radio-button>
+                <el-radio-button :value="0">否</el-radio-button>
+            </el-radio-group>
+        </div>
+    </div>
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">商品卡边角</div>
-            <div class="value">{{ selectLabel.goods_radio_style[frame.goods_radio_style || ''] }}</div>
+            <div class="value">{{ selectLabel.goods_radio_style[frame.goods_radio_style || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.goods_radio_style">
@@ -45,7 +57,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">文本对齐</div>
-            <div class="value">{{ selectLabel.text_align[frame.text_align || ''] }}</div>
+            <div class="value">{{ selectLabel.text_align[frame.text_align || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.text_align">
@@ -57,7 +69,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">文字粗细</div>
-            <div class="value">{{ selectLabel.text_weight[frame.text_weight || ''] }}</div>
+            <div class="value">{{ selectLabel.text_weight[frame.text_weight || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.text_weight">
@@ -69,7 +81,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">商品名称行数</div>
-            <div class="value">{{ selectLabel.goods_name_row[frame.goods_name_row || ''] }}</div>
+            <div class="value">{{ selectLabel.goods_name_row[frame.goods_name_row || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.goods_name_row">
@@ -81,7 +93,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">商品信息边距</div>
-            <div class="value">{{ selectLabel.goods_name_padding[frame.goods_name_padding || ''] }}</div>
+            <div class="value">{{ selectLabel.goods_name_padding[frame.goods_name_padding || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.goods_name_padding">
@@ -93,7 +105,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">显示商品名称</div>
-            <div class="value">{{ selectLabel.show_name[frame.show_name || ''] }}</div>
+            <div class="value">{{ selectLabel.show_name[frame.show_name || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.show_name">
@@ -105,7 +117,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">显示商品描述</div>
-            <div class="value">{{ selectLabel.show_brief[frame.show_brief || ''] }}</div>
+            <div class="value">{{ selectLabel.show_brief[frame.show_brief || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.show_brief">
@@ -117,7 +129,7 @@
     <div class="dec-edit-group">
         <div class="dec-edit-group-title">
             <div class="label">显示商品价格</div>
-            <div class="value">{{ selectLabel.show_price[frame.show_price || ''] }}</div>
+            <div class="value">{{ selectLabel.show_price[frame.show_price || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.show_price">
@@ -132,15 +144,14 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.goods_padding" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="50" />
+                <el-slider v-model="frame.goods_padding" show-input :show-input-controls="false" size="small" input-size="default" :max="50" />
             </div>
         </div>
     </div>
     <div class="dec-edit-group dec-edit-group-block">
         <div class="dec-edit-group-title">
             <div class="label">购买按钮样式</div>
-            <div class="value">{{ selectLabel.buy_btn_style[frame.buy_btn_style || ''] }}</div>
+            <div class="value">{{ selectLabel.buy_btn_style[frame.buy_btn_style || ""] }}</div>
         </div>
         <div class="dec-edit-group-con">
             <el-radio-group class="dec-radio-group" v-model="frame.buy_btn_style">
@@ -176,8 +187,7 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.box_radius" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="30" />
+                <el-slider v-model="frame.box_radius" show-input :show-input-controls="false" size="small" input-size="default" :max="30" />
             </div>
         </div>
     </div>
@@ -187,8 +197,7 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.inner_padding" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="30" />
+                <el-slider v-model="frame.inner_padding" show-input :show-input-controls="false" size="small" input-size="default" :max="30" />
             </div>
         </div>
     </div>
@@ -198,8 +207,7 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.box_padding" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="30" />
+                <el-slider v-model="frame.box_padding" show-input :show-input-controls="false" size="small" input-size="default" :max="30" />
             </div>
         </div>
     </div>
@@ -209,8 +217,7 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.box_padding_top" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="30" />
+                <el-slider v-model="frame.box_padding_top" show-input :show-input-controls="false" size="small" input-size="default" :max="30" />
             </div>
         </div>
     </div>
@@ -220,8 +227,7 @@
         </div>
         <div class="dec-edit-group-con">
             <div class="dec-range-group">
-                <el-slider v-model="frame.box_padding_bottom" show-input :show-input-controls="false" size="small"
-                    input-size="default" :max="30" />
+                <el-slider v-model="frame.box_padding_bottom" show-input :show-input-controls="false" size="small" input-size="default" :max="30" />
             </div>
         </div>
     </div>
@@ -236,9 +242,9 @@ const frame = defineModel<ModuleActivityType & ModuleType>("modelValue", { defau
 const props = defineProps({
     type: {
         type: String,
-        default: ''
-    }
-})
+        default: "",
+    },
+});
 const selectLabel = ref<any>({
     style: {
         1: "一行一个",
@@ -255,6 +261,10 @@ const selectLabel = ref<any>({
     goods_radio_style: {
         1: "直角",
         2: "圆角",
+    },
+    waterfall: {
+        1: "启用",
+        0: "否",
     },
     text_align: {
         1: "左对齐",
