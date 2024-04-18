@@ -78,8 +78,8 @@
                                       @change="handleChange"
                                       :showUploadList="false"
                                       :multiple="true">
-                                      <el-button>{{formState.wechat_pay_certificate ? '点击上传' : '点击修改'}}</el-button>
-                                      <span class="ml10">apiclient_key.pem</span>
+                                      <el-button>{{formState.wechat_pay_certificate ? '重新上传' : '点击上传'}}</el-button>
+                                      <span class="ml10">apiclient_cert.pem</span>
                                   </Upload>
                               </div>
                               <div class="extra">调用微信商户接口时需要用到的API证书，文件名称一般为apiclient_cert.pem，具体操作请参考教程</div>
@@ -93,14 +93,19 @@
                                   @change="handleChange"
                                   :showUploadList="false"
                                   :multiple="true">
-                                <el-button>{{formState.wechat_pay_private_key ? '点击上传' : '点击修改'}}</el-button>
+                                <el-button>{{formState.wechat_pay_private_key ? '重新上传' : '点击上传'}}</el-button>
                                 <span class="ml10">apiclient_key.pem</span>
                               </Upload>
                             </div>
                             <div class="extra">调用微信商户接口时需要用到的API证书密钥，文件名称一般为apiclient_key.pem，具体操作请参考教程</div>
                           </el-form-item>
                           <el-form-item label="平台证书" prop="">
-                            <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="getPlatformCertificate">生成证书</el-button>
+                            <div  style="width: 100%">
+                              <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="getPlatformCertificate">
+                                {{formState.wechat_pay_platform_certificate ? '更新证书' : '生成证书'}}
+                              </el-button>
+                            </div>
+                            <div class="extra">调用微信商户接口时需要用到的平台证书,上传API证书后需要更新平台证书，具体操作请参考教程</div>
                           </el-form-item>
                         </div>
                     </div>
