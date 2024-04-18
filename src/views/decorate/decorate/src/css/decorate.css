@@ -274,7 +274,7 @@
   box-sizing: border-box;
 }
 .theme-con-box .module-list .list-item:hover {
-  background: #1890ff;
+  background: var(--tig-primary);
   color: #fff;
 }
 .theme-con-box .module-list .list-item .pic {
@@ -320,7 +320,7 @@
   text-align: center;
 }
 .theme-modules-warp .modules-item-load:before {
-  border: 2px solid #1890ff;
+  border: 2px solid var(--tig-primary);
   content: "";
   position: absolute;
   width: 100%;
@@ -345,7 +345,7 @@
   font-size: 14px;
   text-align: center;
   font-weight: bold;
-  background: #1890ff;
+  background: var(--tig-primary);
   color: #fff;
   margin: 0 auto;
   padding: 0 20px;
@@ -1496,9 +1496,9 @@ body .layui-layer-tips.dec-tip-box i.layui-layer-TipsB {
   padding: 20px 24px;
 }
 .decoratePgaeWrap .box-wrapper .left-box .left-cont.current {
-  color: #1890ff;
+  color: var(--tig-primary);
   background-color: #f0faff;
-  border-right: 2px solid #1890ff;
+  border-right: 2px solid var(--tig-primary);
 }
 .decoratePgaeWrap .decorateWrap {
   margin-right: 30px;

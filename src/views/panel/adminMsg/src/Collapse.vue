@@ -17,12 +17,12 @@
             </div>
         </div>
         <div class="content_box" :class="show ? 'show' : 'hide'">
-            <div style="margin: 10px;">
+            <div style="margin: 10px">
                 <div v-if="item.order_id && item.items.length > 0 && !item.content">
                     <div class="item">
                         <div class="product_info" v-for="info in item.items">
                             <div class="info">
-                                <Image width="60" :src="imageFormat(info.pic_thumb)" fit="contain"/>
+                                <Image width="60" :src="imageFormat(info.pic_thumb)" fit="contain" />
                                 <p>{{ info.product_name }}</p>
                             </div>
                             <div class="txt">
@@ -49,71 +49,71 @@
     </div>
 </template>
 <script setup lang="ts">
-import {Image} from "@/components/image";
-import {imageFormat} from "@/utils/format";
-import { reactive, ref, onMounted } from "vue"
+import { Image } from "@/components/image";
+import { imageFormat } from "@/utils/format";
+import { reactive, ref, onMounted } from "vue";
 import { getAdminMsgSetReaded } from "@/api/panel/adminMsg";
 const props = defineProps({
     item: { type: Object, default: {} },
-})
-const emit = defineEmits(['setReadedCallback'])
-const show = ref(false)
-const isUnread = ref(true)
-const expand = async (item:any) => {
-    if(!item.is_readed){
-        const result = await getAdminMsgSetReaded({msg_id:item.msg_id})
-        emit('setReadedCallback', true);
+});
+const emit = defineEmits(["setReadedCallback"]);
+const show = ref(false);
+const isUnread = ref(true);
+const expand = async (item: any) => {
+    if (!item.is_readed) {
+        const result = await getAdminMsgSetReaded({ msg_id: item.msg_id });
+        emit("setReadedCallback", true);
     }
-    show.value = !show.value
-    isUnread.value = false
-}
-const toPage = (url:any) => {
-    show.value = !show.value
-    isUnread.value = false
-}
+    show.value = !show.value;
+    isUnread.value = false;
+};
+const toPage = (url: any) => {
+    show.value = !show.value;
+    isUnread.value = false;
+};
 </script>
 
 <style lang="less" scoped>
-.collapse{
-    .cell{
-        border: 1px solid rgba(0,0,0,.15);
+.collapse {
+    .cell {
+        border: 1px solid rgba(0, 0, 0, 0.15);
         margin-top: 10px;
         position: relative;
-        background: rgba(0,0,0,.04);
+        background: rgba(0, 0, 0, 0.04);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        cursor: pointer;  
+        cursor: pointer;
 
-        .left{
+        .left {
             display: flex;
             align-items: center;
-            .badge{
-                background: rgba(0,0,0,0);
+            .badge {
+                background: rgba(0, 0, 0, 0);
                 width: 5px;
                 height: 5px;
                 border-radius: 100px;
                 margin: 0 8px;
             }
-            .text{
+            .text {
                 width: 410px;
-                display: -webkit-box;  
+                display: -webkit-box;
                 -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;  
-                overflow: hidden;  
-                text-overflow: ellipsis;  
-                white-space: normal; 
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
             }
         }
-        .right{
+        .right {
             display: flex;
             align-items: center;
-            .time{
+            .time {
                 font-size: 12px;
-                color: rgba(0,0,0,.45);
+                color: rgba(0, 0, 0, 0.45);
             }
-            .icon{
-                i{
+            .icon {
+                i {
                     display: inline-block;
                     color: #bbb;
                     font-size: 22px;
@@ -122,88 +122,88 @@ const toPage = (url:any) => {
             }
         }
     }
-    .unread{
+    .unread {
         background: #fff;
-        .left{
-            .badge{
+        .left {
+            .badge {
                 background-color: #fa4350;
             }
         }
     }
-    .content_box{
+    .content_box {
         max-height: 0;
         overflow: hidden;
         transition: all 0.4s;
         line-height: 22px;
-        border: 1px solid rgba(0,0,0,0);
+        border: 1px solid rgba(0, 0, 0, 0);
         border-top: none;
-        .more{
+        .more {
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            cursor: pointer;  
-            color: #1890ff;
-            i{
+            cursor: pointer;
+            color: var(--tig-primary);
+            i {
                 font-size: 12px;
             }
         }
-        .product_info{
+        .product_info {
             padding: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid #eee;
-            &:last-child{
+            &:last-child {
                 border: none;
             }
-            .info{
+            .info {
                 display: flex;
-                p{
+                p {
                     margin-top: 10px;
                     margin-left: 5px;
                 }
             }
-            .txt{
+            .txt {
                 text-align: end;
             }
         }
-        .money_box{
+        .money_box {
             font-size: 13px;
             text-align: end;
-            span{
+            span {
                 color: #999;
             }
         }
     }
 }
-.show{
-    .cell{
-        background: rgba(0,0,0,.04);
-        .left{
-            .badge{
-                background: rgba(0,0,0,0);
+.show {
+    .cell {
+        background: rgba(0, 0, 0, 0.04);
+        .left {
+            .badge {
+                background: rgba(0, 0, 0, 0);
             }
         }
-        .right{
-            .icon{
-                i{
+        .right {
+            .icon {
+                i {
                     transform: rotate(-180deg);
                     transition: transform ease 0.4s;
                 }
             }
         }
     }
-    .content_box{
-        border: 1px solid rgba(0,0,0,.15);
+    .content_box {
+        border: 1px solid rgba(0, 0, 0, 0.15);
         border-top: none;
         max-height: 1000px;
     }
 }
-.hide{
-    .cell{
-        .right{
-            .icon{
-                i{
+.hide {
+    .cell {
+        .right {
+            .icon {
+                i {
                     transform: rotate(0deg);
                     transition: transform ease 0.4s;
                 }

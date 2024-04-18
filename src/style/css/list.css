@@ -229,8 +229,8 @@ tr:hover .lyecs-popedit-btn {
   transition: all 0.2s ease-in-out 0.1s;
 }
 .table-switch-on {
-  background: #1890ff;
-  box-shadow: 0 0 2px #1890ff inset;
+  background: var(--tig-primary);
+  box-shadow: 0 0 2px var(--tig-primary) inset;
 }
 .table-switch-on i {
   left: 14px;

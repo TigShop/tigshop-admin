@@ -17,7 +17,7 @@
                 <Collapse v-for="item in filterState" :item="item" @setReadedCallback="loadFilter"></Collapse>
             </div>
             <div class="table-empty" v-else>
-                <img src="/src/style/images/common/empty-bg.png" alt="">
+                <img src="/src/style/images/common/empty-bg.png" alt="" />
                 <p>当前暂无任何消息哟</p>
             </div>
         </div>
@@ -30,32 +30,33 @@
     </div>
 </template>
 <script setup lang="ts">
-import { reactive, ref, onMounted } from "vue"
+import { reactive, ref, onMounted } from "vue";
 import { useConfigStore } from "@/store/config";
-import { Pagination } from '@/components/list';
-import {message} from 'ant-design-vue'
-import Collapse from "./src/Collapse.vue"
-import type {AdminMsgFilterParams, AdminMsgFilterState, AdminMsgMsgTypeFilterState} from '@/types/panel/adminMsg';
+import { Pagination } from "@/components/list";
+import { message } from "ant-design-vue";
+import Collapse from "./src/Collapse.vue";
+import type { AdminMsgFilterParams, AdminMsgFilterState, AdminMsgMsgTypeFilterState } from "@/types/panel/adminMsg";
 import { getAdminMsgList, getAdminMsgSetAllReaded } from "@/api/panel/adminMsg";
 
 const config = useConfigStore();
-const msgList = ref<AdminMsgMsgTypeFilterState[]>([])
+const msgList = ref<AdminMsgMsgTypeFilterState[]>([]);
 interface childFrom {
-    msg_type:number;
-    name:string;
-    unread_count:number;
+    msg_type: number;
+    name: string;
+    unread_count: number;
 }
-const childList = ref<childFrom[]>([])
-const msgIndex = ref(0)
-const childIndex = ref(0)
+const childList = ref<childFrom[]>([]);
+const msgIndex = ref(0);
+const childIndex = ref(0);
 const loading = ref<boolean>(true);
-const filterParams = reactive<AdminMsgFilterParams>({   //初使化用于查询的参数
+const filterParams = reactive<AdminMsgFilterParams>({
+    //初使化用于查询的参数
     page: 1,
-    size: config.get('page_size'),
-    sort_field: '',
-    sort_order: '',
-    keyword: '',
-    msg_type: 11
+    size: config.get("page_size"),
+    sort_field: "",
+    sort_order: "",
+    keyword: "",
+    msg_type: 11,
 });
 const filterState = ref(<AdminMsgFilterState[]>[]);
 const total = ref<number>(0);
@@ -63,49 +64,48 @@ const total = ref<number>(0);
 const loadFilter = async () => {
     loading.value = true;
     try {
-        const result = await getAdminMsgList({...filterParams});
+        const result = await getAdminMsgList({ ...filterParams });
         filterState.value = result.filter_result;
-        msgList.value = result.msg_type_arr
-        childList.value = toArray(msgList.value[msgIndex.value].child)
+        msgList.value = result.msg_type_arr;
+        childList.value = toArray(msgList.value[msgIndex.value].child);
         total.value = result.total;
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
     } finally {
         loading.value = false;
     }
-
-}
+};
 onMounted(() => {
     loadFilter();
 });
 const setAllReaded = async () => {
     await getAdminMsgSetAllReaded();
     loadFilter();
-}
-const msgChange = (index:number) => {
+};
+const msgChange = (index: number) => {
     msgIndex.value = index;
-    childIndex.value = 0
-    filterState.value.length = 0
-    filterParams.msg_type = toArray(msgList.value[msgIndex.value].child)[0].msg_type
+    childIndex.value = 0;
+    filterState.value.length = 0;
+    filterParams.msg_type = toArray(msgList.value[msgIndex.value].child)[0].msg_type;
     loadFilter();
-}
-const childChange = (index:number) => {
+};
+const childChange = (index: number) => {
     childIndex.value = index;
-    filterState.value.length = 0
-    filterParams.msg_type = toArray(msgList.value[msgIndex.value].child)[index].msg_type
+    filterState.value.length = 0;
+    filterParams.msg_type = toArray(msgList.value[msgIndex.value].child)[index].msg_type;
     loadFilter();
-}
-const toArray = (arr:any) => {
-  if (typeof arr == 'object') {
-    var newArr = [];
+};
+const toArray = (arr: any) => {
+    if (typeof arr == "object") {
+        var newArr = [];
 
-    for (let i in arr) {
-      newArr.push(arr[i]);
+        for (let i in arr) {
+            newArr.push(arr[i]);
+        }
+        return newArr;
+    } else {
+        return arr;
     }
-    return newArr;
-  } else {
-    return arr;
-  }
 };
 </script>
 
@@ -130,7 +130,7 @@ const toArray = (arr:any) => {
             justify-content: space-between;
 
             &:hover {
-                color: #1890ff;
+                color: var(--tig-primary);
             }
 
             .num {
@@ -146,17 +146,17 @@ const toArray = (arr:any) => {
         }
 
         .current {
-            background: rgba(61, 127, 255, .06);
-            color: #1890ff;
+            background: rgba(61, 127, 255, 0.06);
+            color: var(--tig-primary);
         }
     }
 
     .list_box {
         flex: 1;
-        padding:10px 20px;
-        .item{
+        padding: 10px 20px;
+        .item {
             height: 370px;
-            overflow:auto;
+            overflow: auto;
             &::-webkit-scrollbar-thumb {
                 border-radius: 8px;
                 box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
@@ -175,12 +175,12 @@ const toArray = (arr:any) => {
             }
         }
     }
-    .pagination-con{
+    .pagination-con {
         position: absolute;
         right: 20px;
         bottom: 10px;
     }
-    .btn{
+    .btn {
         position: absolute;
         left: 20px;
         bottom: 20px;

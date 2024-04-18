@@ -3,36 +3,13 @@
 @import "https://at.alicdn.com/t/c/font_4375017_prfxehhzzwh.css";
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
 :root {
-  --tig-primary: #336df4;
-  --tig-primary-color: #336df4;
-  --theme-default-hover-bg: #e6efff;
-  --theme-link-hover-color: #356fd4;
-  --theme-primary-hover-bg: #356fd4;
-  --theme-primary-hover-border-color: #356fd4;
-  --theme-weak-hover-color: #356fd4;
-  --theme-link-color: #155bd4;
-  --theme-default-hover-color: #155bd4;
-  --theme-default-hover-border-color: #155bd4;
-  --theme-primary-bg: #155bd4;
-  --theme-primary-border-color: #155bd4;
-  --theme-link-active-color: #114bad;
-  --theme-primary-active-bg: #114bad;
-  --theme-primary-active-border-color: #114bad;
-  --theme-weak-active-color: #114bad;
-  --theme-rgb-default-hover-bg: 230, 239, 255;
-  --theme-rgb-link-hover-color: 53, 111, 212;
-  --theme-rgb-primary-hover-bg: 53, 111, 212;
-  --theme-rgb-primary-hover-border-color: 53, 111, 212;
-  --theme-rgb-weak-hover-color: 53, 111, 212;
-  --theme-rgb-link-color: 21, 91, 212;
-  --theme-rgb-default-hover-color: 21, 91, 212;
-  --theme-rgb-default-hover-border-color: 21, 91, 212;
-  --theme-rgb-primary-bg: 21, 91, 212;
-  --theme-rgb-primary-border-color: 21, 91, 212;
-  --theme-rgb-link-active-color: 17, 75, 173;
-  --theme-rgb-primary-active-bg: 17, 75, 173;
-  --theme-rgb-primary-active-border-color: 17, 75, 173;
-  --theme-rgb-weak-active-color: 17, 75, 173;
+  --tig-primary: #1456f0;
+  --tig-text-hover: #336df4;
+  --tig-primary-light-3: #336df4;
+  --tig-primary-color: #1456f0;
+  --el-color-primary: var(--tig-primary);
+  --el-color-primary-light-3: var(--tig-primary-light-3);
+  --el-button-hover-border-color: var(--tig-primary);
 }
 .ant-drawer-content-wrapper {
   max-width: 100%;
@@ -146,6 +123,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
 }
+a:hover {
+  color: var(--tig-text-hover);
+}
 ul,
 ol {
   list-style: none;
@@ -244,7 +224,7 @@ a {
 .btn-link {
   white-space: nowrap;
   cursor: pointer;
-  color: #1890ff;
+  color: var(--tig-primary);
 }
 .content_wrapper {
   padding: 20px;
@@ -348,6 +328,10 @@ body .el-drawer__footer {
 }
 .ant-modal-body .content_wrapper {
   padding: 0;
+}
+body .el-button {
+  --el-button-hover-border-color: var(--el-color-primary-light-3);
+  transition: color 0.1s ease-in, background-color 0.1s ease-in, border-color 0.1s ease-in, width 0.2s ease-in;
 }
 body .el-image-viewer__canvas img {
   background-color: #fff;

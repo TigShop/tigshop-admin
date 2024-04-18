@@ -4,7 +4,7 @@
             token: {
                 fontSize: 12,
                 borderRadius: 2,
-                colorPrimary: '#336df4',
+                colorPrimary: '#1456f0',
                 wireframe: true,
             },
         }"

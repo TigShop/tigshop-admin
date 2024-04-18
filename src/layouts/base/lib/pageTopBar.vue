@@ -14,13 +14,12 @@
                 <div class="top-bar-item top-bar-search-warp">
                     <div class="top-bar-search">
                         <el-input
-                        v-model="keyword"
-                        style="width: 300px"
-                        placeholder="在这里查找功能，一键直达"
-                        :prefix-icon="Search"
-                        @input="onInput"
-                        @blur="onBlur"
-                        />
+                            v-model="keyword"
+                            style="width: 300px"
+                            placeholder="在这里查找功能，一键直达"
+                            :prefix-icon="Search"
+                            @input="onInput"
+                            @blur="onBlur" />
                     </div>
                 </div>
                 <div class="search-menu-con" v-show="isShow">
@@ -28,7 +27,7 @@
                     <div class="search-menu-list">
                         <div class="menu-item" v-for="item in searchMenu" @click="toPage(item.route_link)">
                             <!-- <router-link :to="{ path: '/' + item.route_link }"> -->
-                                <p>{{ item.authority_name }}</p>
+                            <p>{{ item.authority_name }}</p>
                             <!-- </router-link> -->
                         </div>
                         <div class="empty" v-if="searchMenu.length < 1">没有搜索到栏目！</div>
@@ -61,7 +60,7 @@
                         <template #overlay>
                             <div class="dropdown-memu top-bar-memu">
                                 <div class="entrance-list">
-                                    <router-link :to="{ path: '/authority/account_editing/index'}">
+                                    <router-link :to="{ path: '/authority/account_editing/index' }">
                                         <p class="entrance lyecs-openPage">
                                             <i class="iconfont icon-gerenshezhi" style="font-size: 22px"></i>
                                             <span>管理账号</span>
@@ -101,44 +100,44 @@ import { useCategoryStore } from "@/store/category";
 import { notification } from "ant-design-vue";
 import { DialogForm } from "@/components/dialog";
 import { urlFormat, imageFormat } from "@/utils/format";
-import { Search } from '@element-plus/icons-vue';
+import { Search } from "@element-plus/icons-vue";
 import { getSearchMenu } from "@/api/panel/adminMsg";
-import {message} from "ant-design-vue";
+import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-const router = useRouter()
+const router = useRouter();
 interface searchFrom {
     authority_name: string;
     route_link: string;
 }
-const keyword = ref('');
+const keyword = ref("");
 const searchMenu = ref<searchFrom[]>([]);
-const isShow = ref(false)
-const onInput = async (e:any) => {
+const isShow = ref(false);
+const onInput = async (e: any) => {
     try {
-        const result:any = await getSearchMenu({keyword: keyword.value});
+        const result: any = await getSearchMenu({ keyword: keyword.value });
         searchMenu.value = result.item;
-        if(keyword.value){
+        if (keyword.value) {
             isShow.value = true;
         }
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
     }
-}
-const toPage = (route_link:string) => {
+};
+const toPage = (route_link: string) => {
     isShow.value = false;
     keyword.value = "";
     searchMenu.value = [];
     router.push({
-        path: '/' + route_link 
-    })
-}
+        path: "/" + route_link,
+    });
+};
 const onBlur = () => {
-    if(keyword.value == ""){
+    if (keyword.value == "") {
         isShow.value = false;
     }
-}
-const {setUserInfo,logout} = useUserStore();
-const userInfo = computed(()=> useUserStore().userInfo)
+};
+const { setUserInfo, logout } = useUserStore();
+const userInfo = computed(() => useUserStore().userInfo);
 const unreadMsg = ref(0);
 // 清除缓存
 const clearCache = () => {
@@ -146,7 +145,7 @@ const clearCache = () => {
         url: "common/cache_manage/cleanup/",
         method: "post",
         params: {},
-    }).then((result:any) => {
+    }).then((result: any) => {
         const config = useConfigStore();
         const menus = useMenusStore();
         const cateGory = useCategoryStore();
@@ -480,7 +479,7 @@ const onLogout = () => {
         font-size: 13px;
     }
     :deep(.el-input__wrapper.is-focus) {
-        box-shadow: 0 0 0 1px #1890ff inset;
+        box-shadow: 0 0 0 1px var(--tig-primary) inset;
     }
     :deep(.el-input__wrapper i) {
         color: #98a9cc;
