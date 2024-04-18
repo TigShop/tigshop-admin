@@ -193,4 +193,6 @@ export interface PaymentFormState {
     alipay_rsa_public_key?: string;
     offline_pay_bank?: string;
     offline_pay_company?: string;
+    wechat_pay_certificate?: number;
+    wechat_pay_private_key?: number;
 }

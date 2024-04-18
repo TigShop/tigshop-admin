@@ -78,10 +78,11 @@
                                       @change="handleChange"
                                       :showUploadList="false"
                                       :multiple="true">
-                                      <el-button>点击上传</el-button>
+                                      <el-button>{{formState.wechat_pay_certificate ? '点击上传' : '点击修改'}}</el-button>
+                                      <span class="ml10">apiclient_key.pem</span>
                                   </Upload>
                               </div>
-                              <div class="extra">调用微信商户接口时需要用到的API证书，具体操作请参考教程</div>
+                              <div class="extra">调用微信商户接口时需要用到的API证书，文件名称一般为apiclient_cert.pem，具体操作请参考教程</div>
                           </el-form-item>
                           <el-form-item label="商户API证书密钥" prop="wechat_pay_private_key">
                             <div style="width: 100%">
@@ -92,13 +93,14 @@
                                   @change="handleChange"
                                   :showUploadList="false"
                                   :multiple="true">
-                                <el-button>点击上传</el-button>
+                                <el-button>{{formState.wechat_pay_private_key ? '点击上传' : '点击修改'}}</el-button>
+                                <span class="ml10">apiclient_key.pem</span>
                               </Upload>
                             </div>
-                            <div class="extra">调用微信商户接口时需要用到的API证书密钥，具体操作请参考教程</div>
+                            <div class="extra">调用微信商户接口时需要用到的API证书密钥，文件名称一般为apiclient_key.pem，具体操作请参考教程</div>
                           </el-form-item>
                           <el-form-item label="平台证书" prop="">
-                            <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="onSubmit">生成证书</el-button>
+                            <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="getPlatformCertificate">生成证书</el-button>
                           </el-form-item>
                         </div>
                     </div>
@@ -162,7 +164,7 @@ import { SelectRegion } from "@/components/select";
 import { message, Upload } from "ant-design-vue";
 import type { PaymentFormState, Regions } from "@/types/setting/config";
 import request, { requestUrl } from "@/utils/request";
-import { getConfig, saveConfig } from "@/api/setting/config";
+import { getConfig, saveConfig, createPlatformCertificate } from "@/api/setting/config";
 import { Tickets } from "@element-plus/icons-vue";
 
 const formRef = shallowRef();
@@ -187,6 +189,17 @@ onMounted(async () => {
     loadFilter();
 });
 const loading = ref<boolean>(true);
+const getPlatformCertificate = async () => {
+    try {
+        const result = await createPlatformCertificate();
+        message.success(result.message);
+        loadFilter();
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+}
 const loadFilter = async () => {
     try {
         const result = await getConfig({
@@ -203,7 +216,6 @@ const loadFilter = async () => {
 // 表单通过验证后提交
 const onSubmit = async () => {
     confirmLoading.value = true;
-
     try {
         const result = await saveConfig({
             code: "payment",
@@ -232,10 +244,10 @@ const handleChange = (info: any) => {
                     info.fileList[index] = Object.assign(info.fileList[index], info.fileList[index].response.data);
                 }
             }
-            message.success("图片上传成功！");
+            message.success("文件上传成功！");
         }
     } else if (info.file.status === "error") {
-        message.error(`${info.file.name} 图片上传失败！`);
+        message.error(`${info.file.name} 文件上传失败！`);
     }
     // uploadPicList.value = info.fileList
 };

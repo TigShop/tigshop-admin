@@ -23,6 +23,12 @@ export const saveConfig = (params: object) => {
         data: params,
     });
 };
+export const createPlatformCertificate = () => {
+    return request({
+        url: "setting/config/create_platform_certificate/",
+        method: "post"
+    });
+};
 export const updateConfig = (params: object) => {
     return request<BaseFormState>({
         url: "setting/config/update/",
