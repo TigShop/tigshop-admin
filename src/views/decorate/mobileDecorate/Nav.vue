@@ -2,10 +2,10 @@
     <div class="container">
         <div class="content_wrapper decoratePgaeWrap">
             <div class="flex box-wrapper">
-                <div class="tab-box" v-if="type == 'pc_user_login'">
+                <div class="tab-box">
                     <div class="flex">
                         <div class="decorateWrap">
-                            <div class="decorate-page-window" style="background-position: center top; height: 600px; margin-top: 10px">
+                            <div class="decorate-page-window" style="background-position: center top; height: 700px; margin-top: 10px">
                                 <div class="theme-modules-warp">
                                     <div class="list-item modules-item modules-item-topbar" draggable="false">
                                         <div class="module-ad-con module-topbar-warp">
@@ -17,27 +17,13 @@
                                     <div class="list-item modules-item modules-item-bottom_nav module-item-active">
                                         <div class="module-ad-con">
                                             <div class="bottom-nav-con">
-                                                <div class="bottom-nav-item">
+                                                <div class="bottom-nav-item" v-for="(item, index) in module.pic_list">
                                                     <div class="item-content">
                                                         <a class="item-img-a">
-                                                            <img
-                                                                class="item-img"
-                                                                src="https://demo2.lyecs.com/img/gallery/demo/1680247587QG2y44h7a7f0M1dx9T!!pic.png" />
+                                                            <img class="item-img" :src="imageFormat(item.pic_url)" v-if="item.pic_url" />
                                                         </a>
                                                         <a class="item-text-a">
-                                                            <span class="item-text">首页</span>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="bottom-nav-item">
-                                                    <div class="item-content">
-                                                        <a class="item-img-a">
-                                                            <img
-                                                                class="item-img"
-                                                                src="https://demo2.lyecs.com/img/gallery/demo/1680247587QG2y44h7a7f0M1dx9T!!pic.png" />
-                                                        </a>
-                                                        <a class="item-text-a">
-                                                            <span class="item-text">首页</span>
+                                                            <span class="item-text">{{ item.pic_title }}</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -47,39 +33,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="right-box-warp">
+                        <div class="right-box-warp" style="width: 510px">
                             <div class="dec-spread-title">
                                 <div class="title">底部导航设置</div>
                             </div>
                             <a-spin :spinning="loading">
-                                <div class="dec-edit-group">
-                                    <div class="dec-edit-group-desc">
-                                        <div class="pic-change-desc">建议尺寸：高度不要超过580px，宽度可以1700px以内，请结合背景色设置</div>
-                                    </div>
-                                </div>
-                                <div class="dec-edit-group">
+                                <div class="dec-edit-group dec-edit-group-block">
                                     <div class="dec-edit-group-title">
-                                        <div class="title">背景广告图</div>
+                                        <div class="title">添加图片</div>
                                     </div>
                                     <div class="dec-edit-group-con">
-                                        <div class="dec-pic-group">
-                                            <PicSelect v-model:photo="module.background_pic"></PicSelect>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="dec-divider-line"></div>
-                                <div class="dec-edit-group">
-                                    <div class="dec-edit-group-title">
-                                        <div class="title">背景色</div>
-                                        <div class="value"></div>
-                                    </div>
-                                    <div class="dec-edit-group-con">
-                                        <div class="dec-color-group">
-                                            <div class="dec-color-button">
-                                                <a class="dec-color-reset" @click="module.background_color = ''">重置</a>
-                                                <SelectColor v-model:color="module.background_color"></SelectColor>
-                                            </div>
-                                        </div>
+                                        <NavPicList :isMultiple="true" v-model:photos="module.pic_list"></NavPicList>
                                     </div>
                                 </div>
                             </a-spin>
@@ -96,21 +60,18 @@
 <script lang="ts" setup>
 import "@/views/decorate/decorate/src/css/decorate.less";
 import { ref, shallowRef, onMounted } from "vue";
-import { PicList, PicSelect } from "@/components/decorate";
+import { NavPicList, PicSelect } from "@/components/decorate";
 import { SelectColor } from "@/components/select";
 import { getDecorateDiscrete, updateDecorateDiscrete } from "@/api/decorate/decorateDiscrete";
 import { DecorateDiscreteFormState } from "@/types/decorate/decorateDiscrete.d";
 import { message } from "ant-design-vue";
+import { imageFormat } from "@/utils/format";
 
-const type = ref("pc_user_login");
+const type = ref("mobile_nav");
 const loading = ref(true);
 const confirmLoading = ref(false);
 const module = ref<DecorateDiscreteFormState>({
-    background_color: "",
-    background_pic: {
-        pic_url: "",
-        pic_thumb: "",
-    },
+    pic_list: [{}, {}, {}],
 });
 // 表单通过验证后提交
 onMounted(() => {
