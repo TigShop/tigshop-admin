@@ -250,11 +250,11 @@ const handleChange = (info: any) => {
                 }
             }
             message.success("文件上传成功！");
+            loadFilter();
         }
     } else if (info.file.status === "error") {
         message.error(`${info.file.name} 文件上传失败！`);
     }
-    // uploadPicList.value = info.fileList
 };
 </script>
 <style lang="less" scoped>

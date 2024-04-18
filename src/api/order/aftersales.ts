@@ -3,7 +3,7 @@ import {AftersalesFilterParams, AftersalesFilterResult, AftersalesFormResult} fr
 // 获取售后申请列表
 export const getAftersalesList = (params: AftersalesFilterParams) => {
     return request<AftersalesFilterResult>({
-        url: 'order/aftersales/index/',
+        url: 'order/aftersales/list/',
         method: 'get',
         params,
     });
