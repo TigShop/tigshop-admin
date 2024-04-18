@@ -296,9 +296,9 @@ const onPreview = async () => {
         // 1秒后执行
         setTimeout(() => {
             if (props.decorateType == 1) {
-                window.open(urlWapFormat("/?preview=1&id=" + id.value));
+                window.open(urlWapFormat("/?preview_id=" + id.value));
             } else if (props.decorateType == 2) {
-                window.open(urlFormat("/?preview=1&id=" + id.value));
+                window.open(urlFormat("/?preview_id=" + id.value));
             }
         }, 800);
     } catch (error: any) {
