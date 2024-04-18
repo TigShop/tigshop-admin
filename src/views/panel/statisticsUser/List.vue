@@ -8,8 +8,7 @@
                         <SelectTimeInterval
                             type="date"
                             v-model:start-date="filterParams.start_time"
-                            v-model:end-date="filterParams.end_time"
-                        ></SelectTimeInterval>
+                            v-model:end-date="filterParams.end_time"></SelectTimeInterval>
                     </el-form-item>
                     <el-form-item class="mr-10">
                         <el-button plain @click="handleSearch">搜索</el-button>
@@ -95,7 +94,10 @@
                             环比：
                             <span>{{ filterState?.recharge_user_growth_rate }}% </span>
                             <i
-                                v-if="(filterState.recharge_user_growth_rate as string).toString() !== '--' && (filterState.recharge_user_growth_rate as number) > 0"
+                                v-if="
+                                    (filterState.recharge_user_growth_rate as string).toString() !== '--' &&
+                                    (filterState.recharge_user_growth_rate as number) > 0
+                                "
                                 class="admin-iconfont red f12 up"
                                 >&#xe61a;</i
                             >
@@ -120,7 +122,7 @@ import { message } from "ant-design-vue";
 const loading = ref(false);
 const filterParams = reactive<statisticsUserFilterParams>({
     start_time: formattedDate(getDays(30, "sub"), "YYYY-MM-DD"),
-    end_time: formattedDate(new Date(), "YYYY-MM-DD")
+    end_time: formattedDate(new Date(), "YYYY-MM-DD"),
 });
 
 const filterState = ref<FilterResult>({
@@ -135,7 +137,7 @@ const filterState = ref<FilterResult>({
     visit_to_user: 0,
     visit_to_user_rate: 0,
     recharge_user_num: 0,
-    recharge_user_growth_rate: "0"
+    recharge_user_growth_rate: "0",
 });
 
 const getData = async () => {
@@ -157,7 +159,7 @@ const handleSearch = () => {
 const handleExport = () => {
     exportUserStatisticsPanel({
         ...filterParams,
-        is_export: "1"
+        is_export: "1",
     });
 };
 
@@ -193,7 +195,7 @@ onMounted(() => {
 
         .main-panel-item-value {
             font-size: 24px;
-            color: #555;
+            color: #333;
             display: block;
             font-weight: bold;
             padding: 10px 0;

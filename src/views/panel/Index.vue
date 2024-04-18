@@ -255,7 +255,7 @@ const accessStatisticsOptons = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#64a9ff",
+                color: "#1456f0",
             },
             areaStyle: {
                 color: {
@@ -277,7 +277,7 @@ const accessStatisticsOptons = ref<any>({
                     global: !1,
                 },
             },
-            color: "#5CA5FF",
+            color: "#1456f0",
             emphasis: {
                 scale: !1,
             },
@@ -330,7 +330,7 @@ const ordersReceivedStatisticsOptons = ref<any>({
                 borderRadius: [8, 8, 0, 0],
             },
             itemStyle: {
-                color: "#30a5ff",
+                color: "#1456f0",
             },
             barWidth: "50%",
             data: [],
