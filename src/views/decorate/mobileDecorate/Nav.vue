@@ -17,7 +17,7 @@
                                     <div class="list-item modules-item modules-item-bottom_nav module-item-active">
                                         <div class="module-ad-con">
                                             <div class="bottom-nav-con">
-                                                <div class="bottom-nav-item" v-for="(item, index) in module.pic_list">
+                                                <div class="bottom-nav-item" v-for="(item, index) in module.nav_list">
                                                     <div class="item-content">
                                                         <a class="item-img-a">
                                                             <img class="item-img" :src="imageFormat(item.pic_url)" v-if="item.pic_url" />
@@ -43,7 +43,7 @@
                                         <div class="title">添加图片</div>
                                     </div>
                                     <div class="dec-edit-group-con">
-                                        <NavPicList :isMultiple="true" v-model:photos="module.pic_list"></NavPicList>
+                                        <NavPicList :isMultiple="true" v-model:photos="module.nav_list"></NavPicList>
                                     </div>
                                 </div>
                             </a-spin>
@@ -71,7 +71,7 @@ const type = ref("mobile_nav");
 const loading = ref(true);
 const confirmLoading = ref(false);
 const module = ref<DecorateDiscreteFormState>({
-    pic_list: [{}, {}, {}],
+    nav_list: [{}, {}, {}, {}],
 });
 // 表单通过验证后提交
 onMounted(() => {
