@@ -1,14 +1,5 @@
 <template>
     <div class="theme-toolbar">
-        <div class="theme-menu-main">
-            <ul>
-                <li class="selected menu-item" data-id="1">
-                    <div class="left-line"></div>
-                    <b class="item-icon ico-decorate icon-dec-dianpuzhuangxiu"></b>
-                    <div class="tit">装修模块</div>
-                </li>
-            </ul>
-        </div>
         <div class="theme-menu-con show">
             <div class="theme-con-box" data-id="1">
                 <div class="inside">
@@ -33,8 +24,7 @@
                             @end=""
                             :sort="false"
                             :group="{ name: 'advanced', pull: 'clone', put: false }"
-                            :clone="clone"
-                        >
+                            :clone="clone">
                             <template #item="{ element, index }">
                                 <div class="list-item tool-list-item" @click="onAdd(index)">
                                     <span v-if="element.content" class="pic" v-html="element.content"> </span>
@@ -59,8 +49,7 @@
                             @end=""
                             :sort="false"
                             :group="{ name: 'advanced', pull: 'clone', put: false }"
-                            :clone="clone"
-                        >
+                            :clone="clone">
                             <template #item="{ element, index }">
                                 <div class="list-item tool-list-item" @click="onAdd(index)">
                                     <span v-if="element.content" class="pic" v-html="element.content"> </span>
@@ -83,8 +72,8 @@ import { cloneDeep } from "lodash";
 const props = defineProps({
     modules: {
         type: Object,
-        default: () => ({})
-    }
+        default: () => ({}),
+    },
 });
 const modules = ref(props.modules);
 const toolList = ref([

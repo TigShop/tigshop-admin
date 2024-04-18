@@ -10,8 +10,38 @@
 // 移动端图标
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
 
-@primary-color: #1890ff;
-
+:root {
+    --tig-primary: #336df4;
+    --tig-primary-color: #336df4;
+    --theme-default-hover-bg: #e6efff;
+    --theme-link-hover-color: #356fd4;
+    --theme-primary-hover-bg: #356fd4;
+    --theme-primary-hover-border-color: #356fd4;
+    --theme-weak-hover-color: #356fd4;
+    --theme-link-color: #155bd4;
+    --theme-default-hover-color: #155bd4;
+    --theme-default-hover-border-color: #155bd4;
+    --theme-primary-bg: #155bd4;
+    --theme-primary-border-color: #155bd4;
+    --theme-link-active-color: #114bad;
+    --theme-primary-active-bg: #114bad;
+    --theme-primary-active-border-color: #114bad;
+    --theme-weak-active-color: #114bad;
+    --theme-rgb-default-hover-bg: 230, 239, 255;
+    --theme-rgb-link-hover-color: 53, 111, 212;
+    --theme-rgb-primary-hover-bg: 53, 111, 212;
+    --theme-rgb-primary-hover-border-color: 53, 111, 212;
+    --theme-rgb-weak-hover-color: 53, 111, 212;
+    --theme-rgb-link-color: 21, 91, 212;
+    --theme-rgb-default-hover-color: 21, 91, 212;
+    --theme-rgb-default-hover-border-color: 21, 91, 212;
+    --theme-rgb-primary-bg: 21, 91, 212;
+    --theme-rgb-primary-border-color: 21, 91, 212;
+    --theme-rgb-link-active-color: 17, 75, 173;
+    --theme-rgb-primary-active-bg: 17, 75, 173;
+    --theme-rgb-primary-active-border-color: 17, 75, 173;
+    --theme-rgb-weak-active-color: 17, 75, 173;
+}
 .ant-drawer-content-wrapper {
     max-width: 100%;
 }
@@ -205,7 +235,7 @@ td {
 }
 
 a {
-    color: @primary-color;
+    color: var(--tig-primary);
     text-decoration: none;
     background-color: transparent;
     outline: none;
@@ -290,7 +320,7 @@ a {
 }
 
 .ant-pagination-mini li.ant-pagination-item-active:hover {
-    border-color: @primary-color !important;
+    border-color: var(--tig-primary) !important;
 }
 
 .lyecs-modal-gallery .ant-modal-body {
@@ -582,7 +612,7 @@ body {
         height: 16px;
         margin-top: -8px;
         margin-left: -8px;
-        background-color: @primary-color;
+        background-color: var(--tig-primary);
         border-top: 0;
         border-left: 0;
         border-radius: 16px;
@@ -593,7 +623,7 @@ body {
     }
 
     .el-radio__input.is-checked .el-radio__inner {
-        border-color: @primary-color;
+        border-color: var(--tig-primary);
         background: #fff;
     }
 

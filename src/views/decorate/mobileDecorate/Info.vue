@@ -23,7 +23,7 @@ import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { FormAddGallery } from "@/components/gallery";
 import { FormState } from "@/types/decorate/mobileDecorate.d";
-import { getExample, updateExample } from "@/api/decorate/mobileDecorate";
+import { getDecorate, updateDecorate } from "@/api/decorate/mobileDecorate";
 
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 
@@ -52,7 +52,7 @@ onMounted(() => {
 });
 const fetchExample = async () => {
     try {
-        const result = await getExample(action.value, { id: id.value });
+        const result = await getDecorate(action.value, { id: id.value });
         Object.assign(formState.value, result.item);
     } catch (error: any) {
         message.error(error.message);
@@ -67,7 +67,7 @@ const onSubmit = async () => {
     try {
         await formRef.value.validate();
         emit("update:confirmLoading", true);
-        const result = await updateExample(operation, { id: id.value, ...formState.value });
+        const result = await updateDecorate(operation, { id: id.value, ...formState.value });
         emit("submitCallback", result);
         message.success(result.message);
     } catch (error: any) {

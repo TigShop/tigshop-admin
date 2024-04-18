@@ -268,7 +268,7 @@ watchEffect(() => {
 
 .child-menu li.menu-item.current a {
     background: rgba(61, 127, 255, 0.06);
-    color: #1890ff;
+    color: var(--tig-primary);
     border-radius: 4px;
 }
 

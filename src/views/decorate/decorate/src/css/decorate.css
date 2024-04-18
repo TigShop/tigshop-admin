@@ -74,13 +74,23 @@
 }
 .decorate-topbar-con {
   display: flex;
+  background-color: #202033;
   justify-content: space-between;
+}
+.decorate-topbar-con .btn {
+  color: #fff !important;
+  border-color: #444454 !important;
+  background-color: #444454 !important;
+}
+.decorate-topbar-con .btn:hover {
+  background-color: #4d4d5c !important;
+  border-color: #444454 !important;
 }
 .topbar-now-txt {
   line-height: 54px;
   font-size: 12px;
   padding-left: 20px;
-  color: #444;
+  color: #fff;
 }
 .topbar-right {
   display: flex;
@@ -184,7 +194,7 @@
   border-right: 1px solid #f0f2f5;
 }
 .theme-menu-con.show {
-  left: 80px;
+  left: 0;
 }
 .theme-con-box {
   padding: 0;
@@ -421,7 +431,7 @@
 }
 /*页面层*/
 .decorate-page-wrap {
-  left: 280px;
+  left: 200px;
   position: fixed;
   right: 380px;
   background: #f7f8fa;
