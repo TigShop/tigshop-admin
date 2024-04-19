@@ -4,41 +4,50 @@
             <!-- <Image :src="imageFormat(pic_thumb)" fit="contain"/> -->
             <div class="lyecs-form-table">
                 <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
-                    <el-form-item label="商品" prop="order_id">
-                        <Image :src="imageFormat(formState.pic_thumb)" fit="contain" width="80"/>
+                    <el-form-item label="售后编号" prop="aftersales_sn">
+                        <p>{{formState.aftersales_sn}}</p>
                     </el-form-item>
-                    <el-form-item label="所属订单" prop="order_id">
+                    <!-- <el-form-item label="所属订单" prop="order_id">
                         <p>{{formState.order_sn}}</p>
+                    </el-form-item> -->
+                    <el-form-item label="服务类型" prop="aftersales_type_name">
+                        <p class="red">{{ formState.aftersales_type_name }}</p>
                     </el-form-item>
-                    <el-form-item label="退货信息" prop="product_name">
-                        <p>{{formState.product_name}} {{formState.product_sn}}</p>
+                    <el-form-item label="退款说明" prop="description">
+                        <p>{{formState.description}}</p>
                     </el-form-item>
                     <el-form-item label="数量" prop="number">
                         <p>x{{formState.number}}</p>
                     </el-form-item>
-                    <el-form-item label="买家问题描" prop="description">
-                        <p>x{{formState.description}}</p>
+                    <el-form-item label="当前状态" prop="status_name">
+                        <p>{{formState.status_name}}</p>
                     </el-form-item>
-                    <el-form-item label="服务类型" prop="aftersale_type">
-                        <el-radio-group v-model="formState.aftersale_type">
-                            <el-radio v-for="(item,index) in formState.aftersales_type_config" :label="index+1">{{ item }}</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="退款操作" prop="description">
-                        <el-button>生成退款申请</el-button>
-                    </el-form-item>
-                    <el-form-item label="当前操作状态" prop="status">
-                        <el-radio-group v-model="formState.status">
-                            <el-radio v-for="(item,index) in formState.status_config" :label="index+1">{{ item }}</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="修改退货数量" prop="modify_number">
-                        <el-input type="number" v-model="formState.modify_number" @input="onInput"/>
-                    </el-form-item>
+                    <el-table :data="formState.aftersales_items" style="width: 100%;margin-bottom: 20px;" border>
+                        <el-table-column label="商品信息" width="400">
+                            <template #default="{row}">
+                                <div class="flex">
+                                    <ProductCard
+                                        :pic_thumb="row.pic_thumb"
+                                        :product_id="row.product_id"
+                                        :product_name="row.product_name"
+                                        >
+                                    </ProductCard>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="商品价格" align="center">
+                            <template #default="{row}">
+                                <div>{{ priceFormat(row.price) }}</div>
+                            </template>
+                        </el-table-column>
+                        <!-- <el-table-column prop="price" label="商品价格" align="center" /> -->
+                        <el-table-column prop="quantity" label="商品数量" align="center" />
+                        <el-table-column prop="number" label="退货数量" align="center" />
+                    </el-table>
                     <el-form-item label="回寄物流公司" prop="logistics_name">
                         <el-input v-model="formState.logistics_name"/>
                     </el-form-item>
-                    <el-form-item label="回寄物流公司" prop="tracking_no">
+                    <el-form-item label="回寄物流单号" prop="tracking_no">
                         <el-input v-model="formState.tracking_no"/>
                     </el-form-item>
                     <el-form-item label="当前回复内容" prop="reply">
@@ -69,6 +78,8 @@ import {message} from "ant-design-vue";
 import {FormAddGallery} from '@/components/gallery'
 import {FormState} from '@/types/order/aftersales';
 import {getAftersales, updateAftersales} from "@/api/order/aftersales";
+import {ProductCard} from '@/components/list';
+import { priceFormat } from "@/utils/format";
 
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
