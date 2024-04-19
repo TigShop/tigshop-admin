@@ -152,17 +152,17 @@
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column v-if="activeKey != 7" :width="200" label="商品状态">
+                            <el-table-column v-if="activeKey != 7" :width="100" label="是否上架">
                                 <template #default="{ row }">
                                     <div class="status-switch">
                                         <div v-if="row.check_status == 1">
-                                            <span class="span-tit">上架：</span>
+                                            <!-- <span class="span-tit">上架：</span> -->
                                             <Switch
                                                 v-model:checked="row.product_status"
                                                 :params="{ id: row.product_id, field: 'product_status' }"
                                                 :requestApi="updateProductFiled" />
                                         </div>
-                                        <div>
+                                        <!-- <div>
                                             <span class="span-tit">精品：</span>
                                             <Switch
                                                 v-model:checked="row.is_best"
@@ -182,7 +182,7 @@
                                                 v-model:checked="row.is_hot"
                                                 :params="{ id: row.product_id, field: 'is_hot' }"
                                                 :requestApi="updateProductFiled" />
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </template>
                             </el-table-column>

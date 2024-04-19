@@ -6,7 +6,13 @@
                     <div class="container-card">
                         <div class="title">
                             <span class="mr10">基本信息</span>
-                            <DialogForm :params="{ act: 'edit', id: formState.user_id }" isDrawer path="user/user/Info" title="编辑会员" width="600px" @okCallback="updateData">
+                            <DialogForm
+                                :params="{ act: 'edit', id: formState.user_id }"
+                                isDrawer
+                                path="user/user/Info"
+                                title="编辑会员"
+                                width="600px"
+                                @okCallback="updateData">
                                 <a class="btn-link">编辑</a>
                             </DialogForm>
                         </div>
@@ -25,8 +31,7 @@
                                             :params="{ id: formState.user_id, field: 'nickname' }"
                                             :requestApi="updateUserField"
                                             label="昵称"
-                                            type="textarea"
-                                        >
+                                            type="textarea">
                                             <div>{{ "昵称：" + formState.nickname }}</div>
                                         </PopForm>
                                     </el-col>
@@ -68,7 +73,12 @@
                             <div class="zj-info">
                                 <div>可用资金</div>
                                 <div class="rank fz20">
-                                    <DialogForm :params="{ id: formState.user_id, type: 1 }" isDrawer path="user/user/AccountLog" title="资金明细" width="600px">
+                                    <DialogForm
+                                        :params="{ id: formState.user_id, type: 1 }"
+                                        isDrawer
+                                        path="user/user/AccountLog"
+                                        title="资金明细"
+                                        width="600px">
                                         <a class="btn-link">{{ priceFormat(formState.balance) }}</a>
                                     </DialogForm>
                                 </div>
@@ -76,7 +86,12 @@
                             <div class="zj-info">
                                 <div>冻结资金</div>
                                 <div class="rank fz20">
-                                    <DialogForm :params="{ id: formState.user_id, type: 2 }" isDrawer path="user/user/AccountLog" title="资金明细" width="600px">
+                                    <DialogForm
+                                        :params="{ id: formState.user_id, type: 2 }"
+                                        isDrawer
+                                        path="user/user/AccountLog"
+                                        title="资金明细"
+                                        width="600px">
                                         <a class="btn-link">{{ priceFormat(formState.frozen_balance) }}</a>
                                     </DialogForm>
                                 </div>
@@ -84,7 +99,12 @@
                             <div class="zj-info">
                                 <div>成长积分</div>
                                 <div class="rank fz20">
-                                    <DialogForm :params="{ id: formState.user_id, type: 3 }" isDrawer path="user/user/AccountLog" title="资金明细" width="600px">
+                                    <DialogForm
+                                        :params="{ id: formState.user_id, type: 3 }"
+                                        isDrawer
+                                        path="user/user/AccountLog"
+                                        title="资金明细"
+                                        width="600px">
                                         <a class="btn-link">{{ formState.growth_points }}</a>
                                     </DialogForm>
                                 </div>
@@ -92,7 +112,12 @@
                             <div class="zj-info">
                                 <div>消费积分</div>
                                 <div class="rank fz20">
-                                    <DialogForm :params="{ id: formState.user_id, type: 4 }" isDrawer path="user/user/AccountLog" title="资金明细" width="600px">
+                                    <DialogForm
+                                        :params="{ id: formState.user_id, type: 4 }"
+                                        isDrawer
+                                        path="user/user/AccountLog"
+                                        title="资金明细"
+                                        width="600px">
                                         <a class="btn-link">{{ formState.points }}</a>
                                     </DialogForm>
                                 </div>
@@ -121,13 +146,13 @@ const emit = defineEmits(["submitCallback", "update:confirmLoading", "callback",
 const props = defineProps({
     id: {
         type: Number,
-        default: 0
+        default: 0,
     },
     act: {
         type: String,
-        default: ""
+        default: "",
     },
-    isDialog: Boolean
+    isDialog: Boolean,
 });
 const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
@@ -138,7 +163,7 @@ const formRef = shallowRef();
 const formState = ref<UserFormState>({
     balance: 0,
     frozen_balance: 0,
-    avatar: ""
+    avatar: "",
 });
 const fetchUser = async () => {
     try {
@@ -198,7 +223,7 @@ defineExpose({ onFormSubmit });
         line-height: 14px;
         color: #323233;
         margin-bottom: 15px;
-        border-left: 4px solid #1890ff;
+        border-left: 4px solid var(--tig-primary);
         padding-left: 10px;
     }
 
@@ -238,7 +263,7 @@ defineExpose({ onFormSubmit });
 
     .rank {
         cursor: pointer;
-        color: #1890ff;
+        color: var(--tig-primary);
     }
 
     .fz20 {

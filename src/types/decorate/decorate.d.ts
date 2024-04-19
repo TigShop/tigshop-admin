@@ -311,3 +311,10 @@ export interface LinkType {
     link?: string;
     appLink?: string;
 }
+
+export interface PcImageAd {
+    pic_list?: ModulePicListType[];
+    is_flux_width?: number;
+    box_padding_top?: number;
+    box_padding_bottom?: number;
+}

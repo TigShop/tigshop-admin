@@ -188,10 +188,9 @@
                                 </div>
                             </div>
                             <div class="index-cell index-cell-5" style="border-bottom: 1px #f0f2f5 solid">
-                                <router-link :to="{ path: '/panel/statistics_order/list'}">
+                                <router-link :to="{ path: '/panel/statistics_order/list' }">
                                     <a class="check-more lyecs-openPage">查看更多销售统计</a>
                                 </router-link>
-                                
                             </div>
                         </div>
                     </div>
@@ -225,29 +224,29 @@ let ordersReceivedStatisticsChart: echarts.ECharts;
 const accessStatisticsOptons = ref<any>({
     title: {
         text: "访问统计",
-        left: "center"
+        left: "center",
     },
     grid: {
         // left: "5%"
-        right: "2.5%"
+        right: "2.5%",
     },
     tooltip: {
-        trigger: "axis"
+        trigger: "axis",
     },
     legend: {
         data: ["访问量"],
         left: "center", // 将图例居中显示（水平方向）
-        bottom: "bottom" // 设置图例距离底部为容器高度的10%（垂直方向）
+        bottom: "bottom", // 设置图例距离底部为容器高度的10%（垂直方向）
     },
     xAxis: {
         type: "category",
-        data: [0]
+        data: [0],
     },
     yAxis: {
         type: "value",
         axisLabel: {
-            formatter: "{value} K"
-        }
+            formatter: "{value} K",
+        },
     },
     series: [
         {
@@ -256,7 +255,7 @@ const accessStatisticsOptons = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#64a9ff"
+                color: "#1456f0",
             },
             areaStyle: {
                 color: {
@@ -268,46 +267,46 @@ const accessStatisticsOptons = ref<any>({
                     colorStops: [
                         {
                             offset: 0,
-                            color: "#ECF5FF"
+                            color: "#ECF5FF",
                         },
                         {
                             offset: 1,
-                            color: "#ffffff"
-                        }
+                            color: "#ffffff",
+                        },
                     ],
-                    global: !1
-                }
+                    global: !1,
+                },
             },
-            color: "#5CA5FF",
+            color: "#1456f0",
             emphasis: {
-                scale: !1
-            }
-        }
-    ]
+                scale: !1,
+            },
+        },
+    ],
 });
 const ordersReceivedStatisticsOptons = ref<any>({
     title: {
         text: "订单统计",
-        left: "center"
+        left: "center",
     },
     grid: {
         // left: "5%"
-        right: "2.5%"
+        right: "2.5%",
     },
     tooltip: {
-        trigger: "axis"
+        trigger: "axis",
     },
     legend: {
         data: ["订单金额", "订单数量"],
         left: "center", // 将图例居中显示（水平方向）
-        bottom: "bottom" // 设置图例距离底部为容器高度的10%（垂直方向）
+        bottom: "bottom", // 设置图例距离底部为容器高度的10%（垂直方向）
     },
     xAxis: {
         type: "category",
-        data: []
+        data: [],
     },
     yAxis: {
-        type: "value"
+        type: "value",
     },
     series: [
         {
@@ -316,27 +315,27 @@ const ordersReceivedStatisticsOptons = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#fac858"
+                color: "#fac858",
             },
             color: "#fac858",
             emphasis: {
-                scale: !1
-            }
+                scale: !1,
+            },
         },
         {
             name: "订单数量",
             type: "bar",
             backgroundStyle: {
                 color: "rgba(216, 229, 247, 0.55)",
-                borderRadius: [8, 8, 0, 0]
+                borderRadius: [8, 8, 0, 0],
             },
             itemStyle: {
-                color: "#30a5ff"
+                color: "#1456f0",
             },
             barWidth: "50%",
-            data: []
-        }
-    ]
+            data: [],
+        },
+    ],
 });
 const getData = async () => {
     // loading.value = true;
@@ -427,7 +426,7 @@ onUnmounted(() => {
 }
 
 .bar-top-item .itme-box:nth-child(1) .bar_panel {
-    background: #30a5ff;
+    background: var(--tig-primary);
 }
 
 .bar-top-item .itme-box:nth-child(2) .bar_panel {

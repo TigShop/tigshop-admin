@@ -7,9 +7,9 @@
                     <div class="topbar-now-txt">正在装修：{{ decorateTitle }}</div>
                 </div>
                 <el-space class="topbar-right">
-                    <el-button @click="onPreview()">预览</el-button>
-                    <el-button @click="onSavetoDraft()">存至草稿</el-button>
-                    <el-button @click="onPublish()" type="primary">保存并发布</el-button>
+                    <el-button class="btn" text @click="onPreview()">预览</el-button>
+                    <el-button class="btn" text @click="onSavetoDraft()">存至草稿</el-button>
+                    <el-button class="ml10" @click="onPublish()" type="primary">保存并发布</el-button>
                 </el-space>
             </div>
         </div>
@@ -212,8 +212,9 @@ const onModuleDel = (index: number) => {
     modules.value.moduleList.splice(index, 1);
 };
 
-const onEnd = () => {
-    console.log(modules.value);
+const onEnd = (e) => {
+    console.log(e);
+    editModuleIndex.value = e.newIndex;
 };
 const onAdd = (e: any) => {
     onEditComponent(e.newIndex);

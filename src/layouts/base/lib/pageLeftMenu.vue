@@ -201,12 +201,12 @@ watchEffect(() => {
 
 .main-menu li.current .menu-tit {
     background: #fff;
-    color: #1890ff;
+    color: var(--tig-primary);
     box-shadow: 0 5px 25px 1px rgba(0, 0, 0, 0.05);
 }
 
 .main-menu li.current .menu-tit i {
-    color: #1890ff;
+    color: var(--tig-primary);
 }
 
 .child_warp {
@@ -268,7 +268,7 @@ watchEffect(() => {
 
 .child-menu li.menu-item.current a {
     background: rgba(61, 127, 255, 0.06);
-    color: #1890ff;
+    color: var(--tig-primary);
     border-radius: 4px;
 }
 

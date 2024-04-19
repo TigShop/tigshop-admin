@@ -86,14 +86,24 @@
 
 .decorate-topbar-con {
     display: flex;
+    background-color: #202033;
     justify-content: space-between;
+    .btn {
+        color: #fff !important;
+        border-color: #444454 !important;
+        background-color: #444454 !important;
+        &:hover {
+            background-color: #4d4d5c !important;
+            border-color: #444454 !important;
+        }
+    }
 }
 
 .topbar-now-txt {
     line-height: 54px;
     font-size: 12px;
     padding-left: 20px;
-    color: #444;
+    color: #fff;
 }
 
 .topbar-right {
@@ -215,7 +225,7 @@
 }
 
 .theme-menu-con.show {
-    left: 80px;
+    left: 0;
 }
 
 .theme-menu-con.show .theme-con-box {
@@ -311,7 +321,7 @@
 }
 
 .theme-con-box .module-list .list-item:hover {
-    background: #1890ff;
+    background: var(--tig-primary);
     color: #fff;
 }
 
@@ -366,7 +376,7 @@
 }
 
 .theme-modules-warp .modules-item-load:before {
-    border: 2px solid #1890ff;
+    border: 2px solid var(--tig-primary);
     content: "";
     position: absolute;
     width: 100%;
@@ -394,7 +404,7 @@
     font-size: 14px;
     text-align: center;
     font-weight: bold;
-    background: #1890ff;
+    background: var(--tig-primary);
     color: #fff;
     margin: 0 auto;
     padding: 0 20px;
@@ -528,7 +538,7 @@
 
 /*页面层*/
 .decorate-page-wrap {
-    left: 280px;
+    left: 200px;
     position: fixed;
     right: 380px;
     background: #f7f8fa;
@@ -1797,9 +1807,9 @@ body .layui-layer-tips.dec-tip-box i.layui-layer-TipsB {
     }
 
     .box-wrapper .left-box .left-cont.current {
-        color: #1890ff;
+        color: var(--tig-primary);
         background-color: #f0faff;
-        border-right: 2px solid #1890ff;
+        border-right: 2px solid var(--tig-primary);
     }
 
     .decorateWrap {
