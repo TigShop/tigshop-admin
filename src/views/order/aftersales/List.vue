@@ -98,15 +98,15 @@
                                     <td v-if="index == 0" :rowspan="item.aftersales_items.length">
                                         <DialogForm v-if="item.status === 6 || item.status === 7" :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
                                                     path="order/aftersales/Info"
-                                                    title="售后详情" width="800px"
-                                                    @okCallback="loadFilter">
+                                                    :title="'售后详情 ' + item.aftersales_sn" width="800px"
+                                                    @okCallback="loadFilter" :showClose="false" :showOnOk="false">
                                             <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
                                         </DialogForm>
 
                                         <DialogForm v-else :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
                                                     path="order/aftersales/Info"
-                                                    title="处理售后申请" width="800px"
-                                                    @okCallback="loadFilter">
+                                                    :title="'处理售后申请 ' + item.aftersales_sn" width="800px"
+                                                    @okCallback="loadFilter" :showClose="false" :showOnOk="false">
                                             <el-button bg class="buttonColor mr10" size="small" text type="danger"> 处理退款 </el-button>
                                         </DialogForm>
                                     </td>

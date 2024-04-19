@@ -239,8 +239,13 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <el-button size="small" text type="danger"> 处理退款 </el-button>
-                                                    <el-button size="small" text type="primary"> 售后详情 </el-button>
+                                                    <DialogForm v-if="item.status === 6 || item.status === 7" :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
+                                                                path="order/aftersales/Info"
+                                                                :title="'售后详情 ' + item.aftersales_sn" width="800px"
+                                                                @okCallback="loadFilter" :showClose="false" :showOnOk="false">
+                                                        <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
+                                                    </DialogForm>
+                                                    <!-- <el-button size="small" text type="primary"> 售后详情 </el-button> -->
                                                 </div>
                                             </div>
                                         </td>

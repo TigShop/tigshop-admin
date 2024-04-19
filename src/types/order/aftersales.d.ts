@@ -66,7 +66,7 @@ export interface FormState {
     add_time?:string;
     shipping_time?:string;
     aftersales_type_config?:object[];
-    aftersales_log?:object[];
+    aftersales_log?:aftersales_log[];
     aftersales_type_name?:string;
     description?:string;
     logistics_name?:string;
@@ -85,4 +85,27 @@ export interface FormState {
     status_config?: object[];
     tracking_no?:string;
     user_name?:string;
+    aftersale_reason?:string;
+    refuse_reason?:string[];
+    aftersales_items?: productList[];
+}
+
+export interface aftersales_log {
+    log_id?: number;
+	aftersale_id?: number;
+	log_info?: string;
+	add_time?: string;
+	admin_name?: string;
+	refund_money?: string;
+	refund_type?: number;
+	refund_desc?: string;
+	user_name?: string;
+	return_pic?: Return_pic[];
+}
+
+export interface Return_pic {
+	pic_id?: number;
+	pic_thumb?: string;
+	pic_url?: string;
+	pic_name?: string;
 }
