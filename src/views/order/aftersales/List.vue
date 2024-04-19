@@ -38,7 +38,6 @@
                                             text="退换货商品"
                                             @loadData="loadFilter()"></SortButton>
                                     </th>
-                                    <th>物流信息</th>
                                     <th>售后原因</th>
                                     <th>服务类型</th>
                                     <th>售后状态</th>
@@ -49,7 +48,7 @@
                         <table v-for="item in filterState" class="custom-table">
                             <thead>
                                 <tr class="data-tr">
-                                    <th colspan="5">
+                                    <th colspan="4">
                                         <span class="check-box">售后编号：{{ item.aftersales_sn }}</span>
                                         <el-divider direction="vertical" />
                                         <span class="check-box">申请时间：{{ item.add_time }}</span>
@@ -78,10 +77,6 @@
                                         </div>
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.aftersales_items.length">
-                                        <p>快递名称：{{ item.logistics_name || '-' }}</p>
-                                        <p>快递单号：{{ item.tracking_no || '-' }}</p>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.aftersales_items.length">
                                         <p>{{ item.aftersale_reason || '-' }}</p>
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.aftersales_items.length">
@@ -101,16 +96,16 @@
                                         </span>
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.aftersales_items.length">
-                                        <DialogForm v-if="item.status === 6 || item.status === 7" :params="{ act: 'info', id: item.aftersale_id }" isDrawer
+                                        <DialogForm v-if="item.status === 6 || item.status === 7" :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
                                                     path="order/aftersales/Info"
-                                                    title="售后详情" width="700px"
+                                                    title="售后详情" width="800px"
                                                     @okCallback="loadFilter">
                                             <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
                                         </DialogForm>
 
                                         <DialogForm v-else :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
                                                     path="order/aftersales/Info"
-                                                    title="处理售后申请" width="700px"
+                                                    title="处理售后申请" width="800px"
                                                     @okCallback="loadFilter">
                                             <el-button bg class="buttonColor mr10" size="small" text type="danger"> 处理退款 </el-button>
                                         </DialogForm>

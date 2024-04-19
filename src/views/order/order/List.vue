@@ -7,6 +7,16 @@
                         <div class="list-table-tool-row">
                             <div class="list-table-tool-col">
                                 <el-space>
+                                    <div class="tabs flex">
+                                        <div class="item" v-for="item in orderStatusList" :class="filterParams.order_status == item.value ? 'active' : ''" @click="onTabChange(item.value)">{{ item.label }}</div>
+                                    </div>
+                                    <!-- <el-tabs
+                                        v-model="filterParams.order_status"
+                                        type="card"
+                                        @tab-click="loadFilter"
+                                    >
+                                        <el-tab-pane v-for="item in orderStatusList" :label="item.label" :name="item.value"></el-tab-pane>
+                                    </el-tabs> -->
                                     <!-- <el-select v-model="filterParams.order_status" clearable>
                                         <el-option v-for="item in orderStatusList" :label="item.label" :value="item.value"></el-option>
                                         <el-option label="已删除" :value="-2"></el-option>
@@ -107,13 +117,6 @@
                         </div>
                     </el-form>
                 </div>
-                <el-tabs
-                    v-model="filterParams.order_status"
-                    type="border-card"
-                    @tab-click="loadFilter"
-                >
-                    <el-tab-pane v-for="item in orderStatusList" :label="item.label" :name="item.value"></el-tab-pane>
-                    
                     <div class="table-container">
                         <a-spin :spinning="loading">
                             <table class="custom-table">
@@ -331,7 +334,7 @@
                             </div>
                         </a-spin>
                     </div>
-                </el-tabs>
+                
                 <div v-if="total > 0" class="pagination-con">
                     <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
                 </div>
@@ -396,6 +399,11 @@ const payStatusList = reactive([
     { value: 3, label: "退款中" },
     { value: 4, label: "已退款" },
 ]);
+
+const onTabChange = (value:number) => {
+    filterParams.order_status = value;
+    loadFilter()
+}
 
 const filterState = ref<OrderFilterState[]>([]);
 const loading = ref<boolean>(true);
@@ -672,6 +680,28 @@ const onSelectChange = (e: any) => {
 
     .gray {
         color: #999999;
+    }
+}
+.tabs {
+    .item{
+        width: 55px;
+        text-align: center;
+        height: 25px;
+        line-height: 25px;
+        color: #333;
+        margin: 0 5px;
+        font-size: 14px;
+        border-radius: 2px;
+        border: 1px solid #fff;
+        cursor: pointer;
+        &:hover{
+            color: #1890ff;
+        }
+    }
+    .active{
+        color: #1890ff;
+        background-color: rgba(61, 127, 255, 0.06);
+        border: 1px solid #1890ff;
     }
 }
 </style>
