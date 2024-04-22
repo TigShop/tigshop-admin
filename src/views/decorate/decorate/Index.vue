@@ -4,7 +4,10 @@
             <div class="decorate-topbar-con">
                 <div class="topbar-left">
                     <div class="topbar-logo"></div>
-                    <div class="topbar-now-txt">正在装修：{{ decorateTitle }}</div>
+                    <div class="topbar-now-txt cursor-pointer" @click="onLogout()">
+                        <i class="iconfont-admin icon-tuichu" style="margin-right: 8px"></i>退出编辑
+                    </div>
+                    <div class="topbar-now-txt"><span class="tit">正在装修：</span>{{ decorateTitle }}</div>
                 </div>
                 <el-space class="topbar-right">
                     <el-button class="btn" text @click="onPreview()">预览</el-button>
@@ -305,6 +308,13 @@ const onPreview = async () => {
     } catch (error: any) {
         message.error(error.message);
     } finally {
+    }
+};
+const onLogout = () => {
+    if (props.decorateType == 1) {
+        window.location.href = "/decorate/mobile_decorate/list/";
+    } else {
+        window.location.href = "/decorate/pc_decorate/list/";
     }
 };
 </script>

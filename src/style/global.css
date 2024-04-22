@@ -1,6 +1,6 @@
 @import "https://at.alicdn.com/t/c/font_2712500_jd8i8ai7b8k.css";
 @import "https://at.alicdn.com/t/c/font_4441878_29ep8jtwh2k.css";
-@import "https://at.alicdn.com/t/c/font_4375017_prfxehhzzwh.css";
+@import "https://at.alicdn.com/t/c/font_4375017_bbjab699lo.css";
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
 :root {
   --tig-primary: #1456f0;
@@ -187,6 +187,9 @@ a {
 }
 .f14 {
   font-size: 14px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .dollar,
 .decimal,

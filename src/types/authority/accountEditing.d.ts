@@ -1,11 +1,11 @@
 // 获取详情返回参数类型
 
-export interface AccountEditingFilterParams {
-}
+export interface AccountEditingFilterParams {}
 export interface AccountEditingFormState {
     avatar: string;
     username: string;
     email: string;
+    mobile: string;
 }
 export interface AccountPassWordEditingFormState {
     old_password: string;
