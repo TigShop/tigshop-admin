@@ -7,15 +7,15 @@
                         <el-tab-pane v-if="(formState as any)[item.prop] > -1" :label="item.label" :name="item.label"></el-tab-pane>
                     </template>
 
-                    <!--                    <el-tab-pane v-if="formState.is_message>-1" label="系统通知" name="系统通知"></el-tab-pane>-->
+                    <!--                    <el-tab-pane v-if="formState.is_message>-1" label="站内信" name="站内信"></el-tab-pane>-->
                     <!--                    <el-tab-pane v-if="formState.is_msg>-1" label="短信通知" name="短信通知"></el-tab-pane>-->
                     <!--                    <el-tab-pane v-if="formState.is_wechat>-1" label="微信模板消息" name="微信模板消息"></el-tab-pane>-->
-                    <!--                    <el-tab-pane v-if="formState.is_mini_program>-1" label="微信小程序提醒" name="微信小程序提醒"></el-tab-pane>-->
+                    <!--                    <el-tab-pane v-if="formState.is_mini_program>-1" label="小程序订阅消息" name="小程序订阅消息"></el-tab-pane>-->
                     <!--                    <el-tab-pane v-if="formState.is_app>-1" label="APP" name="APP"></el-tab-pane>-->
                     <!--                    <el-tab-pane v-if="formState.is_ding>-1" label="钉钉" name="钉钉"></el-tab-pane>-->
                 </el-tabs>
                 <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
-                    <div v-if="activeKey==='系统通知'">
+                    <div v-if="activeKey==='站内信'">
                         <el-form-item label="通知标题" prop="template_name">
                             <el-input v-model="formState.template_message.message_data.template_name"/>
                         </el-form-item>
@@ -77,7 +77,7 @@
                             </el-radio-group>
                         </el-form-item>
                     </div>
-                    <div v-if="activeKey==='微信小程序提醒'">
+                    <div v-if="activeKey==='小程序订阅消息'">
                         <el-form-item label="通知标题" prop="template_name">
                             <el-input v-model="formState.template_message.mini_program_data.template_name" disabled/>
                         </el-form-item>
@@ -171,15 +171,15 @@ const formState = ref<MessageTypeFormState>({
         msg_data: {},
     }
 });
-const activeKey = ref<string>('系统通知')
+const activeKey = ref<string>('站内信')
 const onTabChange = (val: number) => {
     console.log(val);
 }
 let tabs = ref([
-    {prop: 'is_message', label: '系统通知'},
+    {prop: 'is_message', label: '站内信'},
     {prop: 'is_msg', label: '短信通知'},
     {prop: 'is_wechat', label: '微信模板消息'},
-    {prop: 'is_mini_program', label: '微信小程序提醒'},
+    {prop: 'is_mini_program', label: '小程序订阅消息'},
     // {prop: 'is_app', label: 'APP'},
     // {prop: 'is_ding', label: '钉钉'},
 ]);
