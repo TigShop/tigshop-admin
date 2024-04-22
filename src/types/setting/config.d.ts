@@ -77,6 +77,7 @@ export interface BaseFormState {
     child_area_need_region?: number;
     shipping_tpl_fee_merge?: number;
     auto_cancel_order_hour?: number;
+    auto_cancel_order_minute?: number;
     recover_cancel_order?: number;
     use_bonus?: number;
     // use_surplus?: number;
