@@ -7,6 +7,7 @@
   --tig-text-hover: #336df4;
   --tig-primary-light-3: #336df4;
   --tig-primary-color: #1456f0;
+  --tig-red-text-color: #f23030;
   --el-color-primary: var(--tig-primary);
   --el-color-primary-light-3: var(--tig-primary-light-3);
   --el-button-hover-border-color: var(--tig-primary);
@@ -210,7 +211,7 @@ a {
   color: #999;
 }
 .red {
-  color: #f23030;
+  color: var(--tig-red-text-color);
 }
 .mr10 {
   margin-right: 10px;
@@ -333,7 +334,6 @@ body .el-drawer__footer {
   padding: 0;
 }
 body .el-button {
-  --el-button-hover-border-color: var(--el-color-primary-light-3);
   transition: color 0.1s ease-in, background-color 0.1s ease-in, border-color 0.1s ease-in, width 0.2s ease-in;
 }
 body .el-image-viewer__canvas img {
