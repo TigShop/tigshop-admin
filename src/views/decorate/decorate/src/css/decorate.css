@@ -86,11 +86,19 @@
   background-color: #4d4d5c !important;
   border-color: #444454 !important;
 }
+.decorate-topbar-con .topbar-left {
+  display: flex;
+}
 .topbar-now-txt {
   line-height: 54px;
-  font-size: 12px;
+  font-size: 14px;
   padding-left: 20px;
   color: #fff;
+  display: flex;
+  align-items: center;
+}
+.topbar-now-txt .tit {
+  color: #999999;
 }
 .topbar-right {
   display: flex;

@@ -1,12 +1,13 @@
 @import "https://at.alicdn.com/t/c/font_2712500_jd8i8ai7b8k.css";
 @import "https://at.alicdn.com/t/c/font_4441878_29ep8jtwh2k.css";
-@import "https://at.alicdn.com/t/c/font_4375017_prfxehhzzwh.css";
+@import "https://at.alicdn.com/t/c/font_4375017_bbjab699lo.css";
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
 :root {
   --tig-primary: #1456f0;
   --tig-text-hover: #336df4;
   --tig-primary-light-3: #336df4;
   --tig-primary-color: #1456f0;
+  --tig-red-text-color: #f23030;
   --el-color-primary: var(--tig-primary);
   --el-color-primary-light-3: var(--tig-primary-light-3);
   --el-button-hover-border-color: var(--tig-primary);
@@ -188,6 +189,9 @@ a {
 .f14 {
   font-size: 14px;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .dollar,
 .decimal,
 .price_format {
@@ -207,7 +211,7 @@ a {
   color: #999;
 }
 .red {
-  color: #f23030;
+  color: var(--tig-red-text-color);
 }
 .mr10 {
   margin-right: 10px;
@@ -330,7 +334,6 @@ body .el-drawer__footer {
   padding: 0;
 }
 body .el-button {
-  --el-button-hover-border-color: var(--el-color-primary-light-3);
   transition: color 0.1s ease-in, background-color 0.1s ease-in, border-color 0.1s ease-in, width 0.2s ease-in;
 }
 body .el-image-viewer__canvas img {

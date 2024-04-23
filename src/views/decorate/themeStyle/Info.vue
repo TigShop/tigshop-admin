@@ -8,12 +8,12 @@
                             <h3>主题配色</h3>
                             <div class="color-list">
                                 <div
-                                  v-for="item in ColorList"
-                                  :style="{ border: item.check ? '1px solid #0080f9' : '1px solid transparent' }"
-                                  class="color-card"
-                                  @click="selectItem(item.theme_id)">
-                                    <div :style="{ backgroundColor: item.color1 }"></div>
-                                    <div :style="{ backgroundColor: item.color2 }"></div>
+                                    v-for="item in ColorList"
+                                    :style="{ border: item.check ? '1px solid #0080f9' : '1px solid transparent' }"
+                                    class="color-card"
+                                    @click="selectItem(item.theme_id)">
+                                    <div :style="{ background: item['--main-bg'] }"></div>
+                                    <div :style="{ background: item['--vice-bg'] }"></div>
                                 </div>
                             </div>
                             <a-button :loading="confirmLoading" class="form-submit-btn" type="primary" @click="onSubmit">保存</a-button>
@@ -23,13 +23,13 @@
                             <div class="example">
                                 <div class="card info">
                                     <div class="info-item1">
-                                        <p :style="{ color: formState.color1 }" class="text">¥299-599</p>
-                                        <p :style="{ color: formState.color1, backgroundColor: formState.color3 }" class="bg-card">会员价</p>
+                                        <p :style="{ color: formState['--price'] }" class="text">¥299-599</p>
+                                        <p :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }" class="bg-card">会员价</p>
                                     </div>
                                     <div class="info-item2">
                                         <div>
-                                            <div :style="{ color: formState.color4, backgroundColor: formState.color2 }">加入购物车</div>
-                                            <div :style="{ color: 'white', backgroundColor: formState.color1 }">立即购买</div>
+                                            <div :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }">加入购物车</div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">立即购买</div>
                                         </div>
                                     </div>
                                 </div>
@@ -45,11 +45,10 @@
 </template>
 <script lang="ts" setup>
 import "@/style/css/list.less";
-import {onMounted, ref, shallowRef} from "vue";
+import {onMounted, ref} from "vue";
 import {message} from "ant-design-vue";
 import type {ColorList, ThemeStyleFormState} from "@/types/decorate/themeStyle.d";
 import {getConfig, updateConfig} from "@/api/setting/config";
-// import {getThemeStyle, updateThemeStyle} from "@/api/decorate/themeStyle";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 const confirmLoading = ref(false);
@@ -57,37 +56,198 @@ const confirmLoading = ref(false);
 const loading = ref<boolean>(true);
 const formState = ref<ThemeStyleFormState>({
     theme_id: 0,
-    color1: "",
-    color2: "",
-    color3: "",
-    color4: "",
 });
 const ColorList = ref<ColorList[]>([
-    {check: false, theme_id: 1, color1: "#4A90E2", color2: "#D6EAFC", color3: "#E5F2FF", color4: "#4A90E2"},
-    {check: false, theme_id: 2, color1: "#FF4444", color2: "#FFCCCC", color3: "#FFF2F2", color4: "#FFFFFF"},
-    {check: false, theme_id: 3, color1: "#FF5E15", color2: "#FF9302", color3: "#FFEDE6", color4: "#FFFFFF"},
-    {check: false, theme_id: 4, color1: "#FF547B", color2: "#FFE6E9", color3: "#FFF2F5", color4: "#FF547B"},
-    {check: false, theme_id: 5, color1: "#FF4444", color2: "#555555", color3: "#FFF2F2", color4: "#FFFFFF"},
-    {check: false, theme_id: 6, color1: "#FCC600", color2: "#1D262E", color3: "#FFF4CD", color4: "#FFFFFF"},
-    {check: false, theme_id: 7, color1: "#65C4AA", color2: "#D9F7EF", color3: "#F2FFFC", color4: "#65C4AA"},
-    {check: false, theme_id: 8, color1: "#09BB07", color2: "#383838", color3: "#E6F8E6", color4: "#FFFFFF"},
-    {check: false, theme_id: 9, color1: "#63BE72", color2: "#E2F4E3", color3: "#F0F8F0", color4: "#09BB07"},
-    {check: false, theme_id: 10, color1: "#C3A769", color2: "#F3EEE1", color3: "#F9F6F0", color4: "#C3A769"},
-    {check: false, theme_id: 11, color1: "#2F2F34", color2: "#EBECF2", color3: "#EAEAEA", color4: "#2F2F34"},
-    {check: false, theme_id: 12, color1: "#884CFF", color2: "#EFE6FF", color3: "#F3EDFF", color4: "#884CFF"},
-    {check: false, theme_id: 13, color1: "#EE0A24", color2: "#FF9518", color3: "#FDE6E9", color4: "#FFFFFF"},
+    {
+        check: false, theme_id: 1,
+        "--general": "#4a90e2",
+        "--main-bg": "#4a90e2",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#4a90e2",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#D6E9FC",
+        "--vice-text": "#0080FF",
+        "--icon": "#0080FF",
+        "--price": "#0080FF",
+        "--tag-text": "#0080FF",
+        "--tag-bg": "#E5F2FF"
+    }
+    , {
+        check: false, theme_id: 2,
+        "--general": "#ff4444",
+        "--main-bg": "#ff4444",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#ff4444",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#ff8855",
+        "--vice-text": "#fff",
+        "--icon": "#FC0000",
+        "--price": "#FC0000",
+        "--tag-text": "#CF0000",
+        "--tag-bg": "#FFF2F2"
+    }
+    , {
+        check: false, theme_id: 3,
+        "--general": "#ff5e15",
+        "--main-bg": "#ff5e15",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#ff5e15",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FF9300",
+        "--vice-text": "#ffffff",
+        "--icon": "#ff5e15",
+        "--price": "#ff5e15",
+        "--tag-text": "#ff5e15",
+        "--tag-bg": "#FFEDE6"
+    }
+    , {
+        check: false, theme_id: 4,
+        "--general": "#ff547b",
+        "--main-bg": "#ff547b",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#ff547b",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FFE6E8",
+        "--vice-text": "#ff547b",
+        "--icon": "#ff547b",
+        "--price": "#ff547b",
+        "--tag-text": "#ff547b",
+        "--tag-bg": "#FFF2F5"
+    }
+    , {
+        check: false, theme_id: 5,
+        "--general": "#FF4444",
+        "--main-bg": "#FF4444",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#FF4444",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#555555",
+        "--vice-text": "#ffffff",
+        "--icon": "#FC0000",
+        "--price": "#FC0000",
+        "--tag-text": "#CF0000",
+        "--tag-bg": "#FFF2F2"
+    }
+    , {
+        check: false, theme_id: 6,
+        "--general": "#FCC600",
+        "--main-bg": "#FCC600",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#FCC600",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#1D262E",
+        "--vice-text": "#ffffff",
+        "--icon": "#FCC600",
+        "--price": "#FCC600",
+        "--tag-text": "#FCC600",
+        "--tag-bg": "#FFF4CD"
+    }
+    , {
+        check: false, theme_id: 7,
+        "--general": "#65c4aa",
+        "--main-bg": "#65c4aa",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#65c4aa",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#D9F6EF",
+        "--vice-text": "#65c4aa",
+        "--icon": "#65c4aa",
+        "--price": "#65c4aa",
+        "--tag-text": "#65c4aa",
+        "--tag-bg": "#F2FFFC"
+    }
+    , {
+        check: false, theme_id: 8,
+        "--general": "#09bb07",
+        "--main-bg": "#09bb07",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#09bb07",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#383838",
+        "--vice-text": "#ffffff",
+        "--icon": "#09BB07",
+        "--price": "#09BB07",
+        "--tag-text": "#09BB07",
+        "--tag-bg": "#E6F8E6"
+    }
+    , {
+        check: false, theme_id: 9,
+        "--general": "#63be72",
+        "--main-bg": "#63be72",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#63be72",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#E1F4E3",
+        "--vice-text": "#6CBE72",
+        "--icon": "#6CBE72",
+        "--price": "#6CBE72",
+        "--tag-text": "#6CBE72",
+        "--tag-bg": "#F0F8F0"
+    }
+    , {
+        check: false, theme_id: 10,
+        "--general": "#c3a769",
+        "--main-bg": "#c3a769",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#c3a769",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#F3EEE1",
+        "--vice-text": "#C3A769",
+        "--icon": "#C3A769",
+        "--price": "#C3A769",
+        "--tag-text": "#C3A769",
+        "--tag-bg": "#F9F6F0"
+    }
+    , {
+        check: false, theme_id: 11,
+        "--general": "#2f2f34",
+        "--main-bg": "#2f2f34",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#2f2f34",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#EBECF2",
+        "--vice-text": "#2F2F34",
+        "--icon": "#2F2F34",
+        "--price": "#2F2F34",
+        "--tag-text": "#2F2F34",
+        "--tag-bg": "#EAEAEA"
+    }
+    , {
+        check: false, theme_id: 12,
+        "--general": "#884cff",
+        "--main-bg": "#884cff",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#884cff",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#EFE6FF",
+        "--vice-text": "#884cff",
+        "--icon": "#884cff",
+        "--price": "#884cff",
+        "--tag-text": "#884cff",
+        "--tag-bg": "#F3EDFF"
+    }
+    , {
+        check: false, theme_id: 13,
+        "--general": "#EE0A24",
+        "--main-bg": "#EE0A24",
+        "--main-btn-hover-bg": "",
+        "--main-bg-gradient": "#EE0A24",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FF9518FF",
+        "--vice-text": "#ffffff",
+        "--icon": "#EE0A24",
+        "--price": "#EE0A24",
+        "--tag-text": "#EE0A24",
+        "--tag-bg": "#FDE6E9"
+    }
 ]);
 const selectItem = (theme_id: number) => {
     ColorList.value.forEach((item) => {
         // 如果当前项是被点击的项，则将其 check 设置为 true
         // 否则，将其他项的 check 设置为 false
         if (item.theme_id === theme_id) {
+            Object.assign(formState.value,item)
             item.check = true;
-            formState.value.theme_id = item.theme_id;
-            formState.value.color1 = item.color1;
-            formState.value.color2 = item.color2;
-            formState.value.color3 = item.color3;
-            formState.value.color4 = item.color4;
         } else {
             item.check = false;
         }
@@ -117,7 +277,9 @@ onMounted(() => {
 const onSubmit = async () => {
     try {
         emit('update:confirmLoading', true);
-        const result = await updateConfig({code: "theme_style",data:{...formState.value}});
+        console.log(formState.value);
+        delete formState.value.check
+        const result = await updateConfig({code: "theme_style", data: {...formState.value}});
         emit('submitCallback', result);
         message.success(result.message);
     } catch (error: any) {
@@ -132,6 +294,7 @@ const onFormSubmit = () => {
 };
 
 defineExpose({onFormSubmit});
+
 </script>
 <style lang="less" scoped>
 .theme-style-info {
@@ -235,14 +398,12 @@ defineExpose({onFormSubmit});
             }
 
             .buy {
-                background: url("@/style/images/decorate/themeStyle/temp2.png");
-                background-position: center center;
+                background: url("@/style/images/decorate/themeStyle/temp2.png") center center;
                 background-size: cover;
             }
 
             .check {
-                background: url("@/style/images/decorate/themeStyle/temp3.png");
-                background-position: center center;
+                background: url("@/style/images/decorate/themeStyle/temp3.png") center center;
                 background-size: cover;
             }
         }

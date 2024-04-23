@@ -412,12 +412,13 @@
                             </div>
                         </el-form-item>
                         <div class="title">订单设置</div>
-                        <el-form-item label="未付款订单" prop="auto_cancel_order_hour">
+                        <el-form-item label="未付款订单" prop="auto_cancel_order_minute">
                             <div class="itemWidth">
-                                <el-input v-model="formState.auto_cancel_order_hour" style="width: 120px" />
-                                <span class="ml8">小时自动取消</span>
+                                <span class="mr8">订单超</span>
+                                <el-input v-model="formState.auto_cancel_order_minute" style="width: 60px" />
+                                <span class="ml8">分钟未支付自动取消</span>
                             </div>
-                            <div class="extra">未支付的订单会自动取消，请填写小时，比如8则代表8小时未付款则取消订单，为0或空则不限制</div>
+                            <div class="extra">未支付的订单会自动取消，请填写分钟，比如10则代表10分钟未付款则取消订单，为0或空则不限制</div>
                         </el-form-item>
                         <el-form-item label="已取消订单能否恢复" prop="recover_cancel_order">
                             <el-radio-group v-model="formState.recover_cancel_order" class="itemWidth">
