@@ -57,3 +57,20 @@ export const updateProduct = (operation: string, data: object) => {
         data,
     });
 };
+
+// 获取运费模板
+export const getShippingTplList = () => {
+    return request<ProductFilterResult>({
+        url: "product/product/shipping_tpl_list",
+        method: "get"
+    });
+};
+
+// 批量修改商品
+export const BatchProduct = (data: object) => {
+    return request({
+        url: "product/product_batch/product_batch_edit",
+        method: "post",
+        data,
+    });
+};

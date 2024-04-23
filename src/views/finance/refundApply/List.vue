@@ -25,23 +25,18 @@
                 </div>
                 <div class="table-container">
                     <a-spin :spinning="loading">
-                        <el-table :data="filterState" :loading="loading" :total="total" row-key="refund_id"
-                                  @selection-change="onSelectChange" @sort-change="onSortChange">
-                            <el-table-column type="selection" width="32"/>
+                        <el-table :data="filterState" :loading="loading" :total="total" row-key="refund_id" @sort-change="onSortChange">
+                            <!-- <el-table-column type="selection" width="32"/> -->
                             <el-table-column label="退款类型" :width="120" prop="refund_type_name"></el-table-column>
                             <el-table-column label="退款信息">
                                 <template #default="{ row }">
                                     <div  style="display: flex;justify-content: space-between;align-items: center">
-                                        <div v-if="row.refund_type===1" >
-                                            订单编号：{{row.order_sn}}
-                                        </div>
-                                        <ul v-else style="width: 60%">
-                                            <li>商品名称：{{row.product_name}}</li>
-                                            <li>所在订单编号：{{row.order_sn}}</li>
-                                        </ul>
-                                        <div>
-                                            <img style="width: 50px" :src="row.pic_thumb">
-                                        </div>
+                                        <DialogForm :params="{ act: 'edit', id: row.aftersale_id, type: 2 }" isDrawer
+                                                    path="order/aftersales/Info"
+                                                    :title="'售后详情 ' + row.aftersales_sn" width="800px"
+                                                    @okCallback="loadFilter" :showClose="false" :showOnOk="false">
+                                                    售后编号：<a>{{row.aftersales_sn}}</a>
+                                        </DialogForm>
                                     </div>
                                 </template>
                             </el-table-column>
@@ -50,15 +45,15 @@
                             <el-table-column :width="120" fixed="right" label="操作">
                                 <template #default="{ row }">
                                     <DialogForm :params="{ act: 'edit', id: row.refund_id }" isDrawer
-                                           title="编辑退款申请" width="700px"
+                                           title="编辑退款申请" width="800px"
                                                      path="finance/refundApply/Info"
-                                                @okCallback="loadFilter">
-                                        <a class="btn-link">编辑</a>
+                                                @okCallback="loadFilter" :showClose="false" :showOnOk="false">
+                                        <a class="btn-link">{{row.refund_status == 0 ? '处理申请' : '查看详情'}}</a>
                                     </DialogForm>
-                                    <el-divider direction="vertical"/>
-                                    <DeleteRecord :params="{ id: row.refund_id }" :requestApi="delRefundApply"
+                                    <!-- <el-divider direction="vertical"/> -->
+                                    <!-- <DeleteRecord :params="{ id: row.refund_id }" :requestApi="delRefundApply"
                                                   @afterDelete="loadFilter">删除
-                                    </DeleteRecord>
+                                    </DeleteRecord> -->
                                 </template>
                             </el-table-column>
                             <template #empty>
@@ -73,7 +68,7 @@
                                     @callback="loadFilter"/>
                     </div>
                 </div>
-                <div v-if="selectedIds.length > 0" class="selected-action-warp">
+                <!-- <div v-if="selectedIds.length > 0" class="selected-action-warp">
                     <div class="selected-action">
                         <el-space>
                             <span>已选择：<b>{{ selectedIds.length }}</b> 项</span>
@@ -85,7 +80,7 @@
                             </el-popconfirm>
                         </el-space>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

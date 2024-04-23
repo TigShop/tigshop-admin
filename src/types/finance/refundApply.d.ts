@@ -45,6 +45,16 @@ export interface RefundApplyFormState {
     refund_amount?: string;
     refund_status?: number;
     refund_note?: string;
+    aftersale_id?: number;
+    aftersales_sn?: string;
+    refund_balance?: number;
+    balance?: number;
+    effective_balance?: number;
+    online_balance?: number;
+    effective_online_balance?: number;
+    online_paid_amount?: number;
+    offline_balance?: number;
+    offline_paid_amount?: number;
 }
 
 

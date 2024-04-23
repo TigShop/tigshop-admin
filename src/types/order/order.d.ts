@@ -96,11 +96,12 @@ export interface OrderFilterState {
     shipping_fee?: string;
     order_status?: number;
     is_del?: number;
+    total_amount?: number;
     admin_note?: string;
+    order_status_name?: string;
     items: ItemInfo[];
     available_actions: AvailableActionsInfo;
 }
-
 export interface ItemInfo {
     product_id?: number;
     pic_thumb?: string;
@@ -109,6 +110,12 @@ export interface ItemInfo {
     product_type?: number;
     price: number;
     quantity?: number;
+    aftersales_item?: {
+        aftersales_item_id: number;
+        order_item_id: number;
+        number: number;
+        aftersale_id: number;
+    }
 }
 
 export interface AvailableActionsInfo {

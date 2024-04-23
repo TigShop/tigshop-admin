@@ -81,6 +81,7 @@ export interface FormState {
     product_sn?:string;
     reply?:string;
     status?:number;
+    refund_amount?:number;
     status_name?:string;
     status_config?: object[];
     tracking_no?:string;

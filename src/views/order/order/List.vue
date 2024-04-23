@@ -216,6 +216,11 @@
                                                 <div class="displayColumn textR whiteSN widthAuto">
                                                     <div>{{ priceFormat(product.price) }}</div>
                                                     <div>× {{ product.quantity }}</div>
+                                                    <DialogForm v-if="product.aftersales_item" :params="{ act: 'edit', id: product.aftersales_item.aftersale_id, type: 2 }" isDrawer
+                                                                path="order/aftersales/Info"
+                                                                title="售后详情" :showClose="false" :showOnOk="false">
+                                                        <el-button size="small" text type="primary"> 售后详情 </el-button>
+                                                    </DialogForm>
                                                 </div>
                                             </div>
                                         </td>
@@ -238,15 +243,10 @@
                                                         <p>佣金：<span class="gray">未结算</span></p>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <DialogForm v-if="item.status === 6 || item.status === 7" :params="{ act: 'edit', id: item.aftersale_id }" isDrawer
-                                                                path="order/aftersales/Info"
-                                                                :title="'售后详情 ' + item.aftersales_sn" width="800px"
-                                                                @okCallback="loadFilter" :showClose="false" :showOnOk="false">
-                                                        <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
-                                                    </DialogForm>
+                                                <!-- <div> -->
+                                                   
                                                     <!-- <el-button size="small" text type="primary"> 售后详情 </el-button> -->
-                                                </div>
+                                                <!-- </div> -->
                                             </div>
                                         </td>
                                         <td v-if="index == 0" :rowspan="item.items.length">

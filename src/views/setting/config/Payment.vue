@@ -17,13 +17,13 @@
                             </el-radio-group>
                             <div class="extra">订单结算页面是否支持余额支付功能，不支持则不显示</div>
                         </el-form-item>
-                        <el-form-item label="货到付款" prop="use_cod">
+                        <!-- <el-form-item label="货到付款" prop="use_cod">
                             <el-radio-group v-model="formState.use_cod" class="itemWidth">
                                 <el-radio :value="1">支持</el-radio>
                                 <el-radio :value="0">不支持</el-radio>
                             </el-radio-group>
                             <div class="extra">订单结算页面支付方式是否支持货到付款功能，不支持则不显示</div>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="积分抵扣" prop="use_points">
                             <el-radio-group v-model="formState.use_points" class="itemWidth">
                                 <el-radio :value="1">支持</el-radio>
@@ -139,10 +139,10 @@
                       <el-form-item label="汇款说明">
                         <el-tabs type="border-card" v-model="activeName">
                             <el-tab-pane label="银行汇款" :name="1">
-                                <Editor v-model:html="formState.offline_pay_bank"></Editor>
+                                <Editor v-model:html="formState.offline_pay_bank" :border="false"></Editor>
                             </el-tab-pane>
                             <el-tab-pane label="企业汇款" :name="2">
-                                <Editor v-model:html="formState.offline_pay_company"></Editor>
+                                <Editor v-model:html="formState.offline_pay_company" :border="false"></Editor>
                             </el-tab-pane>
                         </el-tabs>
                       </el-form-item>
@@ -272,6 +272,9 @@ const handleChange = (info: any) => {
         color: #999;
         font-weight: normal;
         font-size: 12px;
+    }
+    :deep(.el-tabs--border-card > .el-tabs__content){
+        padding: 0;
     }
 }
 

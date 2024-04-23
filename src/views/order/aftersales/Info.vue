@@ -26,7 +26,7 @@
                 <div class="container-card">
                     <div class="title flex flex-justify-between">
                         <p>售后明细</p>
-                        <div class="btn flex">
+                        <div class="btn flex" v-if="type != 2">
                             <div v-if="formState.aftersale_type == 1 && formState.status == 1">
                                 <DialogForm
                                     :params="{ status: 2, formData:formState }"
@@ -75,7 +75,7 @@
                                     <el-button> 拒绝仅退款 </el-button>
                                 </DialogForm>
                             </div>
-                            <div v-if="formState.aftersale_type == 1 && formState.status == 5">
+                            <div v-if="formState.aftersale_type == 1 && formState.status == 4">
                                 <el-popconfirm
                                     width="220"
                                     confirm-button-text="确认"
@@ -124,6 +124,10 @@
                         <div class="card-title">
                             <ul>
                                 <li class="card-li">
+                                    <div>退款金额：</div>
+                                    <div class="li-info">{{ priceFormat(formState.refund_amount)  || "0" }}</div>
+                                </li>
+                                <li class="card-li">
                                     <div>物流公司：</div>
                                     <div class="li-info">{{ formState.logistics_name || "--" }}</div>
                                 </li>
@@ -131,9 +135,9 @@
                                     <div>物流单号：</div>
                                     <div class="li-info">{{ formState.tracking_no || "--" }}</div>
                                 </li>
-                                <!-- <li class="card-li" v-if="formState.aftersales_items">
+                                <li class="card-li" v-if="formState.aftersales_items">
                                     订单编号：<span class="li-info">{{ formState.aftersales_items[0].order_sn }}</span>
-                                </li> -->
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -143,7 +147,7 @@
                         <div>
                             协商记录
                         </div>
-                        <div class="btn" v-if="formState.status == 1">
+                        <div class="btn" v-if="formState.status == 1 && type != 2">
                             <el-button bg size="small" text type="primary" :disabled="isMsg" @click="isMsg = true"> 点击发表留言 </el-button>
                         </div>
                     </div>
@@ -251,6 +255,10 @@ const props = defineProps({
         type: String,
         default: ""
     },
+    type: {
+        type: Number,
+        default: 0
+    },
     isDialog: Boolean
 });
 const loading = ref<boolean>(true);
@@ -278,6 +286,7 @@ const fetchBrand  = async () => {
         formState.value.aftersales_type_config = toArray(formState.value.aftersales_type_config)
         formState.value.status_config = toArray(formState.value.status_config)
         formState.value.modify_number = formState.value.number
+        // emit('submitCallback')
     } catch (error:any) {
         message.error(error.message);
         emit('close');
@@ -334,12 +343,11 @@ onMounted(() => {
 
 // 确认收货
 const confirmReceipt = async () => {
-    message.success('1231321');
-    return
     try {
         const result = await updataConfirmReceipt({ id: id.value });
         message.success(result.message);
-        fetchBrand();
+        // fetchBrand();
+        emit('submitCallback')
     } catch (error:any) {
         message.error(error.message);
     }

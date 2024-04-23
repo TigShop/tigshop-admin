@@ -46,6 +46,9 @@ import { BrandFilterState } from "@/types/product/brand";
 // 传值
 const props = defineProps({
     //multiple 是否多选，可直接写在父组件
+    firstWordList: {type: Array as propType<string[]>, default: () => []},
+    brandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
+    allBrandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
 });
 const brand_id = defineModel<any>("brand_id");
 const brand_form = defineModel<any>("brand_form");
@@ -63,7 +66,13 @@ const onChange = (e: any) => {
     firstWord.value = "全部";
 };
 onMounted(() => {
-    loadBrand();
+    if(props.brandList && props.firstWordList && props.allBrandList){
+        options.value = props.brandList;
+        firstWordList.value = props.firstWordList;
+        allBrandList.value = props.allBrandList;
+    }else{
+        loadBrand();
+    }
 });
 
 const loaded = ref(false);

@@ -130,7 +130,7 @@
                                 ></SelectTimeInterval>
                                 <div class="extra">需先钩选促销价</div>
                             </el-form-item>
-                            <el-form-item label="阶梯价格" prop="volume_list">
+                            <!-- <el-form-item label="阶梯价格" prop="volume_list">
                                 <DynamicList
                                     v-model:modelValue="formState.volume_list"
                                     :minWidth="340"
@@ -146,7 +146,7 @@
                                         </div>
                                     </template>
                                 </DynamicList>
-                            </el-form-item>
+                            </el-form-item> -->
                             <el-form-item label="会员价格" prop="rank">
                                 <div class="rank">
                                     <el-space v-for="(rank, index) in formState.user_rank_list" :key="index">

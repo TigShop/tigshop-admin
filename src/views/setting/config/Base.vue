@@ -104,7 +104,7 @@
                             </el-radio-group>
                             <div class="extra">当识别到设备为移动设备时，访问PC端时自动跳转至手机H5端</div>
                         </el-form-item>
-                        <div class="title">Redis设置</div>
+                        <!-- <div class="title">Redis设置</div>
                         <el-form-item label="缓存是否使用Redis" prop="is_open_redis">
                             <el-radio-group v-model="formState.is_open_redis" class="itemWidth">
                                 <el-radio :value="1">是</el-radio>
@@ -131,15 +131,15 @@
                         </el-form-item>
                         <el-form-item label="Redis服务器密码" prop="redis_host_password">
                             <el-input v-model="formState.redis_host_password" />
-                        </el-form-item>
-                        <div class="title">消息队列设置</div>
+                        </el-form-item> -->
+                        <!-- <div class="title">消息队列设置</div>
                         <el-form-item label="是否开启消息队列" prop="is_open_queue">
                             <el-radio-group v-model="formState.is_open_queue" class="itemWidth">
                                 <el-radio :value="1">是</el-radio>
                                 <el-radio :value="0">否</el-radio>
                             </el-radio-group>
                             <div class="extra">消息队列默认使用Redis驱动，请开启前务必配置好Redis服务器，并且在终端项目根目录执行php lyecs queue:listen</div>
-                        </el-form-item>
+                        </el-form-item> -->
                         <div class="title">登录设置</div>
                         <el-form-item label="短信登录方式" prop="mobile_login_need_reg">
                             <el-radio-group v-model="formState.mobile_login_need_reg" class="itemWidth">
@@ -810,7 +810,7 @@
                                 <div class="extra">您也可以下载至本地服务器，只需填写能访问到iconfont的完整域名和存放路径</div>
                             </div>
                         </el-form-item>
-                        <div class="title">第三方登录</div>
+                        <!-- <div class="title">第三方登录</div>
                         <el-form-item label="QQ登陆 KEY" prop="qq_login_key">
                             <el-input v-model="formState.qq_login_key" />
                             <div class="extra">请填写第三方提供的id KEY，不填则不显示，申请链接：https://connect.qq.com</div>
@@ -823,8 +823,8 @@
                         <el-form-item label="LYECS物流KEY" prop="lyecs_api_key">
                             <el-input v-model="formState.lyecs_api_key" />
                             <div class="extra">请通过LYECS获取物流API KEY，每一个物流单号（不限查询次数）会消耗一点API账户余额</div>
-                        </el-form-item>
-                        <div class="title">快递100订阅</div>
+                        </el-form-item> -->
+                        <!-- <div class="title">快递100订阅</div>
                         <el-form-item label="是否开启快递100订阅" prop="kuaidi100_limit">
                             <el-radio-group v-model="formState.kuaidi100_limit" class="itemWidth">
                                 <el-radio :value="1">开启</el-radio>
@@ -834,7 +834,7 @@
                         </el-form-item>
                         <el-form-item label="快递100下发Key" prop="kuaidi100_key">
                             <el-input v-model="formState.kuaidi100_key" />
-                        </el-form-item>
+                        </el-form-item> -->
                         <div class="title">存储设置</div>
                         <el-form-item label="存储类型" prop="storage_type">
                             <el-radio-group v-model="formState.storage_type" class="itemWidth">

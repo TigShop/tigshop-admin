@@ -20,6 +20,7 @@ import { CategoryFilterState } from "@/types/product/category";
 // 传值
 const props = defineProps({
     multiple: { type: Boolean, default: false },
+    categoryList: {type: Array as propType<CategoryFilterState[]>, default: () => []},
 });
 const categoryId = defineModel<any>("category_id");
 const categoryName = defineModel<any>("categoryName");
@@ -34,7 +35,11 @@ const open = ref(false);
 // 给父组件传值
 // 加载分类
 onMounted(() => {
-    loadCategory();
+    if(props.categoryList){
+        options.value = props.categoryList
+    }else{
+        loadCategory();
+    }
 });
 const loadCategory = async () => {
     if (loaded.value === true) return;

@@ -1,5 +1,5 @@
 <template>
-    <div style="border: 1px solid #eee">
+    <div :style="border ? 'border: 1px solid #eee' : ''">
         <Toolbar style="border-bottom: 1px solid #eee" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
         <Editor :style="'height: ' + height + '; overflow-y: hidden;'" @onChange="onChange" v-model="html" :defaultConfig="editorConfig" :mode="mode" @onCreated="handleCreated" />
     </div>
@@ -17,6 +17,10 @@ const props = defineProps({
     height: {
         type: String,
         default: '500px'
+    },
+    border: {
+        type: Boolean,
+        default: true
     }
 })
 const html = ref(props.html)

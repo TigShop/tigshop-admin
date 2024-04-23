@@ -62,7 +62,7 @@
                             <tbody>
                                 <tr v-for="(product, index) in item.aftersales_items">
                                     <td>
-                                        <div class="displayRow">
+                                        <div class="displayRow flex-justify-between">
                                             <ProductCard
                                                 :pic_thumb="product.pic_thumb"
                                                 :product_id="product.product_id"
