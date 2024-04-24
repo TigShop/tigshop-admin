@@ -35,7 +35,7 @@ const open = ref(false);
 // 给父组件传值
 // 加载分类
 onMounted(() => {
-    if(props.categoryList){
+    if(props.categoryList.length > 1){
         options.value = props.categoryList
     }else{
         loadCategory();

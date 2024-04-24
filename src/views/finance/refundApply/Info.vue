@@ -52,22 +52,22 @@
                     <el-form-item :label="'订单金额'" prop="brand_name">
                         <OrderMoney v-model="formState"></OrderMoney>
                     </el-form-item>
-                    <el-form-item label="余额退款金额" prop="refund_balance" :rules="[{ required: true, message: '会员名称不能为空!' }]">
-                        <el-input v-model="formState.refund_balance" :max="formState.effective_balance" />
+                    <el-form-item label="余额退款金额" prop="refund_balance">
+                        <el-input v-model="formState.refund_balance" :max="formState.effective_balance" :disabled="formState.refund_status != 0" />
                         <div class="extra">请根据实际情况填写金额, 最多可操作金额 {{ priceFormat(formState.effective_balance) }}</div>
                     </el-form-item>
                     <el-form-item label="线上退款金额" prop="online_balance">
-                        <el-input v-model="formState.online_balance" :max="formState.effective_online_balance"/>
+                        <el-input v-model="formState.online_balance" :max="formState.effective_online_balance" :disabled="formState.refund_status != 0"/>
                         <div class="extra">请根据实际情况填写金额, 最多可操作金额 {{ priceFormat(formState.effective_online_balance) }}</div>
                     </el-form-item>
                     <el-form-item label="线下退款金额" prop="offline_balance">
-                        <el-input v-model="formState.offline_balance"/>
+                        <el-input v-model="formState.offline_balance" :disabled="formState.refund_status != 0"/>
                         <div class="extra">请根据实际情况填写金额</div>
                     </el-form-item>
                     <el-form-item label="本次操作备注" prop="refund_note">
-                        <el-input v-model="formState.refund_note" row="2" type="textarea"/>
+                        <el-input v-model="formState.refund_note" rows="4" type="textarea" :disabled="formState.refund_status != 0"/>
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item v-if="formState.refund_status == 0">
                         <div class="btn-box">
                             <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit(1)">同意退款</el-button>
                             <el-button ref="submitBtn" class="form-submit-btn" @click="onSubmit(2)">拒绝退款</el-button>
@@ -107,9 +107,16 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
 const formRef = shallowRef();
-const formState = ref<RefundApplyFormState>({});
+const formState = ref<RefundApplyFormState>({
+    effective_balance: 0,
+    refund_balance: 0,
+    effective_online_balance: 0,
+    online_balance: 0,
+    offline_balance: 0,
+    refund_amount: 0,
+    paid_amount: 0,
+});
 const fetchRefundApply = async () => {
     try {
         const result = await getRefundApply(action.value, {id: id.value});
@@ -135,9 +142,37 @@ onMounted(() => {
 const onSubmit = async (status: number) => {
      //refund_status 1同意 2拒绝
      await formRef.value.validate();
+     if(status == 1){
+        if(formState.value.refund_balance > formState.value.effective_balance){
+            message.error('退款金额不能大于最多可操作金额');
+            return;
+        }
+        if(formState.value.online_balance > formState.value.effective_online_balance){
+            message.error('退款金额不能大于最多可操作金额');
+            return;
+        }
+        if(formState.value.offline_balance > formState.value.paid_amount){
+            message.error('退款金额不能大于实收金额');
+            return;
+        }
+        let total = Number(formState.value.refund_balance) + Number(formState.value.online_balance) + Number(formState.value.offline_balance);
+        if(total > formState.value.paid_amount){
+            message.error('总退款金额不能大于实收金额');
+            return;
+        }
+     }
     try {
         emit('update:confirmLoading', true);
-        const result = await updateRefundApply(operation, {id: id.value, refund_status: status, ...formState.value});
+        let obj = {
+            id: id.value, // 退款id
+            refund_status: status, // 退款状态
+            refund_note: formState.value.refund_note,
+            online_balance: formState.value.online_balance, // 线上金额
+            offline_balance: formState.value.offline_balance, // 线下金额
+            refund_balance: formState.value.refund_balance, // 余额
+            // is_gain: 1 // 退款金额是否已全退到账
+        }
+        const result = await updateRefundApply(obj);
         emit('submitCallback', result);
         message.success(result.message);
     } catch (error:any) {

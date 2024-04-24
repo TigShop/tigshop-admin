@@ -243,19 +243,26 @@
                                         >
                                         <el-divider v-if="activeKey != 7" direction="vertical" />
                                         <DeleteRecord
+                                        v-if="activeKey === 7"
+                                            :params="{ id: row.product_id, field: 'is_delete' }"
+                                            :requestApi="updateProductFiled"
+                                            @afterDelete="loadFilter">
+                                            还原
+                                        </DeleteRecord>
+                                        <!-- <DeleteRecord
                                             v-if="activeKey === 7"
                                             :params="{ id: row.product_id, is_delete: 0 }"
                                             :requestApi="delProduct"
                                             @afterDelete="loadFilter">
                                             删除
                                         </DeleteRecord>
-                                        <el-divider v-if="activeKey === 7" direction="vertical" />
+                                        <el-divider v-if="activeKey === 7" direction="vertical" /> -->
 
-                                        <el-dropdown trigger="click">
+                                        <el-dropdown trigger="click" v-if="activeKey != 7">
                                             <span class="iconfont-admin icon-gengduo btn-link"></span>
                                             <template #dropdown>
                                                 <el-dropdown-menu>
-                                                    <el-dropdown-item v-if="activeKey != 7">
+                                                    <el-dropdown-item>
                                                         <DeleteRecord
                                                             :params="{ id: row.product_id, is_delete: 1 }"
                                                             :requestApi="recycleProduct"
@@ -263,14 +270,14 @@
                                                             移入回收站
                                                         </DeleteRecord>
                                                     </el-dropdown-item>
-                                                    <el-dropdown-item v-if="activeKey === 7">
+                                                    <!-- <el-dropdown-item v-if="activeKey === 7">
                                                         <DeleteRecord
                                                             :params="{ id: row.product_id, field: 'is_delete' }"
                                                             :requestApi="updateProductFiled"
                                                             @afterDelete="loadFilter">
                                                             还原
                                                         </DeleteRecord>
-                                                    </el-dropdown-item>
+                                                    </el-dropdown-item> -->
                                                 </el-dropdown-menu>
                                             </template>
                                         </el-dropdown>
@@ -288,7 +295,7 @@
                         <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
                     </div>
                 </div>
-                <div v-if="selectedIds.length > 0" class="selected-action-warp">
+                <div v-if="selectedIds.length > 0 && activeKey != 7" class="selected-action-warp">
                     <div class="selected-action">
                         <el-space>
                             <span

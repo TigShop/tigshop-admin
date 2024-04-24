@@ -273,7 +273,7 @@
                                         <td v-if="index == 0" :rowspan="item.items.length">
                                             <div class="displayColumn fz12 textL">
                                                 <div>
-                                                    <span>{{ item.pay_type === 0 ? "在线支付" : item.pay_type === 1 ? "货到付款" : "线下支付" }}</span>
+                                                    <span>{{ item.pay_type_id === 1 ? "在线支付" : item.pay_type_id === 2 ? "货到付款" : "线下支付" }}</span>
                                                 </div>
                                                 <div v-if="item.logistics_name">
                                                     {{ item.shipping_type_name }}

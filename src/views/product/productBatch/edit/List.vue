@@ -4,7 +4,7 @@
             <div class="wrapper_title">
                 <el-form ref="formRef" :model="form" label-width="auto">
                     <el-form-item label="选择修改：">
-                        <el-checkbox-group v-model="form.type" @change="onCheck">
+                        <el-checkbox-group v-model="form.type">
                             <el-checkbox v-for="item in checkList" :value="item" style="margin-bottom: 10px;">{{ item.lable }}</el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
@@ -57,7 +57,7 @@
                                                 <div>{{ item.lable }}</div>
                                             </div>
                                         </template>
-                                        <template #default="{row,$index}">
+                                        <template #default="{row}">
                                             <div v-if="item.type == 'status'">
                                                 <el-select v-model="row[item.key]">
                                                     <el-option v-for="option in productStatusList" :label="option.label" :value="option.value" />
@@ -103,7 +103,7 @@
                     <el-form-item label=" ">
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit()">提交
                         </el-button>
-                        <el-button ref="submitBtn" class="form-submit-btn">重置</el-button>
+                        <el-button ref="submitBtn" class="form-submit-btn" @click="onReset()">重置</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -126,6 +126,7 @@ import { getAllCategoryList } from "@/api/product/category";
 import { CategoryFilterState } from "@/types/product/category";
 import { getBrandSearch } from "@/api/product/brand";
 import { BrandFilterState } from "@/types/product/brand";
+import { ProductFilterParams, ProductFilterState } from "@/types/product/product";
 const formRef = shallowRef();
 const config = useConfigStore();
 const filterParams = reactive<ProductFilterParams>({
@@ -235,11 +236,11 @@ const selectList = ref([
         value: 0
     }
 ])
-const tableData = ref([]);
+const tableData = ref<ProductFilterState[]>([]);
 const total = ref(0);
 const loading = ref<boolean>(true);
-const ids = ref([])
-const loadList = async (data) => {
+const ids = ref<number[]>([])
+const loadList = async (data:any) => {
     try {
         if(data){
             ids.value.push(...data)
@@ -268,9 +269,9 @@ const batchData = (data: any) => {
     })
 };
 const del = (id:number) => {
-    tableData.value = tableData.value.filter(product => product.product_id !== id);
-    let idArr = []
-    tableData.value.map(item => {
+    tableData.value = tableData.value.filter((product:any) => product.product_id !== id);
+    let idArr:any[] = []
+    tableData.value.map((item:any) => {
         idArr.push(item.product_id)
     })
     ids.value = idArr
@@ -313,26 +314,45 @@ const onSubmit = async () => {
         message.error('未选择修改项');
         return
     }
-    try {
-        let data = filterProducts()
-        const result = await BatchProduct(data);
-        message.success('操作成功');
-    } catch (error: any) {
-        message.error(error.message);
+    console.log(filterProducts())
+    let data = filterProducts()
+    if (validateProducts(data)) {
+        try {
+            const result = await BatchProduct(data);
+            message.success('操作成功');
+            onReset();
+        } catch (error: any) {
+            message.error(error.message);
+        }
     }
+    
 };
-
+const onReset = () => {
+    tableData.value = [];
+    form.value.type = [];
+    ids.value = [];
+}
+// 提交前的验证函数
+const validateProducts = (data:any) => {
+  for (let product of data) {
+    if (!product.product_name || !product.product_sn) {
+      message.error(`商品名称或商品货号不能为空`);
+      return false; // 验证失败，直接返回
+    }
+  }
+  return true; // 验证通过
+};
 const filterProducts = () => {
     // 提取校验列表中所有的key
     const additionalKeys = ['product_id'];
     const keysFromValidation = form.value.type.map(item => item.key);
     const keysToKeep = [...keysFromValidation, ...additionalKeys];
     // 处理商品列表，仅保留校验列表中的key对应的值
-    let list = tableData.value.map(product => {
-        const filteredProduct = {};
-        keysToKeep.forEach(key => {
+    let list = tableData.value.map((product: any) => {
+        const filteredProduct:any = {};
+        keysToKeep.forEach((key:any) => {
             if (product[key] !== undefined) {
-                filteredProduct[key] = product[key];
+                filteredProduct[key] = product[key]
             }
         });
         return filteredProduct;
@@ -349,7 +369,5 @@ const filterProducts = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.wrapper_table{
 }
 </style>

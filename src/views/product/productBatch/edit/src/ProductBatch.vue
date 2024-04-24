@@ -22,8 +22,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from "vue"
-import { message,Popconfirm } from "ant-design-vue";
+import { ref, reactive, PropType } from "vue"
 import { SelectBrand, SelectCategory, SelectStore } from "@/components/select";
 import { CategoryFilterState } from "@/types/product/category";
 import { BrandFilterState } from "@/types/product/brand";
@@ -31,14 +30,14 @@ const props = defineProps({
     // orgValue: [String, Number],  //父组件使用v-model双向绑定
     label: { type: String, default: '编辑项' },
     required: { type: Boolean, default: true },
-    types: { type: Array, default: [] },
-    productStatusList: { type: Array, default: [] },
-    selectList: { type: Array, default: [] },
-    categoryList: {type: Array as propType<CategoryFilterState[]>, default: () => []},
-    firstWordList: {type: Array as propType<string[]>, default: () => []},
-    brandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
-    allBrandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
-    shippingTplList: {type: Array as propType<any[]>, default: () => []},
+    types: { type: Array as PropType<any[]>, default: [] },
+    productStatusList: { type: Array as PropType<any[]>, default: [] },
+    selectList: { type: Array as PropType<any[]>, default: [] },
+    categoryList: {type: Array as PropType<CategoryFilterState[]>, default: () => []},
+    firstWordList: {type: Array as PropType<string[]>, default: () => []},
+    brandList: {type: Array as PropType<BrandFilterState[]>, default: () => []},
+    allBrandList: {type: Array as PropType<BrandFilterState[]>, default: () => []},
+    shippingTplList: {type: Array as PropType<any[]>, default: () => []},
 })
 const visible = ref<any>(false);
 const loaded = ref<Boolean>(false);

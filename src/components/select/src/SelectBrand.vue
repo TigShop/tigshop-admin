@@ -1,5 +1,6 @@
 <template>
     <el-select
+        :multiple="multiple"
         v-model="brand_id"
         :allowClear="true"
         :fieldNames="fieldNames"
@@ -39,18 +40,20 @@
     </el-select>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, defineModel } from "vue";
+import { onMounted, ref, defineModel, PropType } from "vue";
 import { message } from "ant-design-vue";
 import { getBrandSearch } from "@/api/product/brand";
 import { BrandFilterState } from "@/types/product/brand";
 // 传值
 const props = defineProps({
     //multiple 是否多选，可直接写在父组件
-    firstWordList: {type: Array as propType<string[]>, default: () => []},
-    brandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
-    allBrandList: {type: Array as propType<BrandFilterState[]>, default: () => []},
+    multiple: {type: Boolean, default: false},
+    firstWordList: {type: Array as PropType<string[]>, default: () => []},
+    brandList: {type: Array as PropType<BrandFilterState[]>, default: () => []},
+    allBrandList: {type: Array as PropType<BrandFilterState[]>, default: () => []},
 });
 const brand_id = defineModel<any>("brand_id");
+const brand_ids = defineModel<any[]>("brand_ids");
 const brand_form = defineModel<any>("brand_form");
 const fieldNames = { label: "brand_name", value: "brand_id" };
 const filterOption = (input: string, option: any) => {
@@ -62,11 +65,16 @@ const onChange = (e: any) => {
             brand_form.value = subArray;
         }
     });
-    brand_id.value = e;
+    if(!props.multiple){
+        brand_id.value = e;
+    } else{
+        brand_ids.value = e;
+    }
     firstWord.value = "全部";
+   
 };
 onMounted(() => {
-    if(props.brandList && props.firstWordList && props.allBrandList){
+    if(props.brandList.length > 1 && props.firstWordList.length > 1 && props.allBrandList.length > 1){
         options.value = props.brandList;
         firstWordList.value = props.firstWordList;
         allBrandList.value = props.allBrandList;
@@ -97,7 +105,6 @@ const loadBrand = async () => {
 };
 
 const changeBrandWord = (e: any, keywords: string) => {
-    console.log(keywords);
     firstWord.value = keywords;
     if (keywords == "全部") {
         options.value = allBrandList.value;

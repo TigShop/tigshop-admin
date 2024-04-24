@@ -15,7 +15,7 @@
                     确认订单<Tooltip ico content="确认订单可允许在未支付的情况下发货" />
                 </el-button>
                 <DialogForm
-                    v-if="formState.available_actions.set_paid"
+                    v-if="formState.available_actions.set_paid && formState.pay_type_id === 3"
                     :params="{ act: 'set_paid', id: formState.order_id }"
                     isDrawer
                     path="order/order/src/Operation"

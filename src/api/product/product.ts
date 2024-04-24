@@ -60,7 +60,7 @@ export const updateProduct = (operation: string, data: object) => {
 
 // 获取运费模板
 export const getShippingTplList = () => {
-    return request<ProductFilterResult>({
+    return request<any>({
         url: "product/product/shipping_tpl_list",
         method: "get"
     });

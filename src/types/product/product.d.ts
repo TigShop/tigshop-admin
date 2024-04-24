@@ -20,6 +20,7 @@ export interface ProductFilterParams {
 // 获取列表返回参数类型
 export interface ProductFilterState {
     product_id: number;
+    shipping_tpl_id: any;
     product_name: string;
     product_sn: string;
     url: string;

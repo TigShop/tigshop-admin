@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import type {RefundApplyFilterParams, RefundApplyFilterResult, RefundApplyFormResult} from '@/types/finance/refundApply.d'
-// 获取商品分类列表
+// 获取退款申请
 export const getRefundApplyList = (params: RefundApplyFilterParams) => {
     return request<RefundApplyFilterResult>({
         url: 'finance/refund_apply/index/',
@@ -19,7 +19,7 @@ export const delRefundApply= (data: object) => {
 }
 
 
-//获取分类详情
+//获取退款申请详情
 export const getRefundApply  = (action: string, params: object) => {
     return request<RefundApplyFormResult>({
         url: 'finance/refund_apply/' + action + '/',
@@ -28,10 +28,10 @@ export const getRefundApply  = (action: string, params: object) => {
     });
 }
 
-// 更新分类
-export const updateRefundApply = (operation: string, data: object) => {
+// 更新退款申请
+export const updateRefundApply = (data: object) => {
     return request({
-        url: 'finance/refund_apply/' + operation + '/',
+        url: 'finance/refund_apply/update',
         method: 'post',
         data
     });
