@@ -93,7 +93,7 @@
                                             <ul>
                                                 <li>{{ row.username }}</li>
                                                 <li>{{ row.mobile != row.username ? row.mobile : '' }}</li>
-                                                <li>
+                                                <li v-if="row.from_tag_name">
                                                     <Tag :color="(row.from_tag===2||row.from_tag===5)?'#31c19e':'#1890FF'" :text="row.from_tag_name" :transparent="false" style="margin-left: 0"></Tag>
                                                 </li>
                                             </ul>
@@ -104,7 +104,8 @@
                             <el-table-column :width="140" label="会员等级" prop="rank_name">
                                 <template #default="{ row }">
                                     <div class="rank-container">
-                                        <img :src="imageFormat(row.rank_ico)" alt="rank icon" class="image"/>
+
+                                        <el-image v-if="row.rank_ico" :src="imageFormat(row.rank_ico)"  class="image"/>
                                         <div class="text">{{ row.rank_name }}</div>
                                     </div>
                                 </template>
@@ -117,7 +118,7 @@
                                     </ul>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="消费积分" prop="points" sortable="custom"></el-table-column>
+                            <el-table-column :width="100" label="消费积分" prop="points" sortable="custom"></el-table-column>
                             <el-table-column label="累计消费次数" prop="order_count" sortable="custom"></el-table-column>
                             <el-table-column label="累计消费金额" prop="order_amount" sortable="custom"></el-table-column>
                             <el-table-column :width="160" label="注册日期" prop="reg_time" sortable="custom"></el-table-column>
@@ -274,7 +275,7 @@ const onSelectChange = (e: UserFilterState[]) => {
 
     .image {
         width: 18px;
-        height: auto;
+        height: 18px;
     }
 
     .text {

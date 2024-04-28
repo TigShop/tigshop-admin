@@ -7,9 +7,9 @@ export function imageFormat(path: string | undefined) {
         return "";
     }
     if (Number(config.get("storage_type")) > 0) {
-        return path.includes("http") !== false ? path : config.get("storage_url") + path;
+        return path.includes("http") ? path : config.get("storage_url") + path;
     } else {
-        return path.includes("http") !== false ? path : "" + path;
+        return path.includes("http") ? path : "" + path;
     }
 }
 // 格式化金额
