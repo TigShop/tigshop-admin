@@ -67,10 +67,10 @@
                     <el-form-item label="本次操作备注" prop="refund_note">
                         <el-input v-model="formState.refund_note" rows="4" type="textarea" :disabled="formState.refund_status != 0"/>
                     </el-form-item>
-                    <el-form-item v-if="formState.refund_status == 0">
+                    <el-form-item>
                         <div class="btn-box">
-                            <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit(1)">同意退款</el-button>
-                            <el-button ref="submitBtn" class="form-submit-btn" @click="onSubmit(2)">拒绝退款</el-button>
+                            <el-button v-if="formState.refund_status == 0" ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit(1)">同意退款</el-button>
+                            <el-button v-if="formState.is_offline == 1" ref="submitBtn" class="form-submit-btn" type="primary" @click="offlineAudit()">确认已线下转账</el-button>
                         </div>
                     </el-form-item>
                 </el-form>
@@ -84,7 +84,7 @@ import {onMounted, ref, shallowRef} from "vue"
 import {useRouter} from 'vue-router'
 import {message} from "ant-design-vue";
 import {RefundApplyFormState} from '@/types/finance/refundApply.d';
-import {getRefundApply, updateRefundApply} from "@/api/finance/refundApply";
+import {getRefundApply, updateRefundApply, updateOfflineAudit} from "@/api/finance/refundApply";
 import {DialogForm} from "@/components/dialog";
 import {OrderMoney} from "@/components/order";
 import {ProductCard} from '@/components/list';
@@ -131,6 +131,18 @@ const fetchRefundApply = async () => {
         loading.value = false;
     }
 };
+const offlineAudit = async () => {
+    try {
+        const result = await updateOfflineAudit({refund_id: id.value});
+        emit('submitCallback', result);
+        message.success(result.message);
+    } catch (error:any) {
+        message.error(error.message);
+        emit('close');
+    } finally {
+        loading.value = false;
+    }
+};
 
 
 onMounted(() => {
@@ -165,12 +177,10 @@ const onSubmit = async (status: number) => {
         emit('update:confirmLoading', true);
         let obj = {
             id: id.value, // 退款id
-            refund_status: status, // 退款状态
             refund_note: formState.value.refund_note,
             online_balance: formState.value.online_balance, // 线上金额
             offline_balance: formState.value.offline_balance, // 线下金额
             refund_balance: formState.value.refund_balance, // 余额
-            // is_gain: 1 // 退款金额是否已全退到账
         }
         const result = await updateRefundApply(obj);
         emit('submitCallback', result);

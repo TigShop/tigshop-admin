@@ -56,6 +56,8 @@ export interface RefundApplyFormState {
     offline_balance: number;
     offline_paid_amount?: number;
     paid_amount: number;
+    is_offline?: number;
+    items?: any;
 }
 
 

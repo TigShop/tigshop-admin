@@ -26,7 +26,6 @@
                 <div class="table-container">
                     <a-spin :spinning="loading">
                         <el-table :data="filterState" :loading="loading" :total="total" row-key="refund_id" @sort-change="onSortChange">
-                            <!-- <el-table-column type="selection" width="32"/> -->
                             <el-table-column label="退款类型" :width="120" prop="refund_type_name"></el-table-column>
                             <el-table-column label="退款信息">
                                 <template #default="{ row }">
@@ -48,12 +47,8 @@
                                            title="编辑退款申请" width="800px"
                                                      path="finance/refundApply/Info"
                                                 @okCallback="loadFilter" :showClose="false" :showOnOk="false">
-                                        <a class="btn-link">{{row.refund_status == 0 ? '处理申请' : '查看详情'}}</a>
+                                        <a class="btn-link">{{row.refund_status == 0 || row.refund_status == 1 ? '处理申请' : '查看详情'}}</a>
                                     </DialogForm>
-                                    <!-- <el-divider direction="vertical"/> -->
-                                    <!-- <DeleteRecord :params="{ id: row.refund_id }" :requestApi="delRefundApply"
-                                                  @afterDelete="loadFilter">删除
-                                    </DeleteRecord> -->
                                 </template>
                             </el-table-column>
                             <template #empty>
@@ -68,19 +63,6 @@
                                     @callback="loadFilter"/>
                     </div>
                 </div>
-                <!-- <div v-if="selectedIds.length > 0" class="selected-action-warp">
-                    <div class="selected-action">
-                        <el-space>
-                            <span>已选择：<b>{{ selectedIds.length }}</b> 项</span>
-                            <el-popconfirm title="您确认要批量删除所选数据吗？"
-                                           @confirm="onBatchSubmit('del')">
-                                <template #reference>
-                                    <el-button>批量删除</el-button>
-                                </template>
-                            </el-popconfirm>
-                        </el-space>
-                    </div>
-                </div> -->
             </div>
         </div>
     </div>

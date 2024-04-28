@@ -45,3 +45,12 @@ export const batchSubmit = (type: string, params: object) => {
         params,
     });
 }
+
+// 确认线下转账
+export const updateOfflineAudit = (data: object) => {
+    return request({
+        url: 'finance/refund_apply/offline_audit',
+        method: 'post',
+        data
+    });
+}
