@@ -36,7 +36,13 @@
                             </el-table-column>
                             <el-table-column :width="100" label="头像">
                                 <template #default="{ row }">
-                                    <Image :src="row.avatar" fit="contain" style="height: 25px;width: 60px;"/>
+                                    <template v-if="extractContent(String(row.avatar))">
+                                        <Image :src="getAssetsFile(extractContent(String(row.avatar)))" fit="contain" style="height: 25px;width: 60px;"/>
+                                    </template>
+                                    <template v-else>
+                                        <Image :src="row.avatar" fit="contain" style="height: 25px;width: 60px;"/>
+                                    </template>
+
                                 </template>
                             </el-table-column>
                             <el-table-column :width="200" label="邮箱" prop="email"></el-table-column>
@@ -99,6 +105,7 @@ import type {AdminUserFilterParams, AdminUserFilterState} from '@/types/authorit
 import {batchSubmit, delAdminUser, getAdminUserList} from "@/api/authority/adminUser";
 
 import {useRouter} from 'vue-router'
+import {extractContent, getAssetsFile} from "@/utils/util";
 
 const router = useRouter()
 const config:any = useConfigStore();

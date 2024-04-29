@@ -54,7 +54,14 @@
                 <div class="top-bar-item" id="dropdown-memu">
                     <a-dropdown>
                         <a class="top-bar-btn" href="javascript:;">
-                            <span class="admin-user-photo"><img :src="imageFormat(userInfo.avatar)" /></span>
+                            <span class="admin-user-photo">
+                                     <template v-if="extractContent(String(userInfo.avatar))">
+                                          <img :src="getAssetsFile(extractContent(String(userInfo.avatar)))" />
+                                    </template>
+                                    <template v-else>
+                                              <img :src="imageFormat(userInfo.avatar)" />
+                                    </template>
+                            </span>
                             {{ userInfo.username }}<i class="iconfont icon-xiala"></i>
                         </a>
                         <template #overlay>
@@ -104,6 +111,8 @@ import { Search } from "@element-plus/icons-vue";
 import { getSearchMenu } from "@/api/panel/adminMsg";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
+import {extractContent, getAssetsFile} from "@/utils/util";
+import {Image} from "@/components/image";
 const router = useRouter();
 interface searchFrom {
     authority_name: string;

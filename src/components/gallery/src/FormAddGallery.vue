@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 100%" class="gallery-pic">
+    <div  class="gallery-pic">
         <div :class="'gallery-pic-select ' + (photo ? 'have_image' : '')" v-if="!isMultiple">
             <div class="item-img add-photo-btn">
                 <Image v-if="photo" class="gallery-img" :src="imageFormat(photo)" />
@@ -46,6 +46,7 @@
                 </draggable>
             </div>
         </div>
+
     </div>
 </template>
 
