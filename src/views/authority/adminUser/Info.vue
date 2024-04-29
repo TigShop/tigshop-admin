@@ -13,7 +13,11 @@
                         <el-input v-model="formState.email" />
                     </el-form-item>
                     <el-form-item label="头像" prop="avatar">
-                        <FormAddGallery v-model:photo="formState.avatar"></FormAddGallery>
+                        <div class="avatar-type">
+                            <FormAddGallery v-model:photo="formState.avatar"></FormAddGallery>
+                            <DefaultAvatar v-model:avatar="formState.def_avatar"></DefaultAvatar>
+                        </div>
+                        <div class="extra">如果未设置自定义头像，将采用系统头像</div>
                     </el-form-item>
                     <template v-if="operation == 'insert'">
                         <el-form-item :rules="[{ required: true, message: '设置密码不能为空!' }]" label="设置密码" prop="password">
@@ -56,10 +60,11 @@
 import { onMounted, ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
-import { FormAddGallery } from "@/components/gallery";
+import {DefaultAvatar, FormAddGallery} from "@/components/gallery";
 import { AdminUserFormState, AdminUserRoleListItem } from "@/types/authority/adminUser";
 import { getAdminUser, updateAdminUser } from "@/api/authority/adminUser";
 import AuthoritySelect from "@/views/authority/AuthoritySelect.vue";
+import {extractContent} from "@/utils/util";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 
@@ -99,6 +104,11 @@ const fetchAdminUser = async () => {
             formState.value.role_id = 2;
             formState.value.suppliers_id = props.suppliers_id;
         }
+        let temp = extractContent(String(formState.value.avatar));
+        if(temp){
+            formState.value.def_avatar = temp
+            formState.value.avatar = ''
+        }
     } catch (error: any) {
         message.error(error.message);
         emit("close");
@@ -106,6 +116,7 @@ const fetchAdminUser = async () => {
         loading.value = false;
     }
 };
+
 
 onMounted(() => {
     // 获取详情数据
@@ -117,7 +128,15 @@ const onSubmit = async () => {
     try {
         await formRef.value.validate();
         emit("update:confirmLoading", true);
-        const result = await updateAdminUser(operation, { id: id.value, ...formState.value });
+        let temp:any = {
+            avatar:''
+        }
+        if(!formState.value.avatar&&formState.value.def_avatar){
+            temp.avatar = formState.value.def_avatar
+        }else{
+            temp.avatar = formState.value.avatar
+        }
+        const result = await updateAdminUser(operation, { id: id.value, ...formState.value, avatar: temp.avatar });
         emit("submitCallback", result);
         message.success(result.message);
     } catch (error: any) {
@@ -136,5 +155,12 @@ defineExpose({ onFormSubmit });
 <style lang="less" scoped>
 .width100 {
     width: 100%;
+}
+.avatar-type{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
 }
 </style>

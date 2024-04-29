@@ -3,6 +3,7 @@
 export interface AccountEditingFilterParams {}
 export interface AccountEditingFormState {
     avatar: string;
+    def_avatar: string;
     username: string;
     email: string;
     mobile: string;
