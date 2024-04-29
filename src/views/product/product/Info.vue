@@ -147,17 +147,17 @@
                                     </template>
                                 </DynamicList>
                             </el-form-item> -->
-                            <el-form-item label="会员价格" prop="rank">
-                                <div class="rank">
-                                    <el-space v-for="(rank, index) in formState.user_rank_list" :key="index">
-                                        <el-space class="mb10">
-                                            <div style="min-width: 100px; text-align: right">{{ rank.rank_name }}：</div>
-                                            <el-input v-model="rank.price" style="width: 100px"></el-input>
-                                        </el-space>
-                                    </el-space>
-                                </div>
-                                <div class="extra">会员价格为空时表示会员按正常价格购买，会员价格不与促销价、一口价、阶梯价等活动叠加</div>
-                            </el-form-item>
+<!--                            <el-form-item label="会员价格" prop="rank">-->
+<!--                                <div class="rank">-->
+<!--                                    <el-space v-for="(rank, index) in formState.user_rank_list" :key="index">-->
+<!--                                        <el-space class="mb10">-->
+<!--                                            <div style="min-width: 100px; text-align: right">{{ rank.rank_name }}：</div>-->
+<!--                                            <el-input v-model="rank.price" style="width: 100px"></el-input>-->
+<!--                                        </el-space>-->
+<!--                                    </el-space>-->
+<!--                                </div>-->
+<!--                                <div class="extra">会员价格为空时表示会员按正常价格购买，会员价格不与促销价、一口价、阶梯价等活动叠加</div>-->
+<!--                            </el-form-item>-->
                             <el-form-item label="消费积分" prop="give_integral">
                                 <el-input v-model="formState.give_integral" />
                                 <div class="extra">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
