@@ -35,21 +35,21 @@
         <div class="table-container">
             <a-spin :spinning="loading">
                 <el-table :data="filterState" :loading="loading" :total="total" row-key="log_id" @sort-change="onSortChange">
-                    <el-table-column label="变动时间" prop="reg_time" sortable="custom">
+                    <el-table-column label="变动时间" prop="change_time" sortable="custom">
                         <template #default="{ row }">
                             <ul>
                                 <li>{{ row.change_time }}</li>
                             </ul>
                         </template>
                     </el-table-column>
-                    <el-table-column label="变动原因" prop="reg_time" sortable="custom">
+                    <el-table-column label="变动原因" prop="reg_time" >
                         <template #default="{ row }">
                             <ul>
                                 <li>{{ row.change_desc }}</li>
                             </ul>
                         </template>
                     </el-table-column>
-                    <el-table-column label="可用资金" prop="balance" sortable="custom">
+                    <el-table-column label="可用资金" prop="balance" >
                         <template #default="{ row }">
                             <div v-if="row.balance > 0">
                                 <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.balance }}</span>
@@ -61,7 +61,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="冻结资金" prop="points" sortable="custom">
+                    <el-table-column label="冻结资金" prop="frozen_balance">
                         <template #default="{ row }">
                             <div v-if="row.frozen_balance > 0">
                                 <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.frozen_balance }}</span>
@@ -73,7 +73,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="成长积分" prop="order_count" sortable="custom">
+                    <el-table-column label="成长积分" prop="points">
                         <template #default="{ row }">
                             <div v-if="filter.from_tag == 3">
                                 <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.points }}</span>
@@ -85,7 +85,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="消费积分" prop="order_amount" sortable="custom">
+                    <el-table-column label="消费积分" prop="points">
                         <template #default="{ row }">
                             <div v-if="filter.from_tag == 4">
                                 <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.points }}</span>
