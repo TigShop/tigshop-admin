@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import {UserFilterParams, UserFilterResult, UserFormResult} from '@/types/user/user.d'
+import {UserFilterParams, UserFilterResult, UserFormResult, UserFundFilterResult} from '@/types/user/user.d'
 // 获取会员列表
 export const getUserList = (params: UserFilterParams) => {
     return request<UserFilterResult>({
@@ -65,5 +65,13 @@ export const updateUserFundManagement = (data: object) => {
         url: 'user/fund_management',
         method: 'post',
         data
+    });
+}
+
+export const getUserFundList = (params: UserFilterParams) => {
+    return request<UserFundFilterResult>({
+        url: 'user/user_fund_detail/',
+        method: 'get',
+        params,
     });
 }

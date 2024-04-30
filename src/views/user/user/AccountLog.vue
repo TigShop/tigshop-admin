@@ -82,8 +82,8 @@ import {onMounted, reactive, ref} from 'vue';
 import {Pagination} from '@/components/list';
 import {message} from 'ant-design-vue'
 import {useConfigStore} from "@/store/config";
-import {UserFilterParams, UserFilterState} from '@/types/user/user.d';
-import {getUserList} from "@/api/user/user";
+import {UserFilterParams, UserFundList} from '@/types/user/user.d';
+import {getUserFundList} from "@/api/user/user";
 import { useRouter } from "vue-router";
 
 const config:any = useConfigStore();
@@ -95,7 +95,7 @@ const props = defineProps({
     },
     type: {
         type: Number,
-        default: 0
+        default: 1
     },
     isDialog: Boolean
 });
@@ -103,7 +103,7 @@ const query = useRouter().currentRoute.value.query;
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const type = ref<number>(props.isDialog ? props.type : Number(query.type));
 // 基本参数定义
-const filterState = ref(<UserFilterState[]>[]);
+const filterState = ref(<UserFundList[]>[]);
 const loading = ref<boolean>(true);
 const total = ref<number>(0);
 const selectedIds = ref<number[]>([]);
@@ -117,7 +117,7 @@ const filterParams = reactive<UserFilterParams>({   //初使化用于查询的�
 const loadFilter = async () => {
     loading.value = true;
     try {
-        const result = await getUserList({ user_id: id.value, ...filterParams });
+        const result = await getUserFundList({ user_id: id.value, ...filterParams });
         filterState.value = result.filter_result;
         total.value = result.total;
     } catch (error: any) {
