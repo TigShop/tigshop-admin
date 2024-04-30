@@ -34,7 +34,7 @@
         </div>
         <div class="table-container">
             <a-spin :spinning="loading">
-                <el-table :data="filterState" :loading="loading" :total="total" row-key="user_id">
+                <el-table :data="filterState" :loading="loading" :total="total" row-key="log_id" @sort-change="onSortChange">
                     <el-table-column label="变动时间" prop="reg_time" sortable="custom">
                         <template #default="{ row }">
                             <ul>
@@ -178,6 +178,12 @@ const loadFilter = async () => {
     }
 
 }
+// 修改排序
+const onSortChange = ({prop, order}: { prop: string; order?: string }) => {
+    filterParams.sort_field = prop;
+    filterParams.sort_order = order == 'ascending' ? 'asc' : order == 'descending' ? 'desc' : '';
+    loadFilter();
+};
 onMounted(() => {
     loadFilter();
 });
