@@ -303,7 +303,7 @@
                             >
                             <el-popconfirm title="您确认要批量删除所选数据吗？" @confirm="onBatchSubmit('del')">
                                 <template #reference>
-                                    <el-button>批量删除</el-button>
+<!--                                    <el-button>批量删除</el-button>-->
                                 </template>
                             </el-popconfirm>
                         </el-space>
