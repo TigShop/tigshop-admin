@@ -109,7 +109,7 @@
                                 type="daterange" />
                         </el-form-item>
                         <br />
-                        <el-button type="primary" @click="orderExport">导出EXCEL</el-button>
+                        <el-button type="primary" @click="orderExport" :loading="Exportloading">导出EXCEL</el-button>
                         <br />
                         <div style="margin-top: 20px">
                             <el-form-item>
@@ -165,6 +165,7 @@ import { useConfigStore } from "@/store/config";
 import { ExportItemListFilterParams, ExportItemList } from "@/types/order/orderExport";
 import { getExportItemList, getExportItemInfo, saveExportItem, getOrderExport } from "@/api/order/orderExport";
 import { SelectTimeInterval } from "@/components/select";
+import requestExport from "@/utils/export";
 
 const config = useConfigStore();
 // 基本参数定义
@@ -231,11 +232,13 @@ const saveTag = async () => {
         message.error(error.message);
     }
 };
-
+const Exportloading = ref<boolean>(false)
 // 导出订单
 const orderExport = async () => {
     try {
-        await getOrderExport({ ...filterParams });
+        const result = await getOrderExport(filterParams);
+        Exportloading.value = false;
+        requestExport(result,'导出订单')
     } catch (error: any) {
         message.error(error.message);
     }

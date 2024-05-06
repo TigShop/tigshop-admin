@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import requestExport from '@/utils/export';
 import type { newMemberFilterParams, newMemberFilterState } from '@/types/panel/newMembers.d';
 
 // 新增会员数据
@@ -12,8 +11,10 @@ export const getAddUserTrends = (params: newMemberFilterParams) => {
 }
 
 export const exportAddUserTrends = (params: newMemberFilterParams) => {
-   return requestExport({
+   return request({
        url: 'panel/statistics_user/add_user_trends',
+       method: "get",
+       responseType: 'arraybuffer',
        params,
    })
 }

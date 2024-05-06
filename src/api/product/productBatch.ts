@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import requestExport from '@/utils/export';
 
 // 图片批量处理
 export const productBatchDealSubmit = (data: object) => {
@@ -11,8 +10,10 @@ export const productBatchDealSubmit = (data: object) => {
 }
 // 商品批量导出
 export const productBatchExportSubmit = (params: object) => {
-    return requestExport({
+    return request({
         url: 'product/product_batch/product_batch_deal',
+        method: "get",
+        responseType: 'arraybuffer',
         params,
     });
 }
@@ -27,7 +28,9 @@ export const productBatchModifySubmit = (data: object) => {
 }
 // 下载模板文件
 export const productBatchDownloadTemplateSubmit = () => {
-    return requestExport({
-        url: 'product/product_batch/download_template'
+    return request({
+        url: 'product/product_batch/download_template',
+        method: "get",
+        responseType: 'arraybuffer',
     });
 }

@@ -66,10 +66,14 @@ type ApiResponse<T> = T & {
 
 export function request<T>(config: AxiosRequestConfig): Promise<ApiResponse<T>> {
 	return axiosRequest(config).then((response: AxiosResponse<ApiResponse<T>>) => {
-		if (response.data.errcode > 0) {
-			return Promise.reject(response.data as any) as any;
+		if(config.responseType){
+			return response;
+		}else{
+			if (response.data.errcode > 0) {
+				return Promise.reject(response.data as any) as any;
+			}
+			return response.data;
 		}
-		return response.data;
 	});
 }
 
