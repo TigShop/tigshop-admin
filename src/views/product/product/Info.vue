@@ -54,6 +54,7 @@
                             </el-form-item>
                             <el-form-item label="供应商" prop="suppliers_id">
                                 <el-select v-model="formState.suppliers_id" placeholder="请选择" style="width: 100%">
+                                    <el-option label="请选择" :value="0" ></el-option>
                                     <el-option
                                         v-for="item in formState.suppliers_list"
                                         :key="item.suppliers_id"
@@ -63,6 +64,7 @@
                             </el-form-item>
                             <el-form-item label="运费模板" prop="shipping_tpl_id">
                                 <el-select v-model="formState.shipping_tpl_id" placeholder="请选择" style="width: 100%">
+                                    <el-option label="请选择" :value="0" ></el-option>
                                     <el-option
                                         v-for="item in formState.shipping_tpl_list"
                                         :key="item.shipping_tpl_id"
@@ -192,10 +194,10 @@
                                 <el-input v-model="formState.virtual_sales" class="InputBox"></el-input>
                                 <div class="extra">显示销量会随下单而增加，但不是真实销售数据</div>
                             </el-form-item>
-                            <el-form-item label="商品标签" prop="comment_tag">
-                                <el-input v-model="formState.comment_tag" class="InputBox"></el-input>
-                                <div class="extra">如果有设置标签，商品列表页面会高亮显示该标签，如“热销”，尽量不要超过三个字</div>
-                            </el-form-item>
+<!--                            <el-form-item label="商品标签" prop="comment_tag">-->
+<!--                                <el-input v-model="formState.comment_tag" class="InputBox"></el-input>-->
+<!--                                <div class="extra">如果有设置标签，商品列表页面会高亮显示该标签，如“热销”，尽量不要超过三个字</div>-->
+<!--                            </el-form-item>-->
                             <el-form-item label="SEO标题" prop="seo_product_title">
                                 <el-input v-model="formState.seo_product_title" class="InputBox"></el-input>
                                 <div class="extra">如果不填，则该商品详情页的标题则为默认标题；如果该项不为空，则标题显示此项的内容。</div>
@@ -205,9 +207,9 @@
                                     <template #append>Kg</template>
                                 </el-input>
                             </el-form-item>
-                            <el-form-item label="库存警告" prop="warn_number">
-                                <el-input v-model="formState.warn_number" class="InputBox"></el-input>
-                            </el-form-item>
+<!--                            <el-form-item label="库存警告" prop="warn_number">-->
+<!--                                <el-input v-model="formState.warn_number" class="InputBox"></el-input>-->
+<!--                            </el-form-item>-->
                             <el-form-item label="SEO关键词" prop="formState.keywords">
                                 <el-input v-model="formState.keywords" class="InputBox" />
                                 <div class="extra">用空格分隔</div>
@@ -220,10 +222,10 @@
                                 <el-input v-model="formState.remark" cols="40" rows="2" type="textarea"></el-input>
                                 <div class="extra">只有商家可见</div>
                             </el-form-item>
-                            <el-form-item label="温馨提示" prop="product_care">
-                                <el-input v-model="formState.product_care" class="InputBox" />
-                                <div class="extra">如果不填，则该商品详情页则没有温馨提示内容。</div>
-                            </el-form-item>
+<!--                            <el-form-item label="温馨提示" prop="product_care">-->
+<!--                                <el-input v-model="formState.product_care" class="InputBox" />-->
+<!--                                <div class="extra">如果不填，则该商品详情页则没有温馨提示内容。</div>-->
+<!--                            </el-form-item>-->
                             <el-form-item label="服务说明" prop="product_service_ids">
                                 <Checkbox v-model="item.check" v-for="(item, index) in formState.service_list" :key="index">
                                     <template #default>{{ item["product_service_name"] }}</template>
