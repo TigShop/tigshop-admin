@@ -2,7 +2,13 @@
     <div>
         <div class="list-table-tool lyecs-search-warp">
             <div class="notice-warp">
-                <p> 当前会员：mengde  可用资金帐户：¥0.00  冻结资金帐户：¥0.00  等级积分帐户：0  消费积分帐户：0</p>
+                <p class="flex flex-justify-between">
+                    <span>当前会员：{{ formState.username }}</span>
+                    <span>可用资金帐户：{{ priceFormat(formState.balance) }}</span>
+                    <span>冻结资金帐户：{{ priceFormat(formState.frozen_balance) }}</span>
+                    <span>成长积分帐户：{{ formState.growth_points }}</span>
+                    <span>消费积分帐户：{{ formState.points }}</span>
+                </p>
             </div>
             <el-form :model="filterParams">
                 <div class="list-table-tool-row">
@@ -131,9 +137,10 @@ import {onMounted, reactive, ref} from 'vue';
 import {Pagination} from '@/components/list';
 import {message} from 'ant-design-vue'
 import {useConfigStore} from "@/store/config";
-import {UserFilterParams, UserFundList} from '@/types/user/user.d';
-import {getUserFundList} from "@/api/user/user";
+import {UserFilterParams, UserFormState, UserFundList} from '@/types/user/user.d';
+import {getUser, getUserFundList} from "@/api/user/user";
 import { useRouter } from "vue-router";
+import { priceFormat } from "@/utils/format";
 
 const config:any = useConfigStore();
 
@@ -163,6 +170,11 @@ const filterParams = reactive<UserFilterParams>({   //初使化用于查询的�
     keyword: '',
     from_tag: type.value
 });
+const formState = ref<UserFormState>({
+    balance: 0,
+    frozen_balance: 0,
+    avatar: "",
+});
 // 获取列表的查询结果
 const loadFilter = async () => {
     loading.value = true;
@@ -178,6 +190,17 @@ const loadFilter = async () => {
     }
 
 }
+
+const fetchUser = async () => {
+    try {
+        const result = await getUser('edit', { id: id.value });
+        Object.assign(formState.value, result.item);
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+}
 // 修改排序
 const onSortChange = ({prop, order}: { prop: string; order?: string }) => {
     filterParams.sort_field = prop;
@@ -186,6 +209,7 @@ const onSortChange = ({prop, order}: { prop: string; order?: string }) => {
 };
 onMounted(() => {
     loadFilter();
+    fetchUser();
 });
 
 // 参数查询
@@ -193,6 +217,7 @@ const onSearchSubmit = () => {
     loadFilter()
 };
 const onBatchSubmit = (str:string) => {};
+
 
 </script>
 <style lang="less" scoped>
