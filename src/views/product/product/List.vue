@@ -270,6 +270,18 @@
                                                             移入回收站
                                                         </DeleteRecord>
                                                     </el-dropdown-item>
+                                                    <el-dropdown-item>
+                                                        <DialogForm
+                                                            :params="{ act: 'edit', id: row.product_id }"
+                                                            dialogClass="noPadding"
+                                                            isDrawer
+                                                            path="product/product/Info"
+                                                            title="复制商品"
+                                                            width="800px"
+                                                            @okCallback="loadFilter">
+                                                            <a class="btn-link">复制</a>
+                                                        </DialogForm>
+                                                    </el-dropdown-item>
                                                     <!-- <el-dropdown-item v-if="activeKey === 7">
                                                         <DeleteRecord
                                                             :params="{ id: row.product_id, field: 'is_delete' }"
