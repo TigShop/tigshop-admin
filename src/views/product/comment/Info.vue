@@ -24,8 +24,31 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="标签" prop="comment_tag">
-                        <el-input v-model="formState.comment_tag" />
-                        <div class="extra">用英文逗号分开</div>
+                        <div class="flex">
+                            <el-tag
+                            style="margin: 5px;"
+                            v-for="tag in formState.comment_tag"
+                            :key="tag"
+                            closable
+                            :disable-transitions="false"
+                            @close="handleClose(tag)"
+                            >
+                            {{ tag }}
+                            </el-tag>
+                            <el-input
+                            style="margin: 5px;"
+                            v-if="inputVisible"
+                            ref="InputRef"
+                            v-model="inputValue"
+                            class="w-20"
+                            size="small"
+                            @keyup.enter="handleInputConfirm"
+                            @blur="handleInputConfirm"
+                            />
+                            <el-button style="margin: 5px;" v-else class="button-new-tag" size="small" @click="showInput">
+                                + 新增标签
+                            </el-button>
+                        </div>
                     </el-form-item>
                     <el-form-item :rules="[{ required: true, message: '评论内容不能为空!' }]" label="评论内容" prop="content">
                         <el-input v-model="formState.content" type="textarea" />
@@ -81,13 +104,14 @@
 </template>
 <script lang="ts" setup>
 import {DialogForm} from '@/components/dialog'
-import { onMounted, ref, shallowRef } from "vue"
+import { onMounted, ref, shallowRef, nextTick } from "vue"
 import { useRouter } from 'vue-router'
 import { message } from "ant-design-vue";
 import { FormAddGallery } from '@/components/gallery'
 import { CommentFormState } from '@/types/product/comment';
 import { getComment, updateComment } from "@/api/product/comment";
 import { SelectProduct } from "@/components/select";
+import { ElInput } from 'element-plus'
 
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 
@@ -102,6 +126,8 @@ const props = defineProps({
     },
     isDialog: Boolean
 });
+
+
 const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
@@ -109,9 +135,32 @@ const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const operation = action.value === 'add' ? 'insert' : 'update';
 const formRef = shallowRef();
 const formState = ref<CommentFormState>({
-    product_ids: []
+    product_ids: [],
+    comment_tag: []
 });
 
+const inputValue = ref('')
+const inputVisible = ref(false)
+const InputRef = ref<InstanceType<typeof ElInput>>()
+
+const handleClose = (tag: string) => {
+    formState.value.comment_tag.splice(formState.value.comment_tag.indexOf(tag), 1)
+}
+
+const showInput = () => {
+  inputVisible.value = true
+  nextTick(() => {
+    InputRef.value!.input!.focus()
+  })
+}
+
+const handleInputConfirm = () => {
+  if (inputValue.value) {
+    formState.value.comment_tag.push(inputValue.value)
+  }
+  inputVisible.value = false
+  inputValue.value = ''
+}
 onMounted(() => {
     // 获取详情数据
     fetchComment();
