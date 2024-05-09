@@ -51,7 +51,7 @@
                                     <el-button> 拒绝退货退款 </el-button>
                                 </DialogForm>
                             </div>
-                            <div v-if="formState.aftersale_type == 5 && formState.status == 1">
+                            <div v-if="formState.aftersale_type == 2 && formState.status == 1">
                                 <DialogForm
                                     :params="{ status: 2, formData:formState }"
                                     isDrawer
