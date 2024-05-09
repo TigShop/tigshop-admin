@@ -49,6 +49,14 @@ export const getProduct = (action: string, params: object) => {
         params,
     });
 };
+// 获取商品搜索关键词
+export const getParticiple = (params: object) => {
+    return request<ProductFormResult>({
+        url: "product/get_participle/",
+        method: "get",
+        params,
+    });
+};
 // 更新商品
 export const updateProduct = (operation: string, data: object) => {
     return request({

@@ -17,7 +17,10 @@
                                 <el-input v-model="formState.product_name" description="请输入您的姓名" />
                             </el-form-item>
                             <el-form-item label="搜索关键词" prop="formState.keywords">
-                                <el-input v-model="formState.keywords" class="InputBox" />
+                                <div class="keywords">
+                                    <el-input v-model="formState.keywords" class="InputBox" />
+                                    <el-button type="primary" @click="onGetParticiple">更新分词</el-button>
+                                </div>
                                 <div class="extra">用空格分隔，为空时会自动根据商品名称分词</div>
                             </el-form-item>
                             <el-form-item label="商品相册" prop="img_list">
@@ -273,7 +276,7 @@ import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { FormAddGallery } from "@/components/gallery";
 import { ProductFormState, ServiceList } from "@/types/product/product.d";
-import { getProduct, updateProduct } from "@/api/product/product";
+import {getParticiple, getProduct, updateProduct} from "@/api/product/product";
 import { Checkbox, RadioType } from "@/components/radio";
 import { SelectArticle, SelectBrand, SelectCategory, SelectGoods, SelectProduct } from "@/components/select";
 import { DynamicList } from "@/components/list";
@@ -363,6 +366,18 @@ const onFormSubmit = () => {
     onSubmit();
 };
 
+const onGetParticiple = async() => {
+    try {
+        const result = await getParticiple({product_name:formState.value.product_name});
+        console.log(result);
+    } catch (error: any) {
+        message.error(error.message);
+        emit("close");
+    } finally {
+        loading.value = false;
+    }
+}
+
 defineExpose({ onFormSubmit });
 </script>
 <style lang="less" scoped>
@@ -374,5 +389,11 @@ defineExpose({ onFormSubmit });
     width: 100%;
     flex-wrap: wrap; /* 允许项目换行 */
     justify-content: flex-start; /* 项目在主轴上的对齐方式 */
+}
+.keywords{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 8px;
 }
 </style>
