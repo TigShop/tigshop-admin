@@ -16,6 +16,10 @@
                             <el-form-item :rules="[{ required: true, message: '商品名称不能为空' }]" label="商品名称" prop="product_name">
                                 <el-input v-model="formState.product_name" description="请输入您的姓名" />
                             </el-form-item>
+                            <el-form-item label="搜索关键词" prop="formState.keywords">
+                                <el-input v-model="formState.keywords" class="InputBox" />
+                                <div class="extra">用空格分隔，为空时会自动根据商品名称分词</div>
+                            </el-form-item>
                             <el-form-item label="商品相册" prop="img_list">
                                 <FormAddGallery v-if="!loading" v-model:photos="formState.img_list" :isMultiple="true"> </FormAddGallery>
                                 <div class="extra">提示：您可以通过拖拽来调整相册图片顺序，第一张图将作为商品主图展示</div>
@@ -210,10 +214,7 @@
 <!--                            <el-form-item label="库存警告" prop="warn_number">-->
 <!--                                <el-input v-model="formState.warn_number" class="InputBox"></el-input>-->
 <!--                            </el-form-item>-->
-                            <el-form-item label="SEO关键词" prop="formState.keywords">
-                                <el-input v-model="formState.keywords" class="InputBox" />
-                                <div class="extra">用空格分隔</div>
-                            </el-form-item>
+
                             <el-form-item label="商品介绍" prop="product_info">
                                 <el-input v-model="formState.product_info" cols="40" rows="2" type="textarea"></el-input>
                                 <div class="extra">可不填</div>
