@@ -2,6 +2,7 @@
     <div class="div-main">
         <div class="text-right">
             <div> + 商品总金额：<span class="money-style">{{ priceFormat(modelValue.product_amount) }}</span></div>
+            <div> + 订单运费：<span class="money-style">{{ priceFormat(modelValue.shipping_fee) }}</span></div>
             <div v-if="modelValue.coupon_amount > 0">
                 - 优惠券抵扣：<span class="money-style">{{ priceFormat(modelValue.coupon_amount) }}</span>
             </div>
