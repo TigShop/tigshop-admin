@@ -16,7 +16,7 @@
                 type="number"
                 placeholder="请输入退款金额"
               />
-              <div class="extra">最高可退金额{{ priceFormat(formData.suggest_refund_amount )  || "0" }}</div>
+              <div class="extra">建议退款金额{{ priceFormat(formData.suggest_refund_amount )  || "0" }}</div>
             </el-form-item>
             <el-form-item label="退货地址：" prop="return_address" v-if="formData.aftersale_type == 1 && status == 2" :rules="[{ required: status == 2 ? true : false, message: '退货地址不能为空' }]">
               <el-input
