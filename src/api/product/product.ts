@@ -1,5 +1,10 @@
 import request from "@/utils/request";
-import type { ProductFilterParams, ProductFilterResult, ProductFormResult } from "@/types/product/product.d";
+import type {
+    ProductFilterParams,
+    ProductFilterResult,
+    ProductFormResult,
+    ProductParticipleFormResult
+} from "@/types/product/product.d";
 
 // 获取商品列表
 export const getProductList = (params: ProductFilterParams) => {
@@ -51,7 +56,7 @@ export const getProduct = (action: string, params: object) => {
 };
 // 获取商品搜索关键词
 export const getParticiple = (params: object) => {
-    return request<ProductFormResult>({
+    return request<ProductParticipleFormResult>({
         url: "product/get_participle/",
         method: "get",
         params,

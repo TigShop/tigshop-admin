@@ -156,4 +156,8 @@ export interface ProductFormResult {
     service_list:ServiceList[];
 }
 
+export interface ProductParticipleFormResult {
+    keywords:string
+}
+
 

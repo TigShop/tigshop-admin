@@ -16,10 +16,10 @@
                             <el-form-item :rules="[{ required: true, message: '商品名称不能为空' }]" label="商品名称" prop="product_name">
                                 <el-input v-model="formState.product_name" description="请输入您的姓名" />
                             </el-form-item>
-                            <el-form-item label="搜索关键词" prop="formState.keywords">
+                            <el-form-item label="搜索关键词" prop="keywords">
                                 <div class="keywords">
                                     <el-input v-model="formState.keywords" class="InputBox" />
-                                    <el-button type="primary" @click="onGetParticiple">更新分词</el-button>
+                                    <el-button type="primary" @click="onGetParticiple">更新关键词</el-button>
                                 </div>
                                 <div class="extra">用空格分隔，为空时会自动根据商品名称分词</div>
                             </el-form-item>
@@ -369,7 +369,7 @@ const onFormSubmit = () => {
 const onGetParticiple = async() => {
     try {
         const result = await getParticiple({product_name:formState.value.product_name});
-        console.log(result);
+        formState.value.keywords = result.keywords;
     } catch (error: any) {
         message.error(error.message);
         emit("close");
