@@ -10,6 +10,14 @@
             <el-form-item label="售后状态：">
               <p>{{ formData.status_name }}</p>
             </el-form-item>
+            <el-form-item label="退款金额：" prop="refund_amount" v-if="formData.aftersale_type == 1 && status == 2" :rules="[{ required: status == 2 ? true : false, message: '退款金额不能为空' }]">
+              <el-input
+                v-model="formState.refund_amount"
+                type="number"
+                placeholder="请输入退款金额"
+              />
+              <div class="extra">最高可退金额{{ priceFormat(formData.suggest_refund_amount )  || "0" }}</div>
+            </el-form-item>
             <el-form-item label="退货地址：" prop="return_address" v-if="formData.aftersale_type == 1 && status == 2" :rules="[{ required: status == 2 ? true : false, message: '退货地址不能为空' }]">
               <el-input
                 v-model="formState.return_address"
@@ -17,6 +25,7 @@
                 type="textarea"
                 placeholder="请输入退货地址"
               />
+              
             </el-form-item>
             <el-form-item label="拒绝说明：" prop="reply" v-if="status == 3" :rules="[{ required: status == 3 ? true : false, message: '拒绝说明不能为空' }]">
               <el-input
@@ -55,6 +64,7 @@ import { onMounted, ref, shallowRef, PropType } from "vue";
 import { message } from "ant-design-vue";
 import { FormState } from "@/types/order/aftersales";
 import { updateAftersales } from "@/api/order/aftersales";
+import { priceFormat } from "@/utils/format";
 
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
@@ -73,6 +83,7 @@ const loading = ref<boolean>(true);
 const formRef = shallowRef();
 const formState = ref<any>({
   status: props.status,
+  refund_amount: null,
   reply: "",
   return_address: ""
 });

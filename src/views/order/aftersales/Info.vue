@@ -123,9 +123,9 @@
                         </div>
                         <div class="card-title">
                             <ul>
-                                <li class="card-li">
+                                <li class="card-li" v-if="formState.status == 2">
                                     <div>退款金额：</div>
-                                    <div class="li-info">{{ priceFormat(formState.refund_amount)  || "0" }}</div>
+                                    <div class="li-info">{{ priceFormat(formState.suggest_refund_amount )  || "0" }}</div>
                                 </li>
                                 <li class="card-li">
                                     <div>物流公司：</div>

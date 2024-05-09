@@ -52,7 +52,7 @@
                     </el-table-column>
                     <el-table-column prop="add_time" width="200" sortable="custom" label="下单时间">
                         <template #default="{ row }">
-                            {{ row.order.add_time }}
+                            {{ row.order?.add_time }}
                         </template>
                     </el-table-column>
                     <template #empty>
