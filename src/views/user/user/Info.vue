@@ -29,12 +29,12 @@
                         </el-form-item>
                     </template>
                     <el-form-item label="会员等级" prop="rank_id">
-                        <el-select style="width: 100%" v-model="formState.rank_id" >
+                        <el-select v-model="formState.rank_id" style="width: 100%">
                             <el-option
-                              v-for="item in options"
-                              :key="item.rank_id"
-                              :label="item.rank_name"
-                              :value="item.rank_id"
+                                v-for="item in options"
+                                :key="item.rank_id"
+                                :label="item.rank_name"
+                                :value="item.rank_id"
                             />
                         </el-select>
                     </el-form-item>
@@ -48,12 +48,12 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {onMounted, ref, shallowRef} from "vue"
+import {nextTick, onMounted, ref, shallowRef} from "vue"
 import {useRouter} from 'vue-router'
 import {message} from "ant-design-vue";
 import {UserFormState} from '@/types/user/user.d';
 import {getUser, updateUser} from "@/api/user/user";
-import {SelectRankList} from "@/components/select";
+import {ElInput} from "element-plus";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 
@@ -79,19 +79,20 @@ const formState = ref<UserFormState>({
     frozen_balance: 0,
     avatar: "",
     password: "",
-    pwd_confirm: ""
+    pwd_confirm: "",
 });
+
 const options = ref()
 const fetchUser = async () => {
     try {
         loading.value = true;
         const result = await getUser(action.value, {id: id.value});
         Object.assign(
-          formState.value,
-          result.item
+            formState.value,
+            result.item
         )
         options.value = result.rank_list
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
         emit('close');
     } finally {
@@ -113,7 +114,7 @@ const onSubmit = async () => {
         const result = await updateUser(operation, {id: id.value, ...formState.value});
         emit('submitCallback', result);
         message.success(result.message);
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
     } finally {
         emit('update:confirmLoading', false);
@@ -126,4 +127,7 @@ const onFormSubmit = () => {
 
 defineExpose({onFormSubmit});
 </script>
+<style lang="less" scoped>
+
+</style>
 

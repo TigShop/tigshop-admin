@@ -36,7 +36,7 @@
                             <el-button plain @click="handleSearch">搜索</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button plain @click="handleExport">导出EXCEL</el-button>
+                            <el-button plain @click="handleExport" :loading="handleExport">导出EXCEL</el-button>
                         </el-form-item>
                     </div>
                 </el-form>
@@ -150,6 +150,7 @@ import OrderNumberStatistics from "./src/OrderNumberStatistics.vue";
 import type { statisticsOrdeFilterState, statisticsOrdeFilterParams } from "@/types/panel/statisticsOrde";
 import { getSalesstatisticsIndexs, getStatisticsOrdexport } from "@/api/panel/statisticsOrde";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     getData();
 };
@@ -253,11 +254,18 @@ const getData = async () => {
 const handleSearch = () => {
     getData();
 };
-const handleExport = () => {
-    console.log({ ...filterParams, is_export: "1" });
-    getStatisticsOrdexport({ ...filterParams, is_export: "1" });
-};
 
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await getStatisticsOrdexport({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'销售统计导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
+};
 onMounted(() => {
     const nowDate = formatDate(new Date());
     if (nowDate) {

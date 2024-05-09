@@ -51,6 +51,7 @@ export interface UserFormResult {
 // 获取详情返回参数类型
 export interface UserFormState {
     user_id?: number;
+
     username?: string;
     nickname?: string;
     from_tag?: number;
@@ -73,6 +74,7 @@ export interface UserFormState {
     password?: string;
     pwd_confirm?: string;
     avatar: string;
+
 }
 
 

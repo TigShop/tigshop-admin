@@ -1,6 +1,5 @@
 import request from "@/utils/request";
 import type { statisticsAccessFilterParams, statisticsAccessFilterState } from "@/types/panel/statisticsAccess.d.ts";
-// import requestExport from "@/utils/export";
 
 // 访问统计
 export const getStatisticsAccess = (params: statisticsAccessFilterParams) => {

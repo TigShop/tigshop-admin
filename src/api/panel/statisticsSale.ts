@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import requestExport from "@/utils/export";
 import type {
     statisticsSalesFilterParams,
     statisticsSalesFilterState,
@@ -27,8 +26,10 @@ export const getSaleDetaillist = (data: SaleDetaillistFilterParams) => {
 
 // 销售商品明细导出
 export const exportSaleDetaillis = (data: SaleDetaillistFilterParams) => {
-    return requestExport({
+    return request({
         url: "panel/sales_statistics/sales_product_detail",
+        method: "get",
+        responseType: 'arraybuffer',
         data
     });
 };

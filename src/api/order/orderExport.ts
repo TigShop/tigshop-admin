@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import requestExport from '@/utils/export';
 import {ExportItemInfoFilterState, SaveExportItemFilterResult, ExportItemListFilterState} from '@/types/order/orderExport'
 // 订单导出可选标签列表
 export const getExportItemList = () => {
@@ -26,8 +25,10 @@ export const saveExportItem = (data:SaveExportItemFilterResult) => {
 }
 // 导出订单
 export const getOrderExport = (params: object) => {
-    return requestExport({
+    return request({
         url: 'order/order_export/',
-        params,
+        method: "get",
+        responseType: 'arraybuffer',
+        params
     })
 }

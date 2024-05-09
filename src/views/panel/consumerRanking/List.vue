@@ -18,7 +18,7 @@
                         <el-button plain @click="handleSearch">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="mr-10">
-                        <el-button plain @click="handleExport">导出EXCEL</el-button>
+                        <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -60,6 +60,7 @@ import { formattedDate } from "@/utils/time";
 import { getUserConsumptionRanking, exportUserConsumptionRanking } from "@/api/panel/consumerRanking";
 import type { consumerRankingFilterParams, FilterResult } from "@/types/panel/consumerRanking.d.ts";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 const config = useConfigStore();
 
 const loading = ref<boolean>(false);
@@ -93,8 +94,16 @@ const handleSearch = () => {
     getData();
 };
 
-const handleExport = () => {
-    exportUserConsumptionRanking({ ...filterParams, is_export: "1" });
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await exportUserConsumptionRanking({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'消费排行导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
 };
 
 // 修改排序
