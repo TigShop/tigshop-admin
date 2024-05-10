@@ -196,7 +196,7 @@ const router = createRouter({
                         },
                         {
                             path: "/finance/paylog/list",
-                            name: "paylogManage",
+                            name: "payLogManage",
                             meta: { title: "交易日志" },
                             component: () => import("@/views/finance/payLog/List.vue"),
                         },

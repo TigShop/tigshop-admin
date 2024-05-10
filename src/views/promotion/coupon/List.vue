@@ -106,7 +106,7 @@
                                 <template #default="{ row }">
                                     {{ row.coupon_type == 1 ? '满减券' : '折扣券' }}
                                     <span v-if="row.is_new_user == 1" class="green">(新人专享)</span>
-                                    <span v-if="row.limit_user_rank" class="green">(会员专享)</span>
+                                    <span v-if="row.limit_user_rank.length" class="green">(会员专享)</span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="优惠券金额(折扣)" prop="coupon_money" sortable="custom">
