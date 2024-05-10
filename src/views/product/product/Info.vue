@@ -87,10 +87,6 @@
                                 </el-radio-group>
                                 <div class="extra">勾选“是”表示此商品不会产生运费花销，勾选“否”表示按照正常运费计算。</div>
                             </el-form-item>
-                            <el-form-item label="最大秒杀库存" prop="seckill_max_num">
-                                <el-input v-model="formState.seckill_max_num"></el-input>
-                                <div class="extra">已售百分比=当前商品库存/秒杀最大库存数</div>
-                            </el-form-item>
                             <el-form-item label="是否上架" prop="product_status">
                                 <el-radio-group style="width: 100%" v-model="formState.product_status">
                                     <el-radio :value="1">是</el-radio>
