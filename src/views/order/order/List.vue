@@ -173,7 +173,7 @@
                                             <Tag :transparent="false" text="店铺"></Tag>
                                         </el-tooltip>
                                         <el-tooltip v-if="item.order_source" :content="'订单来自' + item.order_source + '下单'" effect="light" placement="top">
-                                            <Tag :text="item.order_source" :transparent="true"></Tag>
+                                            <Tag :text="item.order_source" :transparent="true" style="text-transform: uppercase"></Tag>
                                         </el-tooltip>
                                         <!--<el-tag class="ml10" disable-transitions effect="plain" size="small">-->
                                         <!--团购订单-->
