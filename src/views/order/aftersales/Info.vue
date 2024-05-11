@@ -2,21 +2,16 @@
     <div class="container" v-loading="loading">
         <div class="content_wrapper" v-if="!loading">
             <div class="lyecs-form-table">
-                <el-table :data="formState.aftersales_items" style="width: 100%;margin-bottom: 20px;" border>
+                <el-table :data="formState.aftersales_items" style="width: 100%; margin-bottom: 20px" border>
                     <el-table-column label="商品信息" width="400">
-                        <template #default="{row}">
+                        <template #default="{ row }">
                             <div class="flex">
-                                <ProductCard
-                                    :pic_thumb="row.pic_thumb"
-                                    :product_id="row.product_id"
-                                    :product_name="row.product_name"
-                                    >
-                                </ProductCard>
+                                <ProductCard :pic_thumb="row.pic_thumb" :product_id="row.product_id" :product_name="row.product_name"> </ProductCard>
                             </div>
                         </template>
                     </el-table-column>
                     <el-table-column label="商品价格" align="center">
-                        <template #default="{row}">
+                        <template #default="{ row }">
                             <div>{{ priceFormat(row.price) }}</div>
                         </template>
                     </el-table-column>
@@ -29,60 +24,58 @@
                         <div class="btn flex" v-if="type != 2">
                             <div v-if="formState.aftersale_type == 1 && formState.status == 1">
                                 <DialogForm
-                                    :params="{ status: 2, formData:formState }"
+                                    :params="{ status: 2, formData: formState }"
                                     isDrawer
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
                                     :showClose="false"
                                     :showOnOk="false"
-                                    @okCallback="fetchBrand">
-                                    <el-button type="primary" style="margin-right: 10px;"> 同意并发送退货地址 </el-button>
+                                    @okCallback="fetchBrand"
+                                >
+                                    <el-button type="primary" style="margin-right: 10px"> 同意并发送退货地址 </el-button>
                                 </DialogForm>
                                 <DialogForm
-                                    :params="{ status: 3, formData:formState }"
+                                    :params="{ status: 3, formData: formState }"
                                     isDrawer
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
                                     :showClose="false"
                                     :showOnOk="false"
-                                    @okCallback="fetchBrand">
+                                    @okCallback="fetchBrand"
+                                >
                                     <el-button> 拒绝退货退款 </el-button>
                                 </DialogForm>
                             </div>
                             <div v-if="formState.aftersale_type == 2 && formState.status == 1">
                                 <DialogForm
-                                    :params="{ status: 2, formData:formState }"
+                                    :params="{ status: 2, formData: formState }"
                                     isDrawer
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
                                     :showClose="false"
                                     :showOnOk="false"
-                                    @okCallback="fetchBrand">
-                                    <el-button type="primary" style="margin-right: 10px;"> 同意仅退款 </el-button>
+                                    @okCallback="fetchBrand"
+                                >
+                                    <el-button type="primary" style="margin-right: 10px"> 同意仅退款 </el-button>
                                 </DialogForm>
                                 <DialogForm
-                                    :params="{ status: 3, formData:formState }"
+                                    :params="{ status: 3, formData: formState }"
                                     isDrawer
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
                                     :showClose="false"
                                     :showOnOk="false"
-                                    @okCallback="fetchBrand">
+                                    @okCallback="fetchBrand"
+                                >
                                     <el-button> 拒绝仅退款 </el-button>
                                 </DialogForm>
                             </div>
                             <div v-if="formState.aftersale_type == 1 && formState.status == 4">
-                                <el-popconfirm
-                                    width="220"
-                                    confirm-button-text="确认"
-                                    cancel-button-text="取消"
-                                    title="确认已收到货?"
-                                    @confirm="confirmReceipt"
-                                >
+                                <el-popconfirm width="220" confirm-button-text="确认" cancel-button-text="取消" title="确认已收到货?" @confirm="confirmReceipt">
                                     <template #reference>
                                         <el-button type="primary"> 确认收货 </el-button>
                                     </template>
@@ -110,7 +103,7 @@
                                 </li> -->
                                 <li class="card-li">
                                     <div>退款原因：</div>
-                                    <div class="li-info">{{ formState.aftersale_reason}}</div>
+                                    <div class="li-info">{{ formState.aftersale_reason }}</div>
                                 </li>
                                 <li class="card-li">
                                     <div>退款说明：</div>
@@ -118,14 +111,13 @@
                                         {{ formState.description ? formState.description : "--" }}
                                     </div>
                                 </li>
-
                             </ul>
                         </div>
                         <div class="card-title">
                             <ul>
                                 <li class="card-li" v-if="formState.status == 2">
                                     <div>退款金额：</div>
-                                    <div class="li-info">{{ priceFormat(formState.suggest_refund_amount )  || "0" }}</div>
+                                    <div class="li-info">{{ priceFormat(formState.suggest_refund_amount) || "0" }}</div>
                                 </li>
                                 <li class="card-li">
                                     <div>物流公司：</div>
@@ -144,14 +136,12 @@
                 </div>
                 <div class="negotiation-box">
                     <div class="negotiation-title flex flex-justify-between">
-                        <div>
-                            协商记录
-                        </div>
+                        <div>协商记录</div>
                         <div class="btn" v-if="formState.status == 1 && type != 2">
                             <el-button bg size="small" text type="primary" :disabled="isMsg" @click="isMsg = true"> 点击发表留言 </el-button>
                         </div>
                     </div>
-                    <el-form :model="messageForm" label-width="auto" style="margin-top: 20px;" v-if="isMsg">
+                    <el-form :model="messageForm" label-width="auto" style="margin-top: 20px" v-if="isMsg">
                         <el-form-item label="留言内容：" prop="log_info">
                             <el-input
                                 v-model="messageForm.log_info"
@@ -181,7 +171,7 @@
                                 </template>
                                 <div class="info-box">
                                     <div class="tit">
-                                        <div class="txt" v-if="(index+1) == formState.aftersales_log?.length">
+                                        <div class="txt" v-if="index + 1 == formState.aftersales_log?.length">
                                             {{ item.log_info }}
                                         </div>
                                         <div class="txt" v-else>
@@ -193,31 +183,37 @@
                                         </div>
                                     </div>
                                     <div class="detail">
-                                        <div class="content" v-if="(index+1) != formState.aftersales_log?.length">
+                                        <div class="content" v-if="index + 1 != formState.aftersales_log?.length">
                                             {{ item.log_info }}
                                         </div>
-                                        <div class="card-li" v-if="(index+1) == formState.aftersales_log?.length">
+                                        <div class="card-li" v-if="index + 1 == formState.aftersales_log?.length">
                                             <span>售后方式：</span>
                                             <span class="li-info">
-                                                {{formState.aftersales_type_name}}
+                                                {{ formState.aftersales_type_name }}
                                             </span>
                                         </div>
-                                        <div class="card-li"  v-if="(index+1) == formState.aftersales_log?.length">
+                                        <div class="card-li" v-if="index + 1 == formState.aftersales_log?.length">
                                             <span>退款原因：</span>
                                             <span class="li-info">
-                                                {{formState.aftersale_reason}}
+                                                {{ formState.aftersale_reason }}
                                             </span>
                                         </div>
-                                        <div class="card-li" v-if="(index+1) == formState.aftersales_log?.length">
+                                        <div class="card-li" v-if="index + 1 == formState.aftersales_log?.length">
                                             <span>退款说明：</span>
                                             <span class="li-info">
-                                                {{formState.description}}
+                                                {{ formState.description }}
                                             </span>
                                         </div>
                                         <div class="card-li" v-if="item.return_pic?.length>0">
                                             <span>上传凭证：</span>
                                             <span class="li-info">
-                                                <Image v-for="pic in item.return_pic" style="margin-right: 10px;" width="60" :src="imageFormat(pic.pic_thumb)" fit="contain"/>
+                                                <Image
+                                                    v-for="pic in item.return_pic"
+                                                    style="margin-right: 10px"
+                                                    width="60"
+                                                    :src="imageFormat(pic.pic_thumb)"
+                                                    fit="contain"
+                                                />
                                             </span>
                                         </div>
                                     </div>
@@ -231,16 +227,16 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {imageFormat} from "@/utils/format";
-import {DialogForm} from '@/components/dialog'
-import {Image} from "@/components/image";
-import {onMounted, ref, shallowRef} from "vue"
-import {useRouter} from 'vue-router'
-import {message, Timeline, TimelineItem} from "ant-design-vue";
-import {FormAddGallery} from '@/components/gallery'
-import {FormState} from '@/types/order/aftersales';
-import {getAftersales, updateAftersales, addMessage, updataConfirmReceipt } from "@/api/order/aftersales";
-import {ProductCard} from '@/components/list';
+import { imageFormat } from "@/utils/format";
+import { DialogForm } from "@/components/dialog";
+import { Image } from "@/components/image";
+import { onMounted, ref, shallowRef } from "vue";
+import { useRouter } from "vue-router";
+import { message, Timeline, TimelineItem } from "ant-design-vue";
+import { FormAddGallery } from "@/components/gallery";
+import { FormState } from "@/types/order/aftersales";
+import { getAftersales, updateAftersales, addMessage, updataConfirmReceipt } from "@/api/order/aftersales";
+import { ProductCard } from "@/components/list";
 import { priceFormat } from "@/utils/format";
 
 // 父组件回调
@@ -265,76 +261,73 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === "add" ? "insert" : "update";
 const formRef = shallowRef();
 const formState = ref<FormState>({
     pic_thumb: "",
     number: 1
 });
-const isMsg = ref<boolean>(false)
+const isMsg = ref<boolean>(false);
 const messageForm = ref<any>({
-    log_info:"",
-    return_pic:[]
-})
-const fetchBrand  = async () => {
+    log_info: "",
+    return_pic: []
+});
+const fetchBrand = async () => {
     try {
         const result = await getAftersales(action.value, { id: id.value });
-        Object.assign(
-          formState.value,
-          result.item
-        )
-        formState.value.aftersales_type_config = toArray(formState.value.aftersales_type_config)
-        formState.value.status_config = toArray(formState.value.status_config)
-        formState.value.modify_number = formState.value.number
+        Object.assign(formState.value, result.item);
+        formState.value.aftersales_type_config = toArray(formState.value.aftersales_type_config);
+        formState.value.status_config = toArray(formState.value.status_config);
+        formState.value.modify_number = formState.value.number;
         // emit('submitCallback')
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
-        emit('close');
+        emit("close");
     } finally {
         loading.value = false;
     }
 };
-const toArray = (arr:any) => {
-  if (typeof arr == 'object') {
-    var newArr = [];
+const toArray = (arr: any) => {
+    if (typeof arr == "object") {
+        var newArr = [];
 
-    for (let i in arr) {
-      newArr.push(arr[i]);
+        for (let i in arr) {
+            newArr.push(arr[i]);
+        }
+        return newArr;
+    } else {
+        return arr;
     }
-    return newArr;
-  } else {
-    return arr;
-  }
 };
-const onInput = (e:number) => {
-    if(e > formState.value.number){
-        formState.value.modify_number = formState.value.number
+const onInput = (e: number) => {
+    if (e > formState.value.number) {
+        formState.value.modify_number = formState.value.number;
     }
-    if(e < 1){
-        formState.value.modify_number = 1
+    if (e < 1) {
+        formState.value.modify_number = 1;
     }
-}
+};
 
-const postMessage = async (id:any) => {
-    if(messageForm.value.log_info == ""){
+const postMessage = async (id: any) => {
+    if (messageForm.value.log_info == "") {
         message.error("请输入留言内容");
-        return false
+        return false;
     }
     try {
         const result = await addMessage({ aftersale_id: id, ...messageForm.value });
         isMsg.value = false;
         let data = {
-            log_info:"",
-            return_pic:[]
-        }
+            log_info: "",
+            return_pic: []
+        };
         messageForm.value = data;
         fetchBrand();
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
     } finally {
         loading.value = false;
     }
-}
+};
 
 onMounted(() => {
     // 获取详情数据
@@ -347,8 +340,8 @@ const confirmReceipt = async () => {
         const result = await updataConfirmReceipt({ id: id.value });
         message.success(result.message);
         // fetchBrand();
-        emit('submitCallback')
-    } catch (error:any) {
+        emit("submitCallback");
+    } catch (error: any) {
         message.error(error.message);
     }
 };
@@ -438,7 +431,7 @@ defineExpose({ onFormSubmit });
             white-space: wrap;
             color: black;
         }
-        .red{
+        .red {
             color: var(--tig-red-text-color);
         }
     }
@@ -449,20 +442,19 @@ defineExpose({ onFormSubmit });
         text-align: right;
     }
 }
-.negotiation-box{
-    .negotiation-title{
+.negotiation-box {
+    .negotiation-title {
         font-size: 16px;
         font-weight: 700;
         padding-bottom: 25px;
-        border-bottom: 1px solid #ebedf0;
     }
-    .btn-box{
+    .btn-box {
         display: flex;
         justify-content: flex-end;
-        width:100%;
+        width: 100%;
     }
-    .negotiation-content{
-        .logo{
+    .negotiation-content {
+        .logo {
             width: 24px;
             height: 24px;
             line-height: 24px;
@@ -472,7 +464,7 @@ defineExpose({ onFormSubmit });
             color: #fff;
             text-align: center;
         }
-        .logo-b{
+        .logo-b {
             width: 24px;
             height: 24px;
             line-height: 24px;
@@ -482,36 +474,36 @@ defineExpose({ onFormSubmit });
             color: #fff;
             text-align: center;
         }
-        .info-box{
+        .info-box {
             background-color: #f7f8fa;
             padding: 16px;
             border-radius: 4px;
             margin-bottom: 16px;
-            .tit{
+            .tit {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                .txt{
+                .txt {
                     color: #323233;
                     font-weight: 500;
                 }
-                .time{
+                .time {
                     color: #999;
                 }
             }
-            .detail{
+            .detail {
                 border-top: 1px solid #ebedf0;
                 margin-top: 15px;
                 padding-top: 5px;
                 font-size: 12px;
-                .content{
+                .content {
                     padding: 5px 0;
                 }
-                .card-li{
+                .card-li {
                     padding: 5px 0;
                     color: #646566;
                     display: flex;
-                    .li-info{
+                    .li-info {
                         color: #333;
                     }
                 }
