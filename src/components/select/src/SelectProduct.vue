@@ -117,7 +117,8 @@ const clear = () => {
 };
 // 删除
 const del = (key: number) => {
-    ids.value?.splice(key, 1);
+    let del_product_id = productList.value[key].product_id;
+    ids.value = ids.value.filter(num => num !== del_product_id);
     productList.value.splice(<any>key, 1);
 };
 defineExpose({
