@@ -34,7 +34,7 @@
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
-                                    :showClose="false" 
+                                    :showClose="false"
                                     :showOnOk="false"
                                     @okCallback="fetchBrand">
                                     <el-button type="primary" style="margin-right: 10px;"> 同意并发送退货地址 </el-button>
@@ -45,7 +45,7 @@
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
-                                    :showClose="false" 
+                                    :showClose="false"
                                     :showOnOk="false"
                                     @okCallback="fetchBrand">
                                     <el-button> 拒绝退货退款 </el-button>
@@ -58,7 +58,7 @@
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
-                                    :showClose="false" 
+                                    :showClose="false"
                                     :showOnOk="false"
                                     @okCallback="fetchBrand">
                                     <el-button type="primary" style="margin-right: 10px;"> 同意仅退款 </el-button>
@@ -69,7 +69,7 @@
                                     path="order/aftersales/Handle"
                                     title="处理售后"
                                     width="600px"
-                                    :showClose="false" 
+                                    :showClose="false"
                                     :showOnOk="false"
                                     @okCallback="fetchBrand">
                                     <el-button> 拒绝仅退款 </el-button>
@@ -118,7 +118,7 @@
                                         {{ formState.description ? formState.description : "--" }}
                                     </div>
                                 </li>
-                                
+
                             </ul>
                         </div>
                         <div class="card-title">
@@ -214,7 +214,7 @@
                                                 {{formState.description}}
                                             </span>
                                         </div>
-                                        <div class="card-li" v-if="item.return_pic">
+                                        <div class="card-li" v-if="item.return_pic?.length>0">
                                             <span>上传凭证：</span>
                                             <span class="li-info">
                                                 <Image v-for="pic in item.return_pic" style="margin-right: 10px;" width="60" :src="imageFormat(pic.pic_thumb)" fit="contain"/>
