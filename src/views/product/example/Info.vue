@@ -31,11 +31,11 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, shallowRef, onMounted } from "vue"
-import { useRouter } from 'vue-router'
+import { ref, shallowRef, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
-import { FormAddGallery } from '@/components/gallery'
-import type { ExampleFormState } from '@/types/product/example.d';
+import { FormAddGallery } from "@/components/gallery";
+import type { ExampleFormState } from "@/types/product/example.d";
 import { getExample, updateExample } from "@/api/product/example";
 
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
@@ -49,7 +49,7 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === "add" ? "insert" : "update";
 const formRef = shallowRef();
 const formState = ref<ExampleFormState>({});
 
@@ -59,37 +59,33 @@ onMounted(() => {
 });
 const fetchExample = async () => {
     try {
-        const result = await getExample(action.value, { id: id.value });
-        Object.assign(
-            formState.value,
-            result.item
-        )
+        const result = await getExample({ id: id.value });
+        Object.assign(formState.value, result.item);
     } catch (error) {
         message.error(error.message);
-        emit('close');
+        emit("close");
     } finally {
         loading.value = false;
     }
 };
 
-
 // 表单通过验证后提交
 const onSubmit = async () => {
     try {
         await formRef.value.validate();
-        emit('update:confirmLoading', true);
+        emit("update:confirmLoading", true);
         const result = await updateExample(operation, { id: id.value, ...formState.value });
-        emit('submitCallback', result);
+        emit("submitCallback", result);
         message.success(result.message);
     } catch (error) {
         message.error(error.message);
     } finally {
-        emit('update:confirmLoading', false);
+        emit("update:confirmLoading", false);
     }
 };
 // 表单提交
 const onFormSubmit = () => {
-    onSubmit()
+    onSubmit();
 };
 
 defineExpose({ onFormSubmit });

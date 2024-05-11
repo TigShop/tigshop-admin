@@ -35,15 +35,15 @@
                             <div class="extra">首页描述，该设置与SEO有关，建议长度不要超过50字符</div>
                         </el-form-item>
                         <el-form-item label="商城LOGO" prop="shop_logo">
-                            <FormAddGallery v-model:photo="formState.shop_logo" />
+                            <FormAddGallery v-model:photo="formState.shop_logo" style="width: 100%" />
                             <div class="extra">请根据页面设置对应大小的LOGO，高清需要上传双倍大小</div>
                         </el-form-item>
                         <el-form-item label="ico图标上传" prop="ico_img">
-                            <FormAddGallery v-model:photo="formState.ico_img" />
+                            <FormAddGallery v-model:photo="formState.ico_img" style="width: 100%" />
                             <div class="extra">推荐使用高清128*128像素，格式为png或ico</div>
                         </el-form-item>
                         <el-form-item label="会员默认头像" prop="default_avatar">
-                            <FormAddGallery v-model:photo="formState.default_avatar" />
+                            <FormAddGallery v-model:photo="formState.default_avatar" style="width: 100%" />
                             <div class="extra">请上传1:1的200*200像素以内的图片</div>
                         </el-form-item>
                         <div class="title">全局设置</div>
@@ -87,7 +87,8 @@
                             <el-input
                                 v-model="formState.style_version"
                                 maxlength="40"
-                                @input="formState.style_version = formState.style_version.replace(/[^\d]/g, '')" />
+                                @input="formState.style_version = formState.style_version.replace(/[^\d]/g, '')"
+                            />
                             <div class="extra">用于清除JS、CSS缓存</div>
                         </el-form-item>
                         <el-form-item label="访问统计" prop="visit_stats">
@@ -280,7 +281,7 @@
                         </el-form-item>
                         <div class="title">缩略图设置</div>
                         <el-form-item label="水印上传" prop="watermark">
-                            <FormAddGallery v-model:photo="formState.watermark" />
+                            <FormAddGallery v-model:photo="formState.watermark" style="width: 100%" />
                             <div class="extra">为保证透明效果，格式推荐为png</div>
                         </el-form-item>
                         <el-form-item label="水印位置" prop="watermark_place">
@@ -925,7 +926,7 @@ const formState = ref<BaseFormState>({
     use_alipay: 0,
     use_surplus: 0,
     use_offline: 0,
-    use_another: 0,
+    use_another: 0
 });
 const onTabChange = (val: string) => {
     activeKey.value = val;
@@ -939,7 +940,7 @@ const loading = ref<boolean>(true);
 const loadFilter = async () => {
     try {
         const result = await getConfig({
-            code: "base",
+            code: "base"
         });
         Object.assign(formState.value, result.item);
         countryList.value = result.countrys || [];
@@ -956,7 +957,7 @@ const onSubmit = async () => {
     try {
         const result = await saveConfig({
             code: "base",
-            ...formState.value,
+            ...formState.value
         });
         message.success(result.message);
     } catch (error: any) {
