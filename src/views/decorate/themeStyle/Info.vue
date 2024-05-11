@@ -11,7 +11,8 @@
                                     v-for="item in ColorList"
                                     :style="{ border: item.check ? '1px solid #0080f9' : '1px solid transparent' }"
                                     class="color-card"
-                                    @click="selectItem(item.theme_id)">
+                                    @click="selectItem(item.theme_id)"
+                                >
                                     <div :style="{ background: item['--main-bg'] }"></div>
                                     <div :style="{ background: item['--vice-bg'] }"></div>
                                 </div>
@@ -45,21 +46,22 @@
 </template>
 <script lang="ts" setup>
 import "@/style/css/list.less";
-import {onMounted, ref} from "vue";
-import {message} from "ant-design-vue";
-import type {ColorList, ThemeStyleFormState} from "@/types/decorate/themeStyle.d";
-import {getConfig, updateConfig} from "@/api/setting/config";
+import { onMounted, ref } from "vue";
+import { message } from "ant-design-vue";
+import type { ColorList, ThemeStyleFormState } from "@/types/decorate/themeStyle.d";
+import { getConfig, updateConfig } from "@/api/setting/config";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 const confirmLoading = ref(false);
 
 const loading = ref<boolean>(true);
 const formState = ref<ThemeStyleFormState>({
-    theme_id: 0,
+    theme_id: 0
 });
 const ColorList = ref<ColorList[]>([
     {
-        check: false, theme_id: 1,
+        check: false,
+        theme_id: 1,
         "--general": "#4a90e2",
         "--main-bg": "#4a90e2",
         "--main-btn-hover-bg": "",
@@ -70,10 +72,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#0080FF",
         "--price": "#0080FF",
         "--tag-text": "#0080FF",
-        "--tag-bg": "#E5F2FF"
-    }
-    , {
-        check: false, theme_id: 2,
+        "--tag-bg": "#E5F2FF",
+        "--primary-light-3": "#80b1eb",
+        "--primary-light-5": "#a5c8f1",
+        "--primary-light-7": "#c9def6",
+        "--primary-light-8": "#dbe9f9",
+        "--primary-light-9": "#edf4fc",
+        "--primary-dark-2": "#3b73b5"
+    },
+    {
+        check: false,
+        theme_id: 2,
         "--general": "#ff4444",
         "--main-bg": "#ff4444",
         "--main-btn-hover-bg": "",
@@ -84,10 +93,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#FC0000",
         "--price": "#FC0000",
         "--tag-text": "#CF0000",
-        "--tag-bg": "#FFF2F2"
-    }
-    , {
-        check: false, theme_id: 3,
+        "--tag-bg": "#FFF2F2",
+        "--primary-light-3": "#ff7c7c",
+        "--primary-light-5": "#ffa2a2",
+        "--primary-light-7": "#ffc7c7",
+        "--primary-light-8": "#ffdada",
+        "--primary-light-9": "#ffecec",
+        "--primary-dark-2": "#cc3636"
+    },
+    {
+        check: false,
+        theme_id: 3,
         "--general": "#ff5e15",
         "--main-bg": "#ff5e15",
         "--main-btn-hover-bg": "",
@@ -98,10 +114,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#ff5e15",
         "--price": "#ff5e15",
         "--tag-text": "#ff5e15",
-        "--tag-bg": "#FFEDE6"
-    }
-    , {
-        check: false, theme_id: 4,
+        "--tag-bg": "#FFEDE6",
+        "--primary-light-3": "#ff8e5b",
+        "--primary-light-5": "#ffaf8a",
+        "--primary-light-7": "#ffcfb9",
+        "--primary-light-8": "#ffdfd0",
+        "--primary-light-9": "#ffefe8",
+        "--primary-dark-2": "#cc4b11"
+    },
+    {
+        check: false,
+        theme_id: 4,
         "--general": "#ff547b",
         "--main-bg": "#ff547b",
         "--main-btn-hover-bg": "",
@@ -112,10 +135,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#ff547b",
         "--price": "#ff547b",
         "--tag-text": "#ff547b",
-        "--tag-bg": "#FFF2F5"
-    }
-    , {
-        check: false, theme_id: 5,
+        "--tag-bg": "#FFF2F5",
+        "--primary-light-3": "#ff87a3",
+        "--primary-light-5": "#ffaabd",
+        "--primary-light-7": "#ffccd7",
+        "--primary-light-8": "#ffdde5",
+        "--primary-light-9": "#ffeef2",
+        "--primary-dark-2": "#cc4362"
+    },
+    {
+        check: false,
+        theme_id: 5,
         "--general": "#FF4444",
         "--main-bg": "#FF4444",
         "--main-btn-hover-bg": "",
@@ -126,10 +156,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#FC0000",
         "--price": "#FC0000",
         "--tag-text": "#CF0000",
-        "--tag-bg": "#FFF2F2"
-    }
-    , {
-        check: false, theme_id: 6,
+        "--tag-bg": "#FFF2F2",
+        "--primary-light-3": "#ff7c7c",
+        "--primary-light-5": "#ffa2a2",
+        "--primary-light-7": "#ffc7c7",
+        "--primary-light-8": "#ffdada",
+        "--primary-light-9": "#ffecec",
+        "--primary-dark-2": "#cc3636"
+    },
+    {
+        check: false,
+        theme_id: 6,
         "--general": "#FCC600",
         "--main-bg": "#FCC600",
         "--main-btn-hover-bg": "",
@@ -140,10 +177,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#FCC600",
         "--price": "#FCC600",
         "--tag-text": "#FCC600",
-        "--tag-bg": "#FFF4CD"
-    }
-    , {
-        check: false, theme_id: 7,
+        "--tag-bg": "#FFF4CD",
+        "--primary-light-3": "#fdd74d",
+        "--primary-light-5": "#fee380",
+        "--primary-light-7": "#feeeb3",
+        "--primary-light-8": "#fef4cc",
+        "--primary-light-9": "#fff9e6",
+        "--primary-dark-2": "#ca9e00"
+    },
+    {
+        check: false,
+        theme_id: 7,
         "--general": "#65c4aa",
         "--main-bg": "#65c4aa",
         "--main-btn-hover-bg": "",
@@ -154,10 +198,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#65c4aa",
         "--price": "#65c4aa",
         "--tag-text": "#65c4aa",
-        "--tag-bg": "#F2FFFC"
-    }
-    , {
-        check: false, theme_id: 8,
+        "--tag-bg": "#F2FFFC",
+        "--primary-light-3": "#93d6c4",
+        "--primary-light-5": "#b2e2d5",
+        "--primary-light-7": "#d1ede6",
+        "--primary-light-8": "#e0f3ee",
+        "--primary-light-9": "#f0f9f7",
+        "--primary-dark-2": "#519d88"
+    },
+    {
+        check: false,
+        theme_id: 8,
         "--general": "#09bb07",
         "--main-bg": "#09bb07",
         "--main-btn-hover-bg": "",
@@ -168,10 +219,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#09BB07",
         "--price": "#09BB07",
         "--tag-text": "#09BB07",
-        "--tag-bg": "#E6F8E6"
-    }
-    , {
-        check: false, theme_id: 9,
+        "--tag-bg": "#E6F8E6",
+        "--primary-light-3": "#53cf51",
+        "--primary-light-5": "#84dd83",
+        "--primary-light-7": "#b5ebb5",
+        "--primary-light-8": "#cef1cd",
+        "--primary-light-9": "#e6f8e6",
+        "--primary-dark-2": "#079606"
+    },
+    {
+        check: false,
+        theme_id: 9,
         "--general": "#63be72",
         "--main-bg": "#63be72",
         "--main-btn-hover-bg": "",
@@ -182,10 +240,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#6CBE72",
         "--price": "#6CBE72",
         "--tag-text": "#6CBE72",
-        "--tag-bg": "#F0F8F0"
-    }
-    , {
-        check: false, theme_id: 10,
+        "--tag-bg": "#F0F8F0",
+        "--primary-light-3": "#92d29c",
+        "--primary-light-5": "#b1dfb9",
+        "--primary-light-7": "#d0ecd5",
+        "--primary-light-8": "#e0f2e3",
+        "--primary-light-9": "#eff9f1",
+        "--primary-dark-2": "#4f985b"
+    },
+    {
+        check: false,
+        theme_id: 10,
         "--general": "#c3a769",
         "--main-bg": "#c3a769",
         "--main-btn-hover-bg": "",
@@ -196,10 +261,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#C3A769",
         "--price": "#C3A769",
         "--tag-text": "#C3A769",
-        "--tag-bg": "#F9F6F0"
-    }
-    , {
-        check: false, theme_id: 11,
+        "--tag-bg": "#F9F6F0",
+        "--primary-light-3": "#d5c196",
+        "--primary-light-5": "#e1d3b4",
+        "--primary-light-7": "#ede5d2",
+        "--primary-light-8": "#f3ede1",
+        "--primary-light-9": "#f9f6f0",
+        "--primary-dark-2": "#9c8654"
+    },
+    {
+        check: false,
+        theme_id: 11,
         "--general": "#2f2f34",
         "--main-bg": "#2f2f34",
         "--main-btn-hover-bg": "",
@@ -210,10 +282,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#2F2F34",
         "--price": "#2F2F34",
         "--tag-text": "#2F2F34",
-        "--tag-bg": "#EAEAEA"
-    }
-    , {
-        check: false, theme_id: 12,
+        "--tag-bg": "#EAEAEA",
+        "--primary-light-3": "#6d6d71",
+        "--primary-light-5": "#97979a",
+        "--primary-light-7": "#c1c1c2",
+        "--primary-light-8": "#d5d5d6",
+        "--primary-light-9": "#eaeaeb",
+        "--primary-dark-2": "#26262a"
+    },
+    {
+        check: false,
+        theme_id: 12,
         "--general": "#884cff",
         "--main-bg": "#884cff",
         "--main-btn-hover-bg": "",
@@ -224,10 +303,17 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#884cff",
         "--price": "#884cff",
         "--tag-text": "#884cff",
-        "--tag-bg": "#F3EDFF"
-    }
-    , {
-        check: false, theme_id: 13,
+        "--tag-bg": "#F3EDFF",
+        "--primary-light-3": "#ac82ff",
+        "--primary-light-5": "#c4a6ff",
+        "--primary-light-7": "#dbc9ff",
+        "--primary-light-8": "#e7dbff",
+        "--primary-light-9": "#f3edff",
+        "--primary-dark-2": "#6d3dcc"
+    },
+    {
+        check: false,
+        theme_id: 13,
         "--general": "#EE0A24",
         "--main-bg": "#EE0A24",
         "--main-btn-hover-bg": "",
@@ -238,7 +324,13 @@ const ColorList = ref<ColorList[]>([
         "--icon": "#EE0A24",
         "--price": "#EE0A24",
         "--tag-text": "#EE0A24",
-        "--tag-bg": "#FDE6E9"
+        "--tag-bg": "#FDE6E9",
+        "--primary-light-3": "#f35466",
+        "--primary-light-5": "#f78592",
+        "--primary-light-7": "#fab6bd",
+        "--primary-light-8": "#fcced3",
+        "--primary-light-9": "#fde7e9",
+        "--primary-dark-2": "#be081d"
     }
 ]);
 const selectItem = (theme_id: number) => {
@@ -246,7 +338,7 @@ const selectItem = (theme_id: number) => {
         // 如果当前项是被点击的项，则将其 check 设置为 true
         // 否则，将其他项的 check 设置为 false
         if (item.theme_id === theme_id) {
-            Object.assign(formState.value,item)
+            Object.assign(formState.value, item);
             item.check = true;
         } else {
             item.check = false;
@@ -257,10 +349,10 @@ const selectItem = (theme_id: number) => {
 const loadFilter = async () => {
     try {
         const result = await getConfig({
-            code: "theme_style",
+            code: "theme_style"
         });
         Object.assign(formState.value, result.item);
-        selectItem(Number(formState.value.theme_id))
+        selectItem(Number(formState.value.theme_id));
     } catch (error: any) {
         message.error(error.message);
     } finally {
@@ -276,16 +368,16 @@ onMounted(() => {
 // 表单通过验证后提交
 const onSubmit = async () => {
     try {
-        emit('update:confirmLoading', true);
+        emit("update:confirmLoading", true);
         console.log(formState.value);
-        delete formState.value.check
-        const result = await updateConfig({code: "theme_style", data: {...formState.value}});
-        emit('submitCallback', result);
+        delete formState.value.check;
+        const result = await updateConfig({ code: "theme_style", data: { ...formState.value } });
+        emit("submitCallback", result);
         message.success(result.message);
     } catch (error: any) {
         message.error(error.message);
     } finally {
-        emit('update:confirmLoading', false);
+        emit("update:confirmLoading", false);
     }
 };
 // 表单提交
@@ -293,8 +385,7 @@ const onFormSubmit = () => {
     onSubmit();
 };
 
-defineExpose({onFormSubmit});
-
+defineExpose({ onFormSubmit });
 </script>
 <style lang="less" scoped>
 .theme-style-info {

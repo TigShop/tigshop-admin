@@ -5,11 +5,12 @@
                 fontSize: 12,
                 borderRadius: 2,
                 colorPrimary: '#1456f0',
-                wireframe: true,
-            },
+                wireframe: true
+            }
         }"
         :locale="zhCnAnt"
-        :dropdown-match-select-width="false">
+        :dropdown-match-select-width="false"
+    >
         <el-config-provider :locale="zhLocale">
             <RouterView />
         </el-config-provider>
