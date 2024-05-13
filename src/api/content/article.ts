@@ -3,7 +3,7 @@ import type { ArticleFilterResult, ArticleFormResult,ArticleFilterParams } from 
 // 获取示例模板列表
 export const getArticleList = (params: ArticleFilterParams) => {
     return request<ArticleFilterResult>({
-        url: 'content/article/index/',
+        url: 'content/article/list',
         method: 'get',
         params,
     });
@@ -11,7 +11,7 @@ export const getArticleList = (params: ArticleFilterParams) => {
 // 示例模板列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: 'content/article/batch/?type=' + type,
+        url: 'content/article/batch?type=' + type,
         method: 'post',
         data,
     });
@@ -19,7 +19,7 @@ export const batchSubmit = (type: string, data: object) => {
 // 示例模板列表页面删除项
 export const delArticle = (data: object) => {
     return request({
-        url: 'content/article/del/',
+        url: 'content/article/del',
         method: 'post',
         data,
     });
@@ -27,7 +27,7 @@ export const delArticle = (data: object) => {
 // 示例模板列表页面更新项
 export const updateArticleFiled = (data: object) => {
     return request({
-        url: 'content/article/update_field/',
+        url: 'content/article/update_field',
         method: 'post',
         data,
     });
@@ -35,7 +35,7 @@ export const updateArticleFiled = (data: object) => {
 // 获取示例模板详情
 export const getArticle = (action: string, params: object) => {
     return request<ArticleFormResult>({
-        url: 'content/article/' + action + '/',
+        url: 'content/article/' + action,
         method: 'get',
         params
     });
@@ -43,7 +43,7 @@ export const getArticle = (action: string, params: object) => {
 // 更新示例模板
 export const updateArticle = (operation: string, data: object) => {
     return request({
-        url: 'content/article/' + operation + '/',
+        url: 'content/article/' + operation,
         method: 'post',
         data
     });

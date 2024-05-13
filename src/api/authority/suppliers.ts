@@ -3,7 +3,7 @@ import {SuppliersFilterResult, SuppliersFormResult, SuppliersFilterParams} from 
 // 获取商品分类列表
 export const getSuppliersList = (params: SuppliersFilterParams) => {
     return request<SuppliersFilterResult>({
-        url: 'authority/suppliers/index/',
+        url: 'authority/suppliers/list',
         method: 'get',
         params,
     });
@@ -12,7 +12,7 @@ export const getSuppliersList = (params: SuppliersFilterParams) => {
 // 删除
 export const delSuppliers= (data: object) => {
     return request({
-        url: 'authority/suppliers/del/',
+        url: 'authority/suppliers/del',
         method: 'post',
         data,
     });
@@ -20,7 +20,7 @@ export const delSuppliers= (data: object) => {
 //获取分类详情
 export const getSuppliers  = (action: string, params: object) => {
     return request<SuppliersFormResult>({
-        url: 'authority/suppliers/' + action + '/',
+        url: 'authority/suppliers/' + action,
         method: 'get',
         params
     });
@@ -29,7 +29,7 @@ export const getSuppliers  = (action: string, params: object) => {
 // 更新分类
 export const updateSuppliers = (operation: string, data: object) => {
     return request({
-        url: 'authority/suppliers/' + operation + '/',
+        url: 'authority/suppliers/' + operation,
         method: 'post',
         data
     });
@@ -38,7 +38,7 @@ export const updateSuppliers = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'authority/suppliers/batch/?type=' + type,
+        url: 'authority/suppliers/batch?type=' + type,
         method: 'post',
         params,
     });
@@ -46,7 +46,7 @@ export const batchSubmit = (type: string, params: object) => {
 // 列表更新项
 export const updateSuppliersField = (data:object) => {
     return request({
-        url: 'authority/suppliers/update_field/',
+        url: 'authority/suppliers/update_field',
         method: 'post',
         data
     });

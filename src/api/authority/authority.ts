@@ -4,7 +4,7 @@ import type {AuthorityFilterResult, AuthorityFormResult,AuthorityFilterParams} f
 // 获取商品分类列表
 export const getAuthorityList = (params: AuthorityFilterParams) => {
     return request<AuthorityFilterResult>({
-        url: 'authority/index/',
+        url: 'authority/list',
         method: 'get',
         params,
     });
@@ -30,7 +30,7 @@ export const batchSubmit = (type: string, data: object) => {
 // 商品分类页面更新项
 export const updateAuthorityFiled = (data: object) => {
     return request({
-        url: 'authority/update_field/',
+        url: 'authority/update_field',
         method: 'post',
         data,
     });
@@ -38,7 +38,7 @@ export const updateAuthorityFiled = (data: object) => {
 
 export const delAuthority = (data: object) => {
     return request({
-        url: 'authority/del/',
+        url: 'authority/del',
         method: 'post',
         data,
     });
@@ -46,7 +46,7 @@ export const delAuthority = (data: object) => {
 
 export  const getAuthority = (action: string, params: object) => {
     return request<AuthorityFormResult>({
-        url: 'authority/' + action + '/',
+        url: 'authority/' + action,
         method: 'get',
         params
     });
@@ -54,7 +54,7 @@ export  const getAuthority = (action: string, params: object) => {
 
 export const updateAuthority = (operation: string, data: object) => {
     return request({
-        url: 'authority/' + operation + '/',
+        url: 'authority/' + operation,
         method: 'post',
         data
     });

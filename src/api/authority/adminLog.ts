@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 export const getAdminLogList = (params: AdminLogFilterParams) => {
     return request<AdminLogFilterResult>({
-        url: 'authority/admin_log/index/',
+        url: 'authority/admin_log/list',
         method: 'get',
         params,
     });

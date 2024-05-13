@@ -12,7 +12,7 @@ export const getMobileCatNavList = (params: MobileCatNavFilterParams) => {
 // PC导航栏页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: 'decorate/mobile_cat_nav/batch/?type=' + type,
+        url: 'decorate/mobile_cat_nav/batch?type=' + type,
         method: 'post',
         data,
     });
@@ -21,7 +21,7 @@ export const batchSubmit = (type: string, data: object) => {
 // PC导航栏页面更新项
 export const updateMobileCatNavFiled = (data: object) => {
     return request({
-        url: 'decorate/mobile_cat_nav/update_field/',
+        url: 'decorate/mobile_cat_nav/update_field',
         method: 'post',
         data,
     });
@@ -29,7 +29,7 @@ export const updateMobileCatNavFiled = (data: object) => {
 
 export const delMobileCatNav = (data: object) => {
     return request({
-        url: 'decorate/mobile_cat_nav/del/',
+        url: 'decorate/mobile_cat_nav/del',
         method: 'post',
         data,
     });
@@ -37,7 +37,7 @@ export const delMobileCatNav = (data: object) => {
 
 export  const getMobileCatNavInfo = (action: string, params: object) => {
     return request<MobileCatNavFormResult>({
-        url: 'decorate/mobile_cat_nav/' + action + '/',
+        url: 'decorate/mobile_cat_nav/' + action,
         method: 'get',
         params
     });
@@ -46,7 +46,7 @@ export  const getMobileCatNavInfo = (action: string, params: object) => {
 
 export const updateMobileCatNav = (operation: string, data: object) => {
     return request({
-        url: 'decorate/mobile_cat_nav/' + operation + '/',
+        url: 'decorate/mobile_cat_nav/' + operation,
         method: 'post',
         data
     });

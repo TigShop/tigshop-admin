@@ -3,7 +3,7 @@ import { ArticleCategoryFilterResult, ArticleCategoryFormResult ,ArticleCategory
 // 获取商品分类列表
 export const getArticleCategoryList = (params: ArticleCategoryFilterParams) => {
     return request<ArticleCategoryFilterResult>({
-        url: 'content/article_category/index/',
+        url: 'content/article_category/list',
         method: 'get',
         params,
     });
@@ -11,7 +11,7 @@ export const getArticleCategoryList = (params: ArticleCategoryFilterParams) => {
 
 export const getArticleCategoryTree = () => {
     return request<ArticleCategoryFilterResult>({
-        url: 'content/article_category/tree/',
+        url: 'content/article_category/tree',
         method: 'get'
     });
 }
@@ -19,7 +19,7 @@ export const getArticleCategoryTree = () => {
 // 商品分类页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: 'content/article_category/batch/?type=' + type,
+        url: 'content/article_category/batch?type=' + type,
         method: 'post',
         data,
     });
@@ -28,7 +28,7 @@ export const batchSubmit = (type: string, data: object) => {
 // 商品分类页面更新项
 export const updateArticleCategoryFiled = (data: object) => {
     return request({
-        url: 'content/article_category/update_field/',
+        url: 'content/article_category/update_field',
         method: 'post',
         data,
     });
@@ -36,7 +36,7 @@ export const updateArticleCategoryFiled = (data: object) => {
 
 export const delArticleCategory = (data: object) => {
     return request({
-        url: 'content/article_category/del/',
+        url: 'content/article_category/del',
         method: 'post',
         data,
     });
@@ -44,7 +44,7 @@ export const delArticleCategory = (data: object) => {
 
 export  const getArticleCategory = (action: string, params: object) => {
     return request<ArticleCategoryFormResult>({
-        url: 'content/article_category/' + action + '/',
+        url: 'content/article_category/' + action,
         method: 'get',
         params
     });
@@ -52,7 +52,7 @@ export  const getArticleCategory = (action: string, params: object) => {
 
 export const updateArticleCategory = (operation: string, data: object) => {
     return request({
-        url: 'content/article_category/' + operation + '/',
+        url: 'content/article_category/' + operation,
         method: 'post',
         data
     });
@@ -60,7 +60,7 @@ export const updateArticleCategory = (operation: string, data: object) => {
 
 export const moveArticleCategory = ( data: object) => {
     return request({
-        url: 'content/article_category/move_cat/',
+        url: 'content/article_category/move_cat',
         method: 'post',
         data
     });
