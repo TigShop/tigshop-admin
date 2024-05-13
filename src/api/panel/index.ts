@@ -3,7 +3,7 @@ import { panelIndexFilterState } from "@/types/panel/index";
 // 面板首页
 export const getPanelIndex = () => {
     return request<panelIndexFilterState>({
-        url: "panel/index/",
+        url: "panel/list",
         method: "get"
     });
 };

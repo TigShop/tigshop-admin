@@ -1,10 +1,10 @@
-import request from '@/utils/request';
-import type {RefundApplyFilterParams, RefundApplyFilterResult, RefundApplyFormResult} from '@/types/finance/refundApply.d'
+import request from "@/utils/request";
+import type {RefundApplyFilterParams, RefundApplyFilterResult, RefundApplyFormResult} from "@/types/finance/refundApply.d"
 // 获取退款申请
 export const getRefundApplyList = (params: RefundApplyFilterParams) => {
     return request<RefundApplyFilterResult>({
-        url: 'finance/refund_apply/index/',
-        method: 'get',
+        url: "finance/refund_apply/list",
+        method: "get",
         params,
     });
 }
@@ -12,8 +12,8 @@ export const getRefundApplyList = (params: RefundApplyFilterParams) => {
 // 删除
 export const delRefundApply= (data: object) => {
     return request({
-        url: 'finance/refund_apply/del/',
-        method: 'post',
+        url: "finance/refund_apply/del",
+        method: "post",
         data,
     });
 }
@@ -22,8 +22,8 @@ export const delRefundApply= (data: object) => {
 //获取退款申请详情
 export const getRefundApply  = (action: string, params: object) => {
     return request<RefundApplyFormResult>({
-        url: 'finance/refund_apply/' + action + '/',
-        method: 'get',
+        url: "finance/refund_apply/" + action,
+        method: "get",
         params
     });
 }
@@ -31,8 +31,8 @@ export const getRefundApply  = (action: string, params: object) => {
 // 更新退款申请
 export const updateRefundApply = (data: object) => {
     return request({
-        url: 'finance/refund_apply/update',
-        method: 'post',
+        url: "finance/refund_apply/update",
+        method: "post",
         data
     });
 }
@@ -40,8 +40,8 @@ export const updateRefundApply = (data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'finance/refund_apply/batch/?type=' + type,
-        method: 'post',
+        url: "finance/refund_apply/batch?type=" + type,
+        method: "post",
         params,
     });
 }
@@ -49,8 +49,8 @@ export const batchSubmit = (type: string, params: object) => {
 // 确认线下转账
 export const updateOfflineAudit = (data: object) => {
     return request({
-        url: 'finance/refund_apply/offline_audit',
-        method: 'post',
+        url: "finance/refund_apply/offline_audit",
+        method: "post",
         data
     });
 }

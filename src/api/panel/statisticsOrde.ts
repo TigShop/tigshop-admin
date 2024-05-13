@@ -4,7 +4,7 @@ import type { statisticsOrdeFilterParams, statisticsOrdeFilterState } from "@/ty
 // 销售统计
 export const getSalesstatisticsIndexs = (data: statisticsOrdeFilterParams) => {
     return request<statisticsOrdeFilterState>({
-        url: "panel/sales_statistics/index",
+        url: "panel/sales_statistics/list",
         method: "get",
         params: data
     });
@@ -13,7 +13,7 @@ export const getSalesstatisticsIndexs = (data: statisticsOrdeFilterParams) => {
 // 导出销售统计
 export const getStatisticsOrdexport = (data: statisticsOrdeFilterParams) => {
     return request({
-        url: "panel/sales_statistics/index",
+        url: "panel/sales_statistics/list",
         method: "get",
         responseType: 'arraybuffer',
         params: data

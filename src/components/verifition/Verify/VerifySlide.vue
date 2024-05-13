@@ -251,7 +251,7 @@ export default {
                     "token": backToken.value
                 }
                 request({
-                    url: 'common/verification/check/',
+                    url: 'common/verification/check',
                     method: 'post',
                     data: data
                 }).then((result) => {
@@ -328,7 +328,7 @@ export default {
                 captchaType: captchaType.value
             }
             request({
-                url: 'common/verification/captcha/',
+                url: 'common/verification/captcha',
                 method: 'post',
                 data: data
             }).then(result => {

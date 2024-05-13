@@ -3,14 +3,14 @@ import type { BaseFormResult, BaseFormState } from "@/types/setting/config";
 
 export const getIcon = () => {
     return request({
-        url: "setting/config/get_ico/",
+        url: "setting/config/get_ico",
         method: "get",
     });
 };
 
 export const getConfig = (params: object) => {
     return request<BaseFormResult>({
-        url: "setting/config/index/",
+        url: "setting/config/list",
         method: "get",
         params,
     });
@@ -18,20 +18,20 @@ export const getConfig = (params: object) => {
 
 export const saveConfig = (params: object) => {
     return request<BaseFormState>({
-        url: "setting/config/save/",
+        url: "setting/config/save",
         method: "post",
         data: params,
     });
 };
 export const createPlatformCertificate = () => {
     return request({
-        url: "setting/config/create_platform_certificate/",
+        url: "setting/config/create_platform_certificate",
         method: "post"
     });
 };
 export const updateConfig = (params: object) => {
     return request<BaseFormState>({
-        url: "setting/config/update/",
+        url: "setting/config/update",
         method: "post",
         data: params,
     });

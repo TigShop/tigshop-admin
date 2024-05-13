@@ -151,7 +151,7 @@ const unreadMsg = ref(0);
 // 清除缓存
 const clearCache = () => {
     request({
-        url: "common/cache_manage/cleanup/",
+        url: "common/cache_manage/cleanup",
         method: "post",
         params: {},
     }).then((result: any) => {

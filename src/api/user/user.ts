@@ -1,10 +1,10 @@
-import request from '@/utils/request';
-import {UserFilterParams, UserFilterResult, UserFormResult, UserFundFilterResult} from '@/types/user/user.d'
+import request from "@/utils/request";
+import {UserFilterParams, UserFilterResult, UserFormResult, UserFundFilterResult} from "@/types/user/user.d"
 // 获取会员列表
 export const getUserList = (params: UserFilterParams) => {
     return request<UserFilterResult>({
-        url: 'user/index/',
-        method: 'get',
+        url: "user/list",
+        method: "get",
         params,
     });
 }
@@ -12,24 +12,24 @@ export const getUserList = (params: UserFilterParams) => {
 // 删除
 export const delUser= (data: object) => {
     return request({
-        url: 'user/del/',
-        method: 'post',
+        url: "user/del",
+        method: "post",
         data,
     });
 }
 
 export const recallUser= (data: object) => {
     return request({
-        url: 'user/recall/',
-        method: 'post',
+        url: "user/recall",
+        method: "post",
         data,
     });
 }
 //获取会员详情
 export const getUser  = (action: string, params: object) => {
     return request<UserFormResult>({
-        url: 'user/' + action + '/',
-        method: 'get',
+        url: "user/" + action,
+        method: "get",
         params
     });
 }
@@ -37,8 +37,8 @@ export const getUser  = (action: string, params: object) => {
 // 更新用户信息
 export const updateUser = (operation: string, data: object) => {
     return request({
-        url: 'user/' + operation + '/',
-        method: 'post',
+        url: "user/" + operation,
+        method: "post",
         data
     });
 }
@@ -46,15 +46,15 @@ export const updateUser = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'user/batch/?type=' + type,
-        method: 'post',
+        url: "user/batch?type=" + type,
+        method: "post",
         params,
     });
 }
 export const updateUserField = (data:object) => {
     return request({
-        url: 'user/update_field/',
-        method: 'post',
+        url: "user/update_field",
+        method: "post",
         data
     });
 }
@@ -62,16 +62,16 @@ export const updateUserField = (data:object) => {
 // 资金管理
 export const updateUserFundManagement = (data: object) => {
     return request({
-        url: 'user/fund_management',
-        method: 'post',
+        url: "user/fund_management",
+        method: "post",
         data
     });
 }
 
 export const getUserFundList = (params: UserFilterParams) => {
     return request<UserFundFilterResult>({
-        url: 'user/user_fund_detail/',
-        method: 'get',
+        url: "user/user_fund_detail",
+        method: "get",
         params,
     });
 }

@@ -3,7 +3,7 @@ import { FilterResult, FormResult } from "@/types/decorate/pcDecorate";
 // 获取示例模板列表
 export const getPcDecorateList = (params: object) => {
     return request<FilterResult>({
-        url: "decorate/mobile_decorate/index/",
+        url: "decorate/mobile_decorate/list",
         method: "get",
         params,
     });
@@ -11,7 +11,7 @@ export const getPcDecorateList = (params: object) => {
 // 示例模板列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: "decorate/mobile_decorate/batch/?type=" + type,
+        url: "decorate/mobile_decorate/batch?type=" + type,
         method: "post",
         data,
     });
@@ -19,7 +19,7 @@ export const batchSubmit = (type: string, data: object) => {
 // 示例模板列表页面删除项
 export const delPcDecorate = (data: object) => {
     return request({
-        url: "decorate/mobile_decorate/del/",
+        url: "decorate/mobile_decorate/del",
         method: "post",
         data,
     });
@@ -27,7 +27,7 @@ export const delPcDecorate = (data: object) => {
 // 示例模板列表页面更新项
 export const updatePcDecorateFiled = (data: object) => {
     return request({
-        url: "decorate/mobile_decorate/update_field/",
+        url: "decorate/mobile_decorate/update_field",
         method: "post",
         data,
     });
@@ -35,7 +35,7 @@ export const updatePcDecorateFiled = (data: object) => {
 // 获取示例模板详情
 export const getPcDecorate = (action: string, params: object) => {
     return request<FormResult>({
-        url: "decorate/mobile_decorate/" + action + "/",
+        url: "decorate/mobile_decorate/" + action,
         method: "get",
         params,
     });
@@ -43,7 +43,7 @@ export const getPcDecorate = (action: string, params: object) => {
 // 更新示例模板
 export const updatePcDecorate = (operation: string, data: object) => {
     return request({
-        url: "decorate/mobile_decorate/" + operation + "/",
+        url: "decorate/mobile_decorate/" + operation,
         method: "post",
         data,
     });

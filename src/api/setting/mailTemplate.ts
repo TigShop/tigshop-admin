@@ -4,15 +4,15 @@ import type {MailTemplateFilterResult} from "@/types/setting/mailTemplate";
 
 export const getMailTemplateList = () => {
     return request<MailTemplateFilterResult>({
-        url: 'setting/mail_templates/index/',
-        method: 'get'
+        url: "setting/mail_templates/list",
+        method: "get"
     });
 }
 
 export const updateMailTemplate = (data: object) => {
     return request({
-        url: 'setting/mail_templates/update/',
-        method: 'post',
+        url: "setting/mail_templates/update/",
+        method: "post",
         data
     });
 }

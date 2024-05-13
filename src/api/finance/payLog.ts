@@ -1,10 +1,10 @@
-import request from '@/utils/request';
-import type {PayLogFilterParams, PayLogFilterResult, PayLogFormResult} from '@/types/finance/payLog.d'
+import request from "@/utils/request";
+import type {PayLogFilterParams, PayLogFilterResult, PayLogFormResult} from "@/types/finance/payLog.d"
 // 获取商品分类列表
 export const getPayLogList = (params: PayLogFilterParams) => {
     return request<PayLogFilterResult>({
-        url: 'finance/pay_log/index/',
-        method: 'get',
+        url: "finance/pay_log/list",
+        method: "get",
         params,
     });
 }
@@ -12,24 +12,24 @@ export const getPayLogList = (params: PayLogFilterParams) => {
 // 删除
 export const delPayLog= (data: object) => {
     return request({
-        url: 'finance/pay_log/del/',
-        method: 'post',
+        url: "finance/pay_log/del",
+        method: "post",
         data,
     });
 }
 
 export const recallPayLog= (data: object) => {
     return request({
-        url: 'finance/pay_log/recall/',
-        method: 'post',
+        url: "finance/pay_log/recall",
+        method: "post",
         data,
     });
 }
 //获取分类详情
 export const getPayLog  = (action: string, params: object) => {
     return request<PayLogFormResult>({
-        url: 'finance/pay_log/' + action + '/',
-        method: 'get',
+        url: "finance/pay_log/" + action,
+        method: "get",
         params
     });
 }
@@ -37,8 +37,8 @@ export const getPayLog  = (action: string, params: object) => {
 // 更新分类
 export const updatePayLog = (operation: string, data: object) => {
     return request({
-        url: 'finance/pay_log/' + operation + '/',
-        method: 'post',
+        url: "finance/pay_log/" + operation,
+        method: "post",
         data
     });
 }
@@ -46,8 +46,8 @@ export const updatePayLog = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'finance/pay_log/batch/?type=' + type,
-        method: 'post',
+        url: "finance/pay_log/batch?type=" + type,
+        method: "post",
         params,
     });
 }

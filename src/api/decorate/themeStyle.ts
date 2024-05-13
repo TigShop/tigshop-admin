@@ -1,12 +1,12 @@
-import request from '@/utils/request';
-import type { ThemeStyleFormResult} from '@/types/decorate/themeStyle.d'
+import request from "@/utils/request";
+import type { ThemeStyleFormResult} from "@/types/decorate/themeStyle.d"
 
 
 
 export const getThemeStyle  = ( params: object) => {
     return request<ThemeStyleFormResult>({
-        url: 'decorate/theme_style/index/',
-        method: 'get',
+        url: "decorate/theme_style/list",
+        method: "get",
         params
     });
 }
@@ -14,8 +14,8 @@ export const getThemeStyle  = ( params: object) => {
 
 export const saveThemeStyle  = ( params: object) => {
     return request<ThemeStyleFormResult>({
-        url: 'decorate/theme_style/save_theme_style/',
-        method: 'post',
+        url: "decorate/theme_style/save_theme_style",
+        method: "post",
         data:params
     });
 }

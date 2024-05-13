@@ -1,10 +1,10 @@
-import request from '@/utils/request';
-import type {OrderInvoiceFilterParams, OrderInvoiceFilterResult, OrderInvoiceFormResult} from '@/types/finance/orderInvoice.d'
+import request from "@/utils/request";
+import type {OrderInvoiceFilterParams, OrderInvoiceFilterResult, OrderInvoiceFormResult} from "@/types/finance/orderInvoice.d"
 // 获取商品分类列表
 export const getOrderInvoiceList = (params: OrderInvoiceFilterParams) => {
     return request<OrderInvoiceFilterResult>({
-        url: 'finance/order_invoice/index/',
-        method: 'get',
+        url: "finance/order_invoice/list",
+        method: "get",
         params,
     });
 }
@@ -12,24 +12,24 @@ export const getOrderInvoiceList = (params: OrderInvoiceFilterParams) => {
 // 删除
 export const delOrderInvoice= (data: object) => {
     return request({
-        url: 'finance/order_invoice/del/',
-        method: 'post',
+        url: "finance/order_invoice/del",
+        method: "post",
         data,
     });
 }
 
 export const recallOrderInvoice= (data: object) => {
     return request({
-        url: 'finance/order_invoice/recall/',
-        method: 'post',
+        url: "finance/order_invoice/recall",
+        method: "post",
         data,
     });
 }
 //获取分类详情
 export const getOrderInvoice  = (action: string, params: object) => {
     return request<OrderInvoiceFormResult>({
-        url: 'finance/order_invoice/' + action + '/',
-        method: 'get',
+        url: "finance/order_invoice/" + action,
+        method: "get",
         params
     });
 }
@@ -37,8 +37,8 @@ export const getOrderInvoice  = (action: string, params: object) => {
 // 更新分类
 export const updateOrderInvoice = (operation: string, data: object) => {
     return request({
-        url: 'finance/order_invoice/' + operation + '/',
-        method: 'post',
+        url: "finance/order_invoice/" + operation,
+        method: "post",
         data
     });
 }
@@ -46,8 +46,8 @@ export const updateOrderInvoice = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'finance/order_invoice/batch/?type=' + type,
-        method: 'post',
+        url: "finance/order_invoice/batch?type=" + type,
+        method: "post",
         params,
     });
 }

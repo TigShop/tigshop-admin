@@ -4,16 +4,16 @@ import type {AuthorityFilterResult, AuthorityFormResult,AuthorityFilterParams} f
 // 获取商品分类列表
 export const getAuthorityList = (params: AuthorityFilterParams) => {
     return request<AuthorityFilterResult>({
-        url: 'authority/list',
-        method: 'get',
+        url: "authority/authority/list",
+        method: "get",
         params,
     });
 }
 
 export const getAllAuthority = (params?: object) => {
     return request<AuthorityFormResult>({
-        url: 'authority/get_all_authority',
-        method: 'get',
+        url: "authority/authority/get_all_authority",
+        method: "get",
         params,
     });
 }
@@ -21,8 +21,8 @@ export const getAllAuthority = (params?: object) => {
 // 商品分类页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: 'authority/batch/?type=' + type,
-        method: 'post',
+        url: "authority/authority/batch/?type=" + type,
+        method: "post",
         data,
     });
 }
@@ -30,32 +30,32 @@ export const batchSubmit = (type: string, data: object) => {
 // 商品分类页面更新项
 export const updateAuthorityFiled = (data: object) => {
     return request({
-        url: 'authority/update_field',
-        method: 'post',
+        url: "authority/authority/update_field",
+        method: "post",
         data,
     });
 }
 
 export const delAuthority = (data: object) => {
     return request({
-        url: 'authority/del',
-        method: 'post',
+        url: "authority/authority/del",
+        method: "post",
         data,
     });
 }
 
 export  const getAuthority = (action: string, params: object) => {
     return request<AuthorityFormResult>({
-        url: 'authority/' + action,
-        method: 'get',
+        url: "authority/authority/" + action,
+        method: "get",
         params
     });
 }
 
 export const updateAuthority = (operation: string, data: object) => {
     return request({
-        url: 'authority/' + operation,
-        method: 'post',
+        url: "authority/authority/" + operation,
+        method: "post",
         data
     });
 }
