@@ -92,9 +92,9 @@
                             type="datetime"
                             value-format="YYYY-MM-DD HH:mm:ss"></SelectTimeInterval>
                     </el-form-item>
-                    <el-form-item label="限购数量" prop="seckill_limit_num">
-                        <el-input v-model="formState.seckill_limit_num" />
-                    </el-form-item>
+<!--                    <el-form-item label="限购数量" prop="seckill_limit_num">-->
+<!--                        <el-input v-model="formState.seckill_limit_num" />-->
+<!--                    </el-form-item>-->
                     <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4, span: 16 }">
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
