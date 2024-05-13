@@ -1,5 +1,5 @@
 <template>
-    <div  class="gallery-pic">
+    <div class="gallery-pic">
         <div :class="'gallery-pic-select ' + (photo ? 'have_image' : '')" v-if="!isMultiple">
             <div class="item-img add-photo-btn">
                 <Image v-if="photo" class="gallery-img" :src="imageFormat(photo)" />
@@ -24,7 +24,8 @@
                     chosen-class="chosenClass"
                     animation="300"
                     @start=""
-                    @end="">
+                    @end=""
+                >
                     <template #item="{ element, index }">
                         <div class="item" data-id="img.img_id">
                             <div class="img">
@@ -46,7 +47,6 @@
                 </draggable>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -62,16 +62,16 @@ const dom: Ref<HTMLDivElement> = ref(null) as any;
 const props = defineProps({
     photo: {
         type: String,
-        default: "",
+        default: ""
     },
     photos: {
         type: Array,
-        default: [], // {pic_id,pic_thumb,pic_url,pic_name}
+        default: [] // {pic_id,pic_thumb,pic_url,pic_name}
     },
     isMultiple: {
         type: Boolean,
-        default: false,
-    },
+        default: false
+    }
 });
 // 动态解析props
 const { photo, photos, isMultiple } = toRefs(props);
@@ -108,6 +108,9 @@ const previewPhoto = (v: any) => {
 
 <style lang="less" scoped>
 // 相册选择
+.gallery-pic {
+    width: 100%;
+}
 .gallery-pic-select {
     margin-bottom: 10px;
     position: relative;
@@ -233,11 +236,13 @@ const previewPhoto = (v: any) => {
 .gallery-pic-select .item-bg span {
     display: block;
     font-size: 12px;
+    color: #999;
 }
 
 .gallery-pic-select .item-bg i {
     font-size: 20px;
     text-align: center;
+    color: #999;
 }
 
 .gallery-pic-select .remove-photo-btn {
