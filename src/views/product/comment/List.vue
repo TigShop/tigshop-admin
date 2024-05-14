@@ -104,7 +104,7 @@
                                 </el-table-column>
                                 <el-table-column fixed="right" label="操作">
                                     <template #default="{ row }">
-                                        <DialogForm :params="{ act: 'edit', id: row.comment_id }" isDrawer path="product/comment/Info"
+                                        <DialogForm :params="{ act: 'detail', id: row.comment_id }" isDrawer path="product/comment/Info"
                                                     title="编辑用户评论" width="700px"
                                                     @okCallback="loadFilter">
                                             <a class="btn-link">编辑</a>

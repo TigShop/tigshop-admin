@@ -18,7 +18,7 @@ export const getExportItemInfo = () => {
 // 订单导出保存的标签
 export const saveExportItem = (data:SaveExportItemFilterResult) => {
     return request({
-        url: "order/save_export_item",
+        url: "order/order/save_export_item",
         method: "post",
         data,
     });
@@ -26,7 +26,7 @@ export const saveExportItem = (data:SaveExportItemFilterResult) => {
 // 导出订单
 export const getOrderExport = (params: object) => {
     return request({
-        url: "order/order_expor",
+        url: "order/order/order_export",
         method: "get",
         responseType: "arraybuffer",
         params

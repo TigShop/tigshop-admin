@@ -252,7 +252,7 @@ const handleChange = (info: UploadChangeParam) => {
 // 加载目录和全部相册
 const loadGallery = () => {
     request({
-        url: "setting/gallery/index/",
+        url: "setting/gallery/list",
         method: "get",
         params: { gallery_id: galleryId.value },
     }).then((result: any) => {

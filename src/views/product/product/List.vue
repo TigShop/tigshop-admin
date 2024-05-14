@@ -228,7 +228,7 @@
                                     <el-space :size="0">
                                         <DialogForm
                                             v-if="activeKey != 7"
-                                            :params="{ act: 'edit', id: row.product_id }"
+                                            :params="{ act: 'detail', id: row.product_id }"
                                             dialogClass="noPadding"
                                             isDrawer
                                             path="product/product/Info"
@@ -272,7 +272,7 @@
                                                     </el-dropdown-item>
                                                     <el-dropdown-item>
                                                         <DialogForm
-                                                            :params="{ act: 'edit', id: row.product_id }"
+                                                            :params="{ act: 'copy', id: row.product_id }"
                                                             dialogClass="noPadding"
                                                             isDrawer
                                                             path="product/product/Info"

@@ -66,9 +66,13 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<BrandFormState>({});
+const formState = ref<BrandFormState>({
+    sort_order:50,
+    is_show:1,
+    brand_is_hot:0
+});
 const fetchBrand  = async () => {
     try {
         const result = await getBrand(action.value, { id: id.value });
@@ -86,8 +90,12 @@ const fetchBrand  = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchBrand();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchBrand();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交

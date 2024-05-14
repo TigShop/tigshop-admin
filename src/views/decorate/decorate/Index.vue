@@ -160,7 +160,7 @@ const editModuleIndex = ref<number | null>(null);
 onMounted(() => {
     // 获取详情数据
     request<EditResult>({
-        url: "decorate/edit/",
+        url: "decorate/decorate/detail",
         method: "get",
         params: {
             id: id.value,
@@ -215,7 +215,7 @@ const onModuleDel = (index: number) => {
     modules.value.moduleList.splice(index, 1);
 };
 
-const onEnd = (e) => {
+const onEnd = (e:any) => {
     console.log(e);
     editModuleIndex.value = e.newIndex;
 };
@@ -237,7 +237,7 @@ const onSavetoDraft = async () => {
 };
 const onPublish = async () => {
     request({
-        url: "decorate/publish/",
+        url: "decorate/decorate/publish",
         method: "post",
         data: {
             id: id.value,

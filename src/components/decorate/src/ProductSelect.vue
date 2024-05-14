@@ -87,7 +87,7 @@ const total = ref(0);
 function loadList() {
     if (ids.value.length > 0) {
         request({
-            url: "product/list/",
+            url: "product/product/list",
             method: "get",
             params: {
                 ids: ids.value,

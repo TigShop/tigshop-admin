@@ -182,7 +182,7 @@
                                     </th>
                                     <th class="textR">
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id }"
+                                            :params="{ act: 'detail', id: item.order_id }"
                                             :showClose="false"
                                             :showOnOk="false"
                                             :title="'订单详情 ' + item.order_sn"

@@ -24,7 +24,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="标签" prop="comment_tag">
-                        <div class="flex">
+                        <div class="flex flex-wrap">
                             <el-tag
                             style="margin: 5px;"
                             v-for="tag in formState.comment_tag"
@@ -132,9 +132,13 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<CommentFormState>({
+    comment_rank: 5,
+    is_recommend: 1,
+    is_top: 0,
+    sort_order: 50,
     product_ids: [],
     comment_tag: []
 });
@@ -162,8 +166,12 @@ const handleInputConfirm = () => {
   inputValue.value = ''
 }
 onMounted(() => {
-    // 获取详情数据
-    fetchComment();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchComment();
+    } else {
+        loading.value = false;
+    }
 });
 const fetchComment = async () => {
     try {

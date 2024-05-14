@@ -39,7 +39,7 @@ export interface BrandFormState {
     brand_name?: string;
     brand_logo?: string;
     brand_desc?: string;
-    sort_order?: string;
+    sort_order?: number;
     first_word?: string;
     is_show?: number;
     brand_is_hot?: number;

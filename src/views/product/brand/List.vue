@@ -125,7 +125,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.brand_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.brand_id }" isDrawer
                                                 path="product/brand/Info"
                                                 title="编辑品牌" width="600px"
                                                 @okCallback="loadFilter">

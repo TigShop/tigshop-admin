@@ -14,6 +14,13 @@ export const getProductList = (params: ProductFilterParams) => {
         params,
     });
 };
+// 获取商品配置项
+export const getProductConfig = () => {
+    return request<ProductFormResult>({
+        url: "product/product/config",
+        method: "get"
+    });
+};
 // 商品列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({

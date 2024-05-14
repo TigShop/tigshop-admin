@@ -54,7 +54,7 @@ export const batchSubmit = (type: string, params: object) => {
 //更新首字母
 export const updateFirstWorld = () => {
     return request({
-        url: "product/brand/update_fisrt_word",
+        url: "product/brand/update_first_word",
         method: "post",
     });
 }

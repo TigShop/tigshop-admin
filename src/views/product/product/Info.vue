@@ -271,8 +271,8 @@ import { computed, onMounted, ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { FormAddGallery } from "@/components/gallery";
-import { ProductFormState, ServiceList } from "@/types/product/product.d";
-import {getParticiple, getProduct, updateProduct} from "@/api/product/product";
+import { ProductFormState, ServiceList, UserRankListType } from "@/types/product/product.d";
+import {getParticiple, getProduct, updateProduct, getProductConfig} from "@/api/product/product";
 import { Checkbox, RadioType } from "@/components/radio";
 import { SelectArticle, SelectBrand, SelectCategory, SelectGoods, SelectProduct } from "@/components/select";
 import { DynamicList } from "@/components/list";
@@ -301,23 +301,34 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<ProductFormState>({
+    product_type:1,
+    product_stock:1,
+    free_shipping:0,
+    product_status:1,
+    give_integral:-1,
+    rank_integral:-1,
+    integral:0,
+    product_weight:0,
     product_desc_arr: [],
     product_related: [],
     service_list:[]
 });
-
 onMounted(() => {
-    // console.log(formState);
-    // 获取详情数据
-    fetchProduct();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchProduct();
+    } else {
+        loading.value = false;
+    }
+    fetchProductConfig()
 });
 // 属性模板
 const attrTplList = ref<Object[]>([]);
 // 会员等级
-const userRankList = ref<Object[]>([]);
+const userRankList = ref<UserRankListType[]>([]);
 
 const fetchProduct = async () => {
     try {
@@ -326,12 +337,22 @@ const fetchProduct = async () => {
             result.item.product_related = [];
         }
         Object.assign(formState.value, result.item, result);
+    } catch (error: any) {
+        message.error(error.message);
+        emit("close");
+    } finally {
+        loading.value = false;
+    }
+};
+const fetchProductConfig = async () => {
+    try {
+        const result = await getProductConfig();
         attrTplList.value = result.attr_tpl_list;
-        userRankList.value = result.user_rank_list;
+        // userRankList.value = result.item.user_rank_list;
         formState.value.service_list = result.service_list.map((item: ServiceList) => {
             return {
                 ...item,
-                check: formState.value.product_service_ids?.includes(item.product_service_id) ? 1 : 0,
+                check: result.item.product_service_ids?.includes(item.product_service_id) ? 1 : 0,
             };
         });
     } catch (error: any) {
@@ -340,7 +361,7 @@ const fetchProduct = async () => {
     } finally {
         loading.value = false;
     }
-};
+}
 // 表单通过验证后提交
 const onSubmit = async () => {
     await formRef.value.validate();
