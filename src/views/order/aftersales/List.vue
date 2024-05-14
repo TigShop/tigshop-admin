@@ -49,6 +49,8 @@
                             <thead>
                                 <tr class="data-tr">
                                     <th colspan="4">
+                                        <span class="check-box">订单编号：{{ item.order_sn }}</span>
+                                        <el-divider direction="vertical" />
                                         <span class="check-box">售后编号：{{ item.aftersales_sn }}</span>
                                         <el-divider direction="vertical" />
                                         <span class="check-box">申请时间：{{ item.add_time }}</span>

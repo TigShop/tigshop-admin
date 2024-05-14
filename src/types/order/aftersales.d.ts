@@ -25,6 +25,7 @@ export interface AftersalesFilterResult {
 export interface AftersalesFilterState {
     aftersale_id?: number;
     aftersales_sn?: number;
+    order_sn?: number;
     order_item_id?: number;
     aftersale_type?: number;
     status?: number;
