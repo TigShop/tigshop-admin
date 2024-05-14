@@ -49,7 +49,7 @@
             <el-form-item>
               <div class="btn-box">
                 <el-button type="primary" v-if="formData.aftersale_type == 1" @click="onSubmit">{{ status == 2 ? '同意并发送退货地址' : '拒绝退款'}}</el-button>
-                <el-button type="primary" v-if="formData.aftersale_type == 5" @click="onSubmit">{{ status == 2 ? '同意仅退款' : '拒绝仅退款'}}</el-button>
+                <el-button type="primary" v-if="formData.aftersale_type == 2" @click="onSubmit">{{ status == 2 ? '同意仅退款' : '拒绝仅退款'}}</el-button>
                 <el-button @click="close">取消</el-button>
               </div>
             </el-form-item>
