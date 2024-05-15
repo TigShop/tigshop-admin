@@ -58,5 +58,6 @@ export interface CouponFormState {
     enabled_overlay?: number;
     is_global?: number;
     is_show?: number;
+    limit_num?: number;
     limit_user_rank?: number[];
 }

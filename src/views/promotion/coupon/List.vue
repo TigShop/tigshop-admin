@@ -132,6 +132,7 @@
                                     </PopForm>
                                 </template>
                             </el-table-column>
+                            <el-table-column label="限制领取数量" prop="limit_num"></el-table-column>
                             <el-table-column label="首页显示" prop="is_show" sortable="custom">
                                 <template #default="{ row }">
                                     <Switch v-model:checked="row.is_show" :requestApi="updateCouponFiled"

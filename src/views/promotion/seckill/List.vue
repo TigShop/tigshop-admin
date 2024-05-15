@@ -26,7 +26,6 @@
                             <el-table-column type="selection" width="32"/>
                             <el-table-column label="秒杀名称" prop="seckill_name" sortable="custom"></el-table-column>
                             <el-table-column label="商品名称" prop="product_name"></el-table-column>
-                            <el-table-column :width="100" label="限购数量" prop="seckill_limit_num"></el-table-column>
                             <el-table-column label="秒杀开始时间" prop="seckill_start_time" sortable="custom" width="160"></el-table-column>
                             <el-table-column label="秒杀结束时间" prop="seckill_end_time" sortable="custom" width="160"></el-table-column>
                             <el-table-column :width="100" label="秒杀状态" prop="status_name">
