@@ -32,10 +32,6 @@
                         <el-input type="text" maxlength="60" v-model="formState.min_order_amount" />
                         <div class="extra">只有订单总金额达到这个数才能使用这种优惠券，为0则表示无门槛</div>
                     </el-form-item>
-                    <el-form-item prop="min_order_amount" label="限制领取数量">
-                        <el-input type="text" maxlength="60" v-model="formState.limit_num" />
-                        <div class="extra">限制每人最多领取数量，为0则表示不限制</div>
-                    </el-form-item>
                     <el-form-item v-if="formState.is_new_user" prop="limit_user_level" label="允许领取客户等级">
                         <div v-if="formState.is_new_user == 1">新人专享</div>
                         <div v-else>
