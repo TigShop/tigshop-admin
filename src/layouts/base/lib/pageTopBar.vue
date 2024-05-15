@@ -2,14 +2,14 @@
     <div class="page-top">
         <div class="page-top-warp">
             <div class="top-bar-left">
-                <div class="top-bar-item wap-show" v-if="0">
+                <div class="top-bar-item wap-show" @click="menusStore.menuActive = !menusStore.menuActive">
                     <span class="open-menu-btn icon-zhankai iconfont"></span>
                 </div>
-                <div class="top-bar-item wap-show" v-if="0">
+                <div class="top-bar-item wap-show">
                     <a class="wap-refresh-btn icon-shuaxin iconfont" href="javascript:;" onclick="location.reload();"></a>
                 </div>
-                <div class="top-bar-item wap-show" v-if="0">
-                    <a class="wap-openShop-btn icon-wangdianwaibao iconfont" href="{$lycfg.domain}" target="_blank"></a>
+                <div class="top-bar-item wap-show">
+                    <a class="wap-openShop-btn icon-wangdianwaibao iconfont" :href="urlFormat('/')" target="_blank"></a>
                 </div>
                 <div class="top-bar-item top-bar-search-warp">
                     <div class="top-bar-search">
@@ -19,7 +19,8 @@
                             placeholder="在这里查找功能，一键直达"
                             :prefix-icon="Search"
                             @input="onInput"
-                            @blur="onBlur" />
+                            @blur="onBlur"
+                        />
                     </div>
                 </div>
                 <div class="search-menu-con" v-show="isShow">
@@ -42,7 +43,8 @@
                         title="消息中心"
                         :showFooter="false"
                         width="1000px"
-                        :bodyStyle="{ padding: 0 }">
+                        :bodyStyle="{ padding: 0 }"
+                    >
                         <a class="top-bar-btn lyecs-dialogPage">
                             <i class="admin-iconfont icon-tongzhi"></i><span>消息</span><em class="admin_msg-count" v-if="unreadMsg">{{ unreadMsg }}</em>
                         </a>
@@ -55,12 +57,12 @@
                     <a-dropdown>
                         <a class="top-bar-btn" href="javascript:;">
                             <span class="admin-user-photo">
-                                     <template v-if="extractContent(String(userInfo.avatar))">
-                                          <img :src="getAssetsFile(extractContent(String(userInfo.avatar)))" />
-                                    </template>
-                                    <template v-else>
-                                              <img :src="imageFormat(userInfo.avatar)" />
-                                    </template>
+                                <template v-if="extractContent(String(userInfo.avatar))">
+                                    <img :src="getAssetsFile(extractContent(String(userInfo.avatar)))" />
+                                </template>
+                                <template v-else>
+                                    <img :src="imageFormat(userInfo.avatar)" />
+                                </template>
                             </span>
                             {{ userInfo.username }}<i class="iconfont icon-xiala"></i>
                         </a>
@@ -111,9 +113,10 @@ import { Search } from "@element-plus/icons-vue";
 import { getSearchMenu } from "@/api/panel/adminMsg";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-import {extractContent, getAssetsFile} from "@/utils/util";
-import {Image} from "@/components/image";
+import { extractContent, getAssetsFile } from "@/utils/util";
+import { Image } from "@/components/image";
 const router = useRouter();
+const menusStore = useMenusStore();
 interface searchFrom {
     authority_name: string;
     route_link: string;
@@ -137,7 +140,7 @@ const toPage = (route_link: string) => {
     keyword.value = "";
     searchMenu.value = [];
     router.push({
-        path: "/" + route_link,
+        path: "/" + route_link
     });
 };
 const onBlur = () => {
@@ -153,19 +156,18 @@ const clearCache = () => {
     request({
         url: "common/cache_manage/cleanup",
         method: "post",
-        params: {},
+        params: {}
     }).then((result: any) => {
         const config = useConfigStore();
-        const menus = useMenusStore();
         const cateGory = useCategoryStore();
         // 更新后台设置项
         setUserInfo(result.user_info);
         config.setConfig(result.config);
-        menus.setMenus(result.main_menu);
+        menusStore.setMenus(result.main_menu);
         // cateGory.getCategoryList('getNew')
         notification["success"]({
             message: "缓存已清除",
-            description: "缓存清除后可刷新页面更新效果",
+            description: "缓存清除后可刷新页面更新效果"
         });
     });
 };
@@ -179,7 +181,6 @@ const onLogout = () => {
     clear: both;
     font-size: 12px;
     height: 60px;
-    min-width: 990px;
     position: fixed;
     top: 0;
     left: 108px;
@@ -514,5 +515,49 @@ const onLogout = () => {
     left: 10px;
     top: 8px;
     font-size: 14px;
+}
+.wap-show {
+    display: none;
+}
+@media only screen and (max-width: 767px) {
+    .page-top {
+        left: 0;
+        min-width: 100%;
+    }
+    .wap-show {
+        display: block;
+    }
+    .openShop-btn {
+        display: none;
+    }
+    .open-menu-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 58px;
+        cursor: pointer;
+        color: #333;
+    }
+    .page-top-warp .wap-refresh-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 55px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+    .page-top-warp .wap-openShop-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 55px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+    .page-top-warp .clearCache-btn {
+        display: none;
+    }
+    .top-bar-search-warp {
+        display: none;
+    }
 }
 </style>

@@ -9,8 +9,8 @@
         </perfect-scrollbar>
     </div>
 </template>
-<script setup lang="ts" >
-import pageHeader from './pageHeader.vue'
+<script setup lang="ts">
+import pageHeader from "./pageHeader.vue";
 </script>
 <style lang="less">
 .main-warp {
@@ -30,4 +30,11 @@ import pageHeader from './pageHeader.vue'
     background: #fff;
     bottom: 0;
     overflow-y: auto;
-}</style>
+}
+
+@media only screen and (max-width: 767px) {
+    .main-warp {
+        left: 0 !important;
+    }
+}
+</style>
