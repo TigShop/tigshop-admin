@@ -101,8 +101,10 @@ const save = () => {
 </script>
 <style lang="less" scoped>
 .system-img {
-    width: 80px;
-    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+    max-width: 80px;
+    max-height: 80px;
 
     margin-bottom: 10px;
     display: flex;
@@ -115,10 +117,10 @@ const save = () => {
         display: inline-flex;
         flex-direction: column;
         line-height: 25px;
-
+        color: #999999;
         & > i {
             font-size: 20px;
-            color: rgba(0, 0, 0, 0.85);
+            color: #999999;
             text-align: center;
         }
     }

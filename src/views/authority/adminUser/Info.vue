@@ -14,8 +14,10 @@
                     </el-form-item>
                     <el-form-item label="头像" prop="avatar">
                         <div class="avatar-type">
-                            <FormAddGallery v-model:photo="formState.avatar"></FormAddGallery>
-                            <DefaultAvatar v-model:avatar="formState.def_avatar"></DefaultAvatar>
+                            <template v-if="!formState.avatar">
+                                <DefaultAvatar v-if="!loading" v-model:avatar="formState.def_avatar"></DefaultAvatar>
+                            </template>
+                            <FormAddGallery v-if="!loading" v-model:photo="formState.avatar"></FormAddGallery>
                         </div>
                         <div class="extra">如果未设置自定义头像，将采用系统头像</div>
                     </el-form-item>

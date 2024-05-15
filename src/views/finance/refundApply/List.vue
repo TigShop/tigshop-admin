@@ -12,7 +12,7 @@
                                         <el-option :value="1" label="已处理"/>
                                         <el-option :value="2" label="取消"/>
                                     </el-select>
-                                    <el-input v-model="filterParams.keyword" name="keyword" placeholder="输入订单号/商品名称">
+                                    <el-input v-model="filterParams.keyword" name="keyword" placeholder="输入售后单号">
                                         <template #append>
                                             <el-button @click="onSearchSubmit"><span class="iconfont icon-chakan1"></span>
                                             </el-button>
