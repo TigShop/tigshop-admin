@@ -55,9 +55,11 @@ const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<RegionFormState>({});
+const formState = ref<RegionFormState>({
+    is_hot:0
+});
 const fetchRegion = async () => {
     try {
         const result = await getRegion(action.value, {id: id.value});
@@ -72,22 +74,29 @@ const fetchRegion = async () => {
         loading.value = false;
     }
 };
+const fetchRegionList = async () => {
+    try {
+        const result = await getRegionList({region_id: props.region_id});
+        if(result.filter_result&&result.filter_result.length>0){
+            formState.value.parent_id = result.filter_result[0].region_id
+            formState.value.parent_name = result.filter_result[0].region_name
+        }else{
+            formState.value.parent_id = 0
+            formState.value.parent_name = '顶级地区'
+        }
+    } catch (error:any) {
+        message.error(error.message);
+    }
+}
 
 onMounted(() => {
-    // 获取详情数据
-    fetchRegion().then(()=>{
-        const result =  getRegionList({region_id: props.region_id});
-        result.then((e)=>{
-            if(e.filter_result&&e.filter_result.length>0){
-                console.log(e.filter_result[0]);
-                formState.value.parent_id = e.filter_result[0].region_id
-                formState.value.parent_name = e.filter_result[0].region_name
-            }else{
-                formState.value.parent_id = 0
-                formState.value.parent_name = '顶级地区'
-            }
-        })
-    })
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchRegion()
+    } else {
+        loading.value = false;
+    }
+    fetchRegionList()
 });
 // 表单通过验证后提交
 const onSubmit = async () => {

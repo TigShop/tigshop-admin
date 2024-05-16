@@ -113,7 +113,7 @@ import {batchSubmit, delShippingTpl, getShippingTplList, updateShippingTplField}
 
 const config:any = useConfigStore();
 // 基本参数定义
-const filterState = ref(<ShippingTplFilterState[]>[]);
+const filterState = ref<ShippingTplFilterState[]>([]);
 const loading = ref<boolean>(true);
 const total = ref<number>(0);
 const selectedIds = ref<number[]>([]);

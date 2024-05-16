@@ -191,7 +191,10 @@ const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<ShippingTplFormState>({
-    shipping_tpl_info:[]
+    shipping_tpl_info:[],
+    is_default:0,
+    is_free:0,
+    pricing_type:1
 });
 const fetchShippingTpl = async () => {
     try {
@@ -272,14 +275,17 @@ const fetchShippingTplConfig = async () => {
     try {
         const result = await getShippingTplConfig();
         result.shipping_tpl_info.forEach((row:any) => {
-            row.default_tpl_info = getDefaultRegion(row.shipping_type_id, row.shipping_type_name, 1)
-            row.area_tpl_info = [];
-            row.is_checked = 0;
+            if (!row.default_tpl_info) {
+                row.default_tpl_info = getDefaultRegion(row.shipping_type_id, row.shipping_type_name, 1)
+                row.area_tpl_info = [];
+                row.is_checked = 0;
+            } else {
+                row.is_checked = 1;
+            }
         });
-        // formState.shipping_tpl_info = result.shipping_tpl_info
+        formState.value.shipping_tpl_info = result.shipping_tpl_info;
     } catch (error:any) {
         message.error(error.message);
-        emit('close');
     } finally {
         loading.value = false;
     }

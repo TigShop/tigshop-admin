@@ -51,7 +51,7 @@ export const updateFriendLinks = (operation: string, data: object) => {
 
 export const updateFriendLinksField = (data:object) => {
     return request({
-        url: "setting/friend_links/update_field/",
+        url: "setting/friend_links/update_field",
         method: "post",
         data
     });
