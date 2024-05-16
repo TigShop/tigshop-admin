@@ -315,10 +315,20 @@
                                                 path="order/order/src/Operation"
                                                 title="取消订单"
                                                 width="600px"
-                                                @okCallback="loadFilter">
+                                                @okCallback="loadFilter"
+                                            >
                                                 <el-button bg class="buttonColor" size="small" text type="primary"> 取消订单 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.del_order" bg size="small" text type="primary" @click="onDelClick(item.order_id)"> 删除订单 </el-button>
+                                            <el-button
+                                                v-if="item.available_actions.del_order"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="primary"
+                                                @click="onDelClick(item.order_id)"
+                                            >
+                                                删除订单
+                                            </el-button>
                                             <!-- <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button> -->
                                             <!--<el-button bg size="small" text type="primary">-->
                                             <!--处理退款-->
@@ -335,7 +345,16 @@
                                             >
                                                 <el-button bg size="small" text type="danger"> 去发货 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger" @click="onReceiptClick(item.order_id)"> 确认收货 </el-button>
+                                            <el-button
+                                                v-if="item.available_actions.confirm_receipt"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="danger"
+                                                @click="onReceiptClick(item.order_id)"
+                                            >
+                                                确认收货
+                                            </el-button>
                                         </div>
                                     </td>
                                 </tr>
@@ -515,7 +534,7 @@ const onBatchSubmit = async (action: string) => {
         message.error(error.message);
     }
 };
-const onDelClick = (id:any) => {
+const onDelClick = (id: any) => {
     Modal.confirm({
         title: "确认删除订单吗？",
         content: "被删除的订单可以通过筛选查找并恢复",
@@ -529,10 +548,10 @@ const onDelClick = (id:any) => {
             } finally {
                 loading.value = false;
             }
-        },
+        }
     });
 };
-const onReceiptClick = (id:any) => {
+const onReceiptClick = (id: any) => {
     Modal.confirm({
         title: "确认订单已收货吗？",
         onOk: async () => {
@@ -545,7 +564,7 @@ const onReceiptClick = (id:any) => {
             } finally {
                 loading.value = false;
             }
-        },
+        }
     });
 };
 
@@ -756,13 +775,13 @@ const onSelectChange = (e: any) => {
         border: 1px solid #fff;
         cursor: pointer;
         &:hover {
-            color: #1890ff;
+            color: var(--tig-primary);
         }
     }
     .active {
-        color: #1890ff;
+        color: var(--tig-primary);
         background-color: rgba(61, 127, 255, 0.06);
-        border: 1px solid #1890ff;
+        border: 1px solid var(--tig-primary);
     }
 }
 

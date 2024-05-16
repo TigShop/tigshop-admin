@@ -2,7 +2,7 @@
     <div class="page-container">
         <div class="login-page-left">
             <a class="top-bar-btn" target="_blank" href="http://www.lyecs.com" title="起始页" style="padding: 0 3px">
-                <img style="margin: 10px" height="40" src="~@/style/images/logo_blue.png" />
+                <img style="margin: 10px" height="40" src="~@/style/images/logo2.png" />
             </a>
         </div>
         <div class="login-page-right">
@@ -433,6 +433,8 @@ const validateMobile = (rule: any, value: any, callback: any) => {
         .login-page-left {
             height: 80px;
             background: #fff;
+            padding-top: 20px;
+            text-align: center;
             img {
                 height: 50px;
             }

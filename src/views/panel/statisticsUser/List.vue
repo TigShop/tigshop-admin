@@ -8,7 +8,8 @@
                         <SelectTimeInterval
                             type="date"
                             v-model:start-date="filterParams.start_time"
-                            v-model:end-date="filterParams.end_time"></SelectTimeInterval>
+                            v-model:end-date="filterParams.end_time"
+                        ></SelectTimeInterval>
                     </el-form-item>
                     <el-form-item class="mr-10">
                         <el-button plain @click="handleSearch">搜索</el-button>
@@ -123,7 +124,7 @@ import requestExport from "@/utils/export";
 const loading = ref(false);
 const filterParams = reactive<statisticsUserFilterParams>({
     start_time: formattedDate(getDays(30, "sub"), "YYYY-MM-DD"),
-    end_time: formattedDate(new Date(), "YYYY-MM-DD"),
+    end_time: formattedDate(new Date(), "YYYY-MM-DD")
 });
 
 const filterState = ref<FilterResult>({
@@ -138,7 +139,7 @@ const filterState = ref<FilterResult>({
     visit_to_user: 0,
     visit_to_user_rate: 0,
     recharge_user_num: 0,
-    recharge_user_growth_rate: "0",
+    recharge_user_growth_rate: "0"
 });
 
 const getData = async () => {
@@ -157,16 +158,16 @@ const handleSearch = () => {
     getData();
 };
 
-const Exportloading = ref<boolean>(false)
+const Exportloading = ref<boolean>(false);
 const handleExport = async () => {
-  Exportloading.value = true;
-  try {
-    const result = await exportUserStatisticsPanel({ ...filterParams, is_export: "1" });
-    Exportloading.value = false;
-    requestExport(result,'用户统计导出')
-  } catch (error:any) {
-    message.error(error.message)
-  }
+    Exportloading.value = true;
+    try {
+        const result = await exportUserStatisticsPanel({ ...filterParams, is_export: "1" });
+        Exportloading.value = false;
+        requestExport(result, "用户统计导出");
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 
 onMounted(() => {

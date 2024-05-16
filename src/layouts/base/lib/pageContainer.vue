@@ -1,12 +1,10 @@
 <template>
     <div class="body-menu-mask"></div>
     <div class="main-warp">
-        <perfect-scrollbar class="main-layout-box">
-            <div class="page-grid-content">
-                <pageHeader></pageHeader>
-                <router-view :key="$route.fullPath" />
-            </div>
-        </perfect-scrollbar>
+        <div class="page-grid-content">
+            <pageHeader></pageHeader>
+            <router-view :key="$route.fullPath" />
+        </div>
     </div>
 </template>
 <script setup lang="ts">
