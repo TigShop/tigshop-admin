@@ -575,3 +575,11 @@ body .el-tabs__content {
   line-height: 26px;
   white-space: normal;
 }
+@media only screen and (max-width: 767px) {
+  .el-form-item__label {
+    max-width: 92px;
+    text-align: right;
+    line-height: 16px;
+    padding-top: 7px;
+  }
+}

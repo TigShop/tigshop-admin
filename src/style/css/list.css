@@ -257,6 +257,7 @@ tr:hover .lyecs-popedit-btn {
   .list-table-tool-row {
     flex-wrap: wrap;
     flex-direction: column;
+    gap: 10px;
   }
   .control-container {
     padding-right: 0 !important;
@@ -268,5 +269,11 @@ tr:hover .lyecs-popedit-btn {
   .list-table-tool-col .el-space {
     flex-wrap: wrap;
     gap: 8px !important;
+  }
+  .filtrate-menu {
+    flex-wrap: wrap;
+  }
+  .filtrate-menu .asterisk-left {
+    width: 100%;
   }
 }

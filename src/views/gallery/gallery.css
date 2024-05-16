@@ -394,8 +394,18 @@
   }
   .lyecs_gallery_box .gallery-list ul.gallery-list-ul {
     height: 100%;
+    width: auto;
   }
   .gallery_pic_sort {
     display: none;
+  }
+  :deep(.el-pager) {
+    flex-wrap: wrap;
+  }
+  .gallery-list-ul {
+    gap: 10px 10px;
+  }
+  .lyecs_gallery_box .gallery-list li {
+    margin: 0;
   }
 }
