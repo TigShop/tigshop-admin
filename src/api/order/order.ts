@@ -41,7 +41,7 @@ export const getOrder = (action: string, params: object) => {
     });
 };
 
-// 获取订单详情
+// 获取删除订单
 export const operationOrder = (action: string, data: object) => {
     return request<OrderFormResult>({
         url: "order/order/" + action,

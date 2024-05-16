@@ -337,7 +337,7 @@
                                             >
                                                 <el-button bg size="small" text type="danger"> 去发货 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger"> 确认收货 </el-button>
+                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger" @click="onReceiptClick"> 确认收货 </el-button>
                                         </div>
                                     </td>
                                 </tr>
@@ -524,6 +524,22 @@ const onDelClick = (id:number) => {
         onOk: async () => {
             try {
                 const result = await operationOrder("del_order", { id: id });
+                message.success(result.message);
+                loadFilter();
+            } catch (error: any) {
+                message.error(error.message);
+            } finally {
+                loading.value = false;
+            }
+        },
+    });
+};
+const onReceiptClick = (id:number) => {
+    Modal.confirm({
+        title: "确认订单已收货吗？",
+        onOk: async () => {
+            try {
+                const result = await operationOrder("confirm_receipt", { id: id });
                 message.success(result.message);
                 loadFilter();
             } catch (error: any) {
