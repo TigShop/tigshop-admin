@@ -81,7 +81,8 @@ const onChangeEndDate = (value: any) => {
 </script>
 
 <style lang="less" scoped>
-.lyecs-time-select-group {
+.lyecs-time-select-group{
+    flex: 1;
 }
 .time-con {
     display: flex;
@@ -91,12 +92,18 @@ const onChangeEndDate = (value: any) => {
 @media only screen and (max-width: 767px) {
     .time-con {
         flex-direction: column-reverse;
+        :deep(.el-input){
+            width: 100% !important;
+            // margin-bottom: 15px;
+        }
         > * {
             flex: 1;
         }
         > span {
+            // display: none !important;
             flex: 1;
             line-height: 30px;
+            text-align: center;
         }
         :deep(.el-date-editor) {
             flex: 1;
