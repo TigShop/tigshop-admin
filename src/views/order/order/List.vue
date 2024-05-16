@@ -751,4 +751,20 @@ const onSelectChange = (e: any) => {
         border: 1px solid #1890ff;
     }
 }
+
+@media only screen and (max-width: 767px) {
+    .tabs {
+        flex-wrap: wrap;
+        gap: 10px !important;
+        .item {
+            margin: 0 !important;
+        }
+    }
+    .table-container {
+        overflow-x: auto;
+        .table-container-con {
+            min-width: 800px;
+        }
+    }
+}
 </style>
