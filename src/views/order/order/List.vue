@@ -102,8 +102,6 @@
                                                 type="date"
                                                 value-format="YYYY-MM-DD"
                                             ></SelectTimeInterval>
-                                            <!-- <el-date-picker v-model="filterParams.add_time" class="width240" end-placeholder="结束时间" range-separator="-" start-placeholder="起始时间"
-                                                            type="daterange"/> -->
                                         </div>
                                     </div>
                                 </div>
