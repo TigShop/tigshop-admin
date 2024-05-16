@@ -251,9 +251,15 @@ tr:hover .lyecs-popedit-btn {
   .list-table-tool .simple-form-field {
     width: 100%;
   }
+  .list-table-tool .simple-form-field .el-button--primary {
+    width: 100%;
+  }
   .list-table-tool-row {
     flex-wrap: wrap;
     flex-direction: column;
+  }
+  .control-container {
+    padding-right: 0 !important;
   }
   .advanced-search-btn {
     margin: 10px 0 10px 0;

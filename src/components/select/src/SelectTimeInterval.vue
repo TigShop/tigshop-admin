@@ -96,6 +96,7 @@ const onChangeEndDate = (value: any) => {
         }
         > span {
             flex: 1;
+            line-height: 30px;
         }
         :deep(.el-date-editor) {
             flex: 1;

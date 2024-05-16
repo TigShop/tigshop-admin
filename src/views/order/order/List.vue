@@ -116,242 +116,251 @@
                 </div>
                 <div class="table-container">
                     <a-spin :spinning="loading">
-                        <table class="custom-table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <el-checkbox
-                                            v-model="selectAll"
-                                            :indeterminate="isIndeterminate"
-                                            class="check-box mr10"
-                                            @change="onSelectChangeAll"
-                                        ></el-checkbox>
-                                        <SortButton
-                                            v-model:sortField="filterParams.sort_field"
-                                            v-model:sortOrder="filterParams.sort_order"
-                                            sortName="order_id"
-                                            text="订单信息(下单时间排序)"
-                                            @loadData="onSearchSubmit()"
-                                        ></SortButton>
-                                    </th>
-                                    <th>
-                                        <SortButton
-                                            v-model:sortField="filterParams.sort_field"
-                                            v-model:sortOrder="filterParams.sort_order"
-                                            sortName="total_amount"
-                                            text="订单金额"
-                                            @loadData="onSearchSubmit()"
-                                        ></SortButton>
-                                    </th>
-                                    <th>收货人信息</th>
-                                    <th>物流/支付信息</th>
-                                    <th>订单状态</th>
-                                    <th class="textR">操作</th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <table v-for="item in filterState" class="custom-table">
-                            <thead>
-                                <tr class="data-tr">
-                                    <th colspan="5">
-                                        <el-checkbox v-model="item.checkBox" class="check-box mr10" @change="onSelectChange(item)"></el-checkbox>
-                                        <span class="check-box">订单编号：{{ item.order_sn }}</span>
-                                        <el-divider direction="vertical" />
-                                        <span class="check-box">下单时间：{{ item.add_time }}</span>
-                                        <!--                                    <el-tooltip :content="'操作人：' + item.op_admin_name" effect="light" placement="top">-->
-                                        <!--                                        <el-tag class="ml10" disable-transitions effect="plain" size="small">代下单</el-tag>-->
-                                        <!--                                    </el-tooltip>-->
-                                        <el-tooltip
-                                            v-if="item.parent_order_id > 0"
-                                            :content="'该订单已拆分，点击可查看父订单' + ''"
-                                            effect="light"
-                                            placement="top"
-                                        >
-                                            <Tag text="子订单"></Tag>
-                                        </el-tooltip>
-                                        <el-tooltip v-if="item.store_id > 0" :content="'订单来自店铺：' + item.store_title" effect="light" placement="top">
-                                            <Tag :transparent="false" text="店铺"></Tag>
-                                        </el-tooltip>
-                                        <el-tooltip v-if="item.order_source" :content="'订单来自' + item.order_source + '下单'" effect="light" placement="top">
-                                            <Tag :text="item.order_source" :transparent="true" style="text-transform: uppercase"></Tag>
-                                        </el-tooltip>
-                                        <!--<el-tag class="ml10" disable-transitions effect="plain" size="small">-->
-                                        <!--团购订单-->
-                                        <!--</el-tag>-->
-                                        <Tag v-if="filterParams.is_exchange_order" :transparent="true" color="red" text="积分兑换"></Tag>
-                                    </th>
-                                    <th class="textR">
-                                        <DialogForm
-                                            :params="{ act: 'detail', id: item.order_id }"
-                                            :showClose="false"
-                                            :showOnOk="false"
-                                            :title="'订单详情 ' + item.order_sn"
-                                            isDrawer
-                                            path="order/order/Info"
-                                            width="880px"
-                                            @callback="loadFilter"
-                                        >
-                                            <el-button bg class="buttonColor mr10" size="small" text type="primary"> 查看详情 </el-button>
-                                        </DialogForm>
-                                        <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
-                                            isDrawer
-                                            path="order/order/src/EditRemark"
-                                            title="编辑备注"
-                                            width="600px"
-                                            @okCallback="loadFilter"
-                                        >
-                                            <el-button bg class="buttonColor" size="small" text type="primary"> 备注 </el-button>
-                                        </DialogForm>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(product, index) in item.items">
-                                    <td>
-                                        <div class="displayRow">
-                                            <ProductCard
-                                                :pic_thumb="product.pic_thumb"
-                                                :product_id="product.product_id"
-                                                :product_name="product.product_name"
-                                                :product_type="product.product_type"
-                                                :url="product.url"
-                                            ></ProductCard>
-                                            <div class="displayColumn textR whiteSN widthAuto">
-                                                <div>{{ priceFormat(product.price) }}</div>
-                                                <div>× {{ product.quantity }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.items.length">
-                                        <div class="displayColumn textR fz14">
-                                            <div>{{ priceFormat(item.total_amount) }}</div>
-                                            <div class="gray fz12">(含运费：{{ item.shipping_fee }})</div>
-                                            <div v-if="item.store_id > 0" class="fz12">
-                                                <div>
-                                                    <p>
-                                                        佣金：<a
-                                                            :href="'store_commission_log.html?act=list&store_id=' + item.store_id"
-                                                            class="green"
-                                                            target="_blank"
-                                                            >已结算</a
-                                                        >
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p>佣金：<span class="gray">未结算</span></p>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <DialogForm
-                                                    v-if="item.status === 6 || item.status === 7"
-                                                    :params="{ act: 'edit', id: item.aftersale_id }"
-                                                    isDrawer
-                                                    path="order/aftersales/Info"
-                                                    :title="'售后详情 ' + item.aftersales_sn"
-                                                    width="800px"
-                                                    @okCallback="loadFilter"
-                                                    :showClose="false"
-                                                    :showOnOk="false"
-                                                >
-                                                    <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
-                                                </DialogForm>
-                                                <!-- <el-button size="small" text type="primary"> 售后详情 </el-button> -->
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.items.length">
-                                        <div class="displayColumn fz12 textL">
-                                            <div class="gray">
-                                                会员名：
-                                                <DialogForm
-                                                    :params="{ act: 'edit', id: item.user_id }"
-                                                    isDrawer
-                                                    path="order/order/src/Users"
-                                                    title="用户信息"
-                                                    width="600px"
-                                                    @okCallback="loadFilter"
-                                                    :showOnOk="false"
-                                                >
-                                                    <a>{{ item.username }}</a>
-                                                </DialogForm>
-                                            </div>
-                                            <div class="gray">
-                                                收货人：
-                                                <span class="black">
-                                                    {{ item.consignee }}
-                                                    <span class="ml5">{{ item.mobile }}</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.items.length">
-                                        <div class="displayColumn fz12 textL">
-                                            <div>
-                                                <span>{{ item.pay_type === 0 ? "在线支付" : item.pay_type === 1 ? "货到付款" : "线下支付" }}</span>
-                                            </div>
-                                            <div v-if="item.logistics_name">
-                                                {{ item.shipping_type_name }}
-                                                <span class="gray">{{ "" + item.logistics_name + "" }}</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.items.length">
-                                        <span
-                                            :class="{
-                                                orange: item.order_status === 0,
-                                                black: item.order_status === 1 || item.order_status === 2 || item.order_status === 4,
-                                                gray: item.order_status === 3,
-                                                green: item.order_status === 5
-                                            }"
-                                        >
-                                            {{ item.order_status_name }}
-                                        </span>
-                                    </td>
-                                    <td v-if="index == 0" :rowspan="item.items.length">
-                                        <div class="buttonStyle">
-                                            <el-button v-if="item.available_actions.del_order" bg size="small" text type="primary"> 删除 </el-button>
-                                            <el-button v-if="item.available_actions.cancel_order" bg size="small" text type="primary"> 取消订单 </el-button>
-                                            <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button>
-                                            <!--<el-button bg size="small" text type="primary">-->
-                                            <!--处理退款-->
-                                            <!--</el-button>-->
-
-                                            <DialogForm
-                                                :params="{ act: 'info', id: item.order_id }"
-                                                :title="'订单发货 ' + item.order_sn"
-                                                isDrawer
-                                                path="order/order/src/ToShip"
-                                                width="900px"
-                                                @okCallback="loadFilter"
-                                                v-if="item.available_actions.deliver"
+                        <div class="table-container-con">
+                            <table class="custom-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <el-checkbox
+                                                v-model="selectAll"
+                                                :indeterminate="isIndeterminate"
+                                                class="check-box mr10"
+                                                @change="onSelectChangeAll"
+                                            ></el-checkbox>
+                                            <SortButton
+                                                v-model:sortField="filterParams.sort_field"
+                                                v-model:sortOrder="filterParams.sort_order"
+                                                sortName="order_id"
+                                                text="订单信息(下单时间排序)"
+                                                @loadData="onSearchSubmit()"
+                                            ></SortButton>
+                                        </th>
+                                        <th>
+                                            <SortButton
+                                                v-model:sortField="filterParams.sort_field"
+                                                v-model:sortOrder="filterParams.sort_order"
+                                                sortName="total_amount"
+                                                text="订单金额"
+                                                @loadData="onSearchSubmit()"
+                                            ></SortButton>
+                                        </th>
+                                        <th>收货人信息</th>
+                                        <th>物流/支付信息</th>
+                                        <th>订单状态</th>
+                                        <th class="textR">操作</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table v-for="item in filterState" class="custom-table">
+                                <thead>
+                                    <tr class="data-tr">
+                                        <th colspan="5">
+                                            <el-checkbox v-model="item.checkBox" class="check-box mr10" @change="onSelectChange(item)"></el-checkbox>
+                                            <span class="check-box">订单编号：{{ item.order_sn }}</span>
+                                            <el-divider direction="vertical" />
+                                            <span class="check-box">下单时间：{{ item.add_time }}</span>
+                                            <!--                                    <el-tooltip :content="'操作人：' + item.op_admin_name" effect="light" placement="top">-->
+                                            <!--                                        <el-tag class="ml10" disable-transitions effect="plain" size="small">代下单</el-tag>-->
+                                            <!--                                    </el-tooltip>-->
+                                            <el-tooltip
+                                                v-if="item.parent_order_id > 0"
+                                                :content="'该订单已拆分，点击可查看父订单' + ''"
+                                                effect="light"
+                                                placement="top"
                                             >
-                                                <el-button bg size="small" text type="danger"> 去发货 </el-button>
+                                                <Tag text="子订单"></Tag>
+                                            </el-tooltip>
+                                            <el-tooltip v-if="item.store_id > 0" :content="'订单来自店铺：' + item.store_title" effect="light" placement="top">
+                                                <Tag :transparent="false" text="店铺"></Tag>
+                                            </el-tooltip>
+                                            <el-tooltip
+                                                v-if="item.order_source"
+                                                :content="'订单来自' + item.order_source + '下单'"
+                                                effect="light"
+                                                placement="top"
+                                            >
+                                                <Tag :text="item.order_source" :transparent="true" style="text-transform: uppercase"></Tag>
+                                            </el-tooltip>
+                                            <!--<el-tag class="ml10" disable-transitions effect="plain" size="small">-->
+                                            <!--团购订单-->
+                                            <!--</el-tag>-->
+                                            <Tag v-if="filterParams.is_exchange_order" :transparent="true" color="red" text="积分兑换"></Tag>
+                                        </th>
+                                        <th class="textR">
+                                            <DialogForm
+                                                :params="{ act: 'detail', id: item.order_id }"
+                                                :showClose="false"
+                                                :showOnOk="false"
+                                                :title="'订单详情 ' + item.order_sn"
+                                                isDrawer
+                                                path="order/order/Info"
+                                                width="880px"
+                                                @callback="loadFilter"
+                                            >
+                                                <el-button bg class="buttonColor mr10" size="small" text type="primary"> 查看详情 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger"> 确认收货 </el-button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr v-if="item.admin_note">
-                                    <td colspan="6">
-                                        <span class="orange">商家备注：</span>{{ item.admin_note }}
-                                        <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
-                                            isDrawer
-                                            path="order/order/src/EditRemark"
-                                            title="编辑备注"
-                                            width="600px"
-                                            @okCallback="loadFilter"
-                                        >
-                                            <el-button bg class="buttonColor" size="small" text type="primary"> 修改 </el-button>
-                                        </DialogForm>
-                                    </td>
-                                </tr>
-                                <!-- 可以添加更多的行 -->
-                            </tbody>
-                        </table>
-                        <div v-if="loading || total == 0" class="empty-warp">
-                            <div v-if="!loading" class="empty-bg">暂无数据</div>
+                                            <DialogForm
+                                                :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                                isDrawer
+                                                path="order/order/src/EditRemark"
+                                                title="编辑备注"
+                                                width="600px"
+                                                @okCallback="loadFilter"
+                                            >
+                                                <el-button bg class="buttonColor" size="small" text type="primary"> 备注 </el-button>
+                                            </DialogForm>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(product, index) in item.items">
+                                        <td>
+                                            <div class="displayRow">
+                                                <ProductCard
+                                                    :pic_thumb="product.pic_thumb"
+                                                    :product_id="product.product_id"
+                                                    :product_name="product.product_name"
+                                                    :product_type="product.product_type"
+                                                    :url="product.url"
+                                                ></ProductCard>
+                                                <div class="displayColumn textR whiteSN widthAuto">
+                                                    <div>{{ priceFormat(product.price) }}</div>
+                                                    <div>× {{ product.quantity }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td v-if="index == 0" :rowspan="item.items.length">
+                                            <div class="displayColumn textR fz14">
+                                                <div>{{ priceFormat(item.total_amount) }}</div>
+                                                <div class="gray fz12">(含运费：{{ item.shipping_fee }})</div>
+                                                <div v-if="item.store_id > 0" class="fz12">
+                                                    <div>
+                                                        <p>
+                                                            佣金：<a
+                                                                :href="'store_commission_log.html?act=list&store_id=' + item.store_id"
+                                                                class="green"
+                                                                target="_blank"
+                                                                >已结算</a
+                                                            >
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <p>佣金：<span class="gray">未结算</span></p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <DialogForm
+                                                        v-if="item.status === 6 || item.status === 7"
+                                                        :params="{ act: 'edit', id: item.aftersale_id }"
+                                                        isDrawer
+                                                        path="order/aftersales/Info"
+                                                        :title="'售后详情 ' + item.aftersales_sn"
+                                                        width="800px"
+                                                        @okCallback="loadFilter"
+                                                        :showClose="false"
+                                                        :showOnOk="false"
+                                                    >
+                                                        <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
+                                                    </DialogForm>
+                                                    <!-- <el-button size="small" text type="primary"> 售后详情 </el-button> -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td v-if="index == 0" :rowspan="item.items.length">
+                                            <div class="displayColumn fz12 textL">
+                                                <div class="gray">
+                                                    会员名：
+                                                    <DialogForm
+                                                        :params="{ act: 'edit', id: item.user_id }"
+                                                        isDrawer
+                                                        path="order/order/src/Users"
+                                                        title="用户信息"
+                                                        width="600px"
+                                                        @okCallback="loadFilter"
+                                                        :showOnOk="false"
+                                                    >
+                                                        <a>{{ item.username }}</a>
+                                                    </DialogForm>
+                                                </div>
+                                                <div class="gray">
+                                                    收货人：
+                                                    <span class="black">
+                                                        {{ item.consignee }}
+                                                        <span class="ml5">{{ item.mobile }}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td v-if="index == 0" :rowspan="item.items.length">
+                                            <div class="displayColumn fz12 textL">
+                                                <div>
+                                                    <span>{{ item.pay_type === 0 ? "在线支付" : item.pay_type === 1 ? "货到付款" : "线下支付" }}</span>
+                                                </div>
+                                                <div v-if="item.logistics_name">
+                                                    {{ item.shipping_type_name }}
+                                                    <span class="gray">{{ "" + item.logistics_name + "" }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td v-if="index == 0" :rowspan="item.items.length">
+                                            <span
+                                                :class="{
+                                                    orange: item.order_status === 0,
+                                                    black: item.order_status === 1 || item.order_status === 2 || item.order_status === 4,
+                                                    gray: item.order_status === 3,
+                                                    green: item.order_status === 5
+                                                }"
+                                            >
+                                                {{ item.order_status_name }}
+                                            </span>
+                                        </td>
+                                        <td v-if="index == 0" :rowspan="item.items.length">
+                                            <div class="buttonStyle">
+                                                <el-button v-if="item.available_actions.del_order" bg size="small" text type="primary"> 删除 </el-button>
+                                                <el-button v-if="item.available_actions.cancel_order" bg size="small" text type="primary"> 取消订单 </el-button>
+                                                <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button>
+                                                <!--<el-button bg size="small" text type="primary">-->
+                                                <!--处理退款-->
+                                                <!--</el-button>-->
+
+                                                <DialogForm
+                                                    :params="{ act: 'info', id: item.order_id }"
+                                                    :title="'订单发货 ' + item.order_sn"
+                                                    isDrawer
+                                                    path="order/order/src/ToShip"
+                                                    width="900px"
+                                                    @okCallback="loadFilter"
+                                                    v-if="item.available_actions.deliver"
+                                                >
+                                                    <el-button bg size="small" text type="danger"> 去发货 </el-button>
+                                                </DialogForm>
+                                                <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger">
+                                                    确认收货
+                                                </el-button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="item.admin_note">
+                                        <td colspan="6">
+                                            <span class="orange">商家备注：</span>{{ item.admin_note }}
+                                            <DialogForm
+                                                :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                                isDrawer
+                                                path="order/order/src/EditRemark"
+                                                title="编辑备注"
+                                                width="600px"
+                                                @okCallback="loadFilter"
+                                            >
+                                                <el-button bg class="buttonColor" size="small" text type="primary"> 修改 </el-button>
+                                            </DialogForm>
+                                        </td>
+                                    </tr>
+                                    <!-- 可以添加更多的行 -->
+                                </tbody>
+                            </table>
+                            <div v-if="loading || total == 0" class="empty-warp">
+                                <div v-if="!loading" class="empty-bg">暂无数据</div>
+                            </div>
                         </div>
                     </a-spin>
                 </div>
@@ -723,6 +732,22 @@ const onSelectChange = (e: any) => {
         color: #1890ff;
         background-color: rgba(61, 127, 255, 0.06);
         border: 1px solid #1890ff;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .tabs {
+        flex-wrap: wrap;
+        gap: 10px !important;
+        .item {
+            margin: 0 !important;
+        }
+    }
+    .table-container {
+        overflow-x: auto;
+        .table-container-con {
+            min-width: 800px;
+        }
     }
 }
 </style>
