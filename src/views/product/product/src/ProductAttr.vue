@@ -231,7 +231,7 @@ const importAttrTpl = () => {
         title: "导入模板会清空并重置已设置的属性、规格、规格库存等设置，确认导入吗？",
         async onOk() {
             request({
-                url: "product/product_attributes_tpl/edit?id=" + attrTplId.value,
+                url: "product/product_attributes_tpl/detail?id=" + attrTplId.value,
                 method: "get"
             }).then((result: any) => {
                 let data = result.item.tpl_data;

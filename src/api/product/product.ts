@@ -64,8 +64,8 @@ export const getProduct = (action: string, params: object) => {
 // 获取商品搜索关键词
 export const getParticiple = (params: object) => {
     return request<ProductParticipleFormResult>({
-        url: "product/get_participle",
-        method: "get",
+        url: "product/product/get_participle",
+        method: "post",
         params,
     });
 };
