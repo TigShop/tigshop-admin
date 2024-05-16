@@ -121,7 +121,7 @@ const showChild = (key: any, ckey: any) => {
 const actionPush = (menu: any, isMain = false) => {
     if (window.innerWidth <= 756) {
         if (isMain) {
-            menus.value.forEach((element) => {
+            menus.value.forEach((element: any) => {
                 element.current = false;
             });
             menu.current = true;
@@ -183,7 +183,6 @@ watchEffect(() => {
     height: 100%;
     border-right: 1px solid #f0f2f5;
     -webkit-font-smoothing: initial;
-    overflow-x: hidden;
 }
 
 .main-menu .menu-tit {
@@ -232,6 +231,7 @@ watchEffect(() => {
     overflow: hidden;
     position: relative;
     top: 60px;
+    bottom: 0;
     left: 0;
     height: 100%;
 }

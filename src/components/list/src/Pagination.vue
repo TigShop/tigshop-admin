@@ -9,8 +9,11 @@
             :page-size="size"
             :background="props.background"
             :layout="props.layout"
-            :total="total">
-            <template #default> 第{{ (page - 1) * size + 1 }}-{{ page * size }} 条 / 总共 {{ total }} 条 </template>
+            :total="total"
+        >
+            <template #default>
+                <div class="pagination-text">第{{ (page - 1) * size + 1 }}-{{ page * size }} 条 / 总共 {{ total }} 条</div></template
+            >
         </el-pagination>
     </div>
 </template>
@@ -20,24 +23,24 @@ import { ref } from "vue";
 const props = defineProps({
     page: {
         type: Number,
-        default: 1,
+        default: 1
     },
     size: {
         type: Number,
-        default: 10,
+        default: 10
     },
     total: {
         type: Number,
-        default: 10,
+        default: 10
     },
     layout: {
         type: String,
-        default: "slot ,prev, pager, next, sizes",
+        default: "slot ,prev, pager, next, sizes"
     },
     background: {
         type: Boolean,
-        default: true,
-    },
+        default: true
+    }
 });
 const emit = defineEmits(["update:page", "update:size", "callback"]);
 // 修改页面显示数量
@@ -56,6 +59,14 @@ const pageChange = (value: number) => {
     :deep(.el-select) {
         min-width: 100px !important;
         width: 100px !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .el-pagination {
+        gap: 10px 0;
+        flex-wrap: wrap;
+        justify-content: right;
     }
 }
 </style>

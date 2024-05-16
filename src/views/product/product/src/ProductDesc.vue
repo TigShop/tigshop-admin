@@ -17,7 +17,8 @@
                     chosen-class="chosenClass"
                     animation="300"
                     @start=""
-                    @end="">
+                    @end=""
+                >
                     <template #item="{ element, index }">
                         <div class="info-edit-list-item" draggable="false" style="">
                             <div class="edit-list-item-img" v-if="element.type == 'pic'">
@@ -54,13 +55,13 @@ import { Modal } from "ant-design-vue";
 import draggable from "vuedraggable";
 import { imageFormat } from "@/utils/format";
 const props = defineProps({
-    descArr: { type: [Object, Array], default: [] },
+    descArr: { type: [Object, Array], default: [] }
 });
 const descArr: any = ref(props.descArr || []);
 
 const visible = ref(false);
 const editorHtml = ref({
-    html: "",
+    html: ""
 });
 const editTextIndex = ref<number>(0);
 const emit = defineEmits(["update:descArr"]);
@@ -71,7 +72,7 @@ const addPic = (result: any) => {
     for (let idx in result) {
         descArr.value.push({
             pic: result[idx].pic_url,
-            type: "pic",
+            type: "pic"
         });
     }
 };
@@ -79,7 +80,7 @@ const editPic = (result: any, data: any) => {
     editTextIndex.value = data.index;
     descArr.value[editTextIndex.value] = {
         pic: result[0].pic_url,
-        type: "pic",
+        type: "pic"
     };
 };
 const previewHtml = computed(() => {
@@ -111,12 +112,12 @@ const onOk = () => {
     if (editTextIndex.value > 0) {
         descArr.value[editTextIndex.value] = {
             html: editorHtml.value.html,
-            type: "text",
+            type: "text"
         };
     } else {
         descArr.value.push({
             html: editorHtml.value.html,
-            type: "text",
+            type: "text"
         });
     }
     console.log(descArr.value);
@@ -136,6 +137,7 @@ const onOk = () => {
 .goods-info-edit-act {
     margin-bottom: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .goods-info-edit-act :deep .add-item {
@@ -146,6 +148,7 @@ const onOk = () => {
     background: rgba(0, 0, 0, 0.06);
     border: 0;
     padding: 5px 20px;
+    word-break: keep-all;
     color: #333;
 }
 

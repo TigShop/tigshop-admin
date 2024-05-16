@@ -8,7 +8,7 @@
                 <div class="top-bar-item wap-show">
                     <a class="wap-refresh-btn icon-shuaxin iconfont" href="javascript:;" onclick="location.reload();"></a>
                 </div>
-                <div class="top-bar-item wap-show">
+                <div class="top-bar-item wap-show" style="display: none">
                     <a class="wap-openShop-btn icon-wangdianwaibao iconfont" :href="urlFormat('/')" target="_blank"></a>
                 </div>
                 <div class="top-bar-item top-bar-search-warp">
@@ -53,7 +53,7 @@
                 <div class="top-bar-item openShop-btn">
                     <a class="top-bar-btn" :href="urlFormat('/')" target="_blank"><i class="iconfont icon-guanli"></i><span>查看店铺</span></a>
                 </div>
-                <div class="top-bar-item" id="dropdown-memu">
+                <div class="top-bar-item top-bar-user" id="dropdown-memu">
                     <a-dropdown>
                         <a class="top-bar-btn" href="javascript:;">
                             <span class="admin-user-photo">
@@ -64,7 +64,8 @@
                                     <img :src="imageFormat(userInfo.avatar)" />
                                 </template>
                             </span>
-                            {{ userInfo.username }}<i class="iconfont icon-xiala"></i>
+                            <div class="admin-user-name">{{ userInfo.username }}</div>
+                            <i class="iconfont icon-xiala"></i>
                         </a>
                         <template #overlay>
                             <div class="dropdown-memu top-bar-memu">
@@ -519,6 +520,16 @@ const onLogout = () => {
 .wap-show {
     display: none;
 }
+.top-bar-user {
+    .admin-user-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        word-break: keep-all;
+        max-width: 100px;
+    }
+}
 @media only screen and (max-width: 767px) {
     .page-top {
         left: 0;
@@ -558,6 +569,18 @@ const onLogout = () => {
     }
     .top-bar-search-warp {
         display: none;
+    }
+    .top-bar-item .top-bar-btn {
+        word-break: keep-all;
+        margin: 0;
+        padding-left: 10px;
+    }
+    .top-bar-user {
+        margin-left: 10px;
+        margin-right: 10px;
+        .admin-user-name {
+            max-width: 60px;
+        }
     }
 }
 </style>
