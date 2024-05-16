@@ -380,12 +380,12 @@ const onDelClick = () => {
         },
     });
 };
-const onReceiptClick = (id:number) => {
+const onReceiptClick = () => {
     Modal.confirm({
         title: "确认订单已收货吗？",
         onOk: async () => {
             try {
-                const result = await operationOrder("confirm_receipt", { id: id });
+                const result = await operationOrder("confirm_receipt", { id: id.value });
                 message.success(result.message);
                 updateDataWithList();
             } catch (error: any) {

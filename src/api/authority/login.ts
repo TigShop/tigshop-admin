@@ -2,7 +2,7 @@ import request from "@/utils/request";
 // 登录
 export const adminSignin = (data: object) => {
     return request({
-        url: "login/login/signin",
+        url: "login/signin",
         method: "post",
         data,
     });
