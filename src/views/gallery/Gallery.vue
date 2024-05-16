@@ -25,7 +25,7 @@
                                                 @okCallback="editRecordCallback(item.gallery_id, true)"
                                                 title="编辑相册"
                                                 path="gallery/GalleryEdit"
-                                                :params="{ act: 'edit', id: item.gallery_id }">
+                                                :params="{ act: 'detail', id: item.gallery_id }">
                                                 <div>编辑相册</div>
                                             </DialogForm>
                                         </el-dropdown-item>
@@ -56,7 +56,7 @@
                             <el-space>
                                 <Upload
                                     name="file"
-                                    :action="requestUrl.prefix + '/setting/gallery_pic/upload_img/?gallery_id=' + galleryId"
+                                    :action="requestUrl.prefix + '/setting/gallery_pic/upload_img?gallery_id=' + galleryId"
                                     :headers="requestUrl.headers"
                                     @change="handleChange"
                                     :showUploadList="false"
@@ -105,7 +105,7 @@
                                                 @okCallback="editRecordCallback(gallery.gallery_id, false)"
                                                 title="编辑相册"
                                                 path="gallery/GalleryEdit"
-                                                :params="{ act: 'edit', id: gallery.gallery_id }">
+                                                :params="{ act: 'detail', id: gallery.gallery_id }">
                                                 <a class="btn-edit ico-font">&#xe610;</a>
                                             </DialogForm>
                                             <a-popconfirm title="您确认要删掉该相册吗？" @confirm="delGallery(gallery.gallery_id, key)" placement="bottom">
@@ -277,7 +277,7 @@ const galleryChange = (gallery_id: number, page_id: number = 1) => {
     loading.value = true;
     page.value = page_id;
     request({
-        url: "setting/gallery_pic/index/",
+        url: "setting/gallery_pic/list",
         method: "get",
         params: { gallery_id, page: page_id, sort_order: sort_order.value },
     })
@@ -319,7 +319,7 @@ const addGalleryCallback = (parentId: number) => {
 // 修改相册名称
 const changGalleryName = (event: any, gallery_id: number) => {
     request({
-        url: "setting/gallery/update_field/",
+        url: "setting/gallery/update_field",
         method: "post",
         data: { id: gallery_id, val: event.target.value, field: "gallery_name" },
     })
@@ -333,7 +333,7 @@ const changGalleryName = (event: any, gallery_id: number) => {
 // 修改图片名称
 const changPicName = (event: any, pic_id: number) => {
     request({
-        url: "setting/gallery_pic/update_field/",
+        url: "setting/gallery_pic/update_field",
         method: "post",
         data: { id: pic_id, val: event.target.value, field: "pic_name" },
     })
@@ -347,7 +347,7 @@ const changPicName = (event: any, pic_id: number) => {
 // 删除图片
 const delPic = (pic_id: number) => {
     request({
-        url: "setting/gallery_pic/del/",
+        url: "setting/gallery_pic/del",
         method: "post",
         data: { id: pic_id },
     })
@@ -362,7 +362,7 @@ const delPic = (pic_id: number) => {
 // 删除相册
 const delGallery = (gallery_id: number, key: number) => {
     request({
-        url: "setting/gallery/del/",
+        url: "setting/gallery/del",
         method: "post",
         data: { id: gallery_id },
     })
@@ -381,7 +381,7 @@ const delRootGallery = (gallery_id: number) => {
         okType: "danger",
         onOk() {
             request({
-                url: "setting/gallery/del/",
+                url: "setting/gallery/del",
                 method: "post",
                 data: { id: gallery_id },
             })

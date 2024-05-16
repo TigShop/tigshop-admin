@@ -17,13 +17,13 @@ export const batchSubmit = (type: string, data: object) => {
     });
 };
 // 订单列表页面删除项
-// export const delOrder = (data: object) => {
-//     return request({
-//         url: "order/order/del_order",
-//         method: "post",
-//         data,
-//     });
-// };
+export const delOrder = (data: object) => {
+    return request({
+        url: "order/order/del_order",
+        method: "post",
+        data,
+    });
+};
 // 订单列表页面更新项
 export const updateOrderFiled = (data: object) => {
     return request({
@@ -110,7 +110,7 @@ export const modifyOrderProduct = (data: object) => {
 // 获取订单操作日志
 export const getOrderLogList = (params: object) => {
     return request<OrderFilterResult>({
-        url: "order/order/order_log/list",
+        url: "order/order_log/list",
         method: "get",
         params,
     });
@@ -119,7 +119,7 @@ export const getOrderLogList = (params: object) => {
 // 添加订单操作日志
 export const updateOrderLog = (data: object) => {
     return request({
-        url: "order/order/order_log/insert",
+        url: "order/order_log/update",
         method: "post",
         data,
     });

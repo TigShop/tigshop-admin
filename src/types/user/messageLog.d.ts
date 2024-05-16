@@ -37,8 +37,9 @@ export interface MessageLogFormState {
     message_title?: string;
     message_content?: string;
     message_link?: Object;
-    user_ids?: string|number;
+    user_ids?: number;
     user_rank?: number;
+    user_list?: string;
     send_user_type?: number;
 }
 

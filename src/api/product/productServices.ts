@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import type { ProductServicesFilterParams, ProductServicesFilterResult, ProductServicesFormResult} from "@/types/product/productServices";
-// 获取示例模板列表
+// 获取商品服务列表
 export const getProductServicesList = (params: ProductServicesFilterParams) => {
     return request<ProductServicesFilterResult>({
         url: "product/product_services/list",
@@ -8,7 +8,7 @@ export const getProductServicesList = (params: ProductServicesFilterParams) => {
         params,
     });
 }
-// 示例模板列表页面批量操作
+// 商品服务列表页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
         url: "product/product_services/batch?type=" + type,
@@ -16,7 +16,7 @@ export const batchSubmit = (type: string, data: object) => {
         data,
     });
 }
-// 示例模板列表页面删除项
+// 商品服务列表页面删除项
 export const delProductServices = (data: object) => {
     return request({
         url: "product/product_services/del",
@@ -24,7 +24,7 @@ export const delProductServices = (data: object) => {
         data,
     });
 }
-// 示例模板列表页面更新项
+// 商品服务列表页面更新项
 export const updateProductServicesFiled = (data: object) => {
     return request({
         url: "product/product_services/update_field",
@@ -32,7 +32,7 @@ export const updateProductServicesFiled = (data: object) => {
         data,
     });
 }
-// 获取示例模板详情
+// 获取商品服务详情
 export const getProductServices = (action: string, params: object) => {
     return request<ProductServicesFormResult>({
         url: "product/product_services/" + action,
@@ -40,7 +40,7 @@ export const getProductServices = (action: string, params: object) => {
         params
     });
 }
-// 更新示例模板
+// 更新商品服务
 export const updateProductServices = (operation: string, data: object) => {
     return request({
         url: "product/product_services/" + operation,

@@ -1,10 +1,10 @@
 import request from "@/utils/request";
-// 获取示例模板列表
+// 获取未完成编辑
 export const loadDraftData = (id: number) => {
     return request({
         url: "decorate/decorate/load_draft_data",
-        method: "post",
-        data: {
+        method: "get",
+        params: {
             id,
         },
     });

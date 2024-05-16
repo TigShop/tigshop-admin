@@ -140,7 +140,7 @@
                             <el-table-column label="操作" fixed="right">
                                 <template #default="{ row }">
                                     <DialogForm isDrawer @okCallback="loadFilter" title="编辑优惠活动" width="800px"
-                                        path="promotion/productActivity/Info" :params="{ act: 'edit', id: row.promotion_id }">
+                                        path="promotion/productActivity/Info" :params="{ act: 'detail', id: row.promotion_id }">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                     <el-divider direction="vertical" />

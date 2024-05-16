@@ -164,7 +164,7 @@ import { onMounted, ref, shallowRef } from "vue"
 import { useRouter } from 'vue-router'
 import { message, Cascader } from "ant-design-vue";
 import { ShippingTplFormState, ShippingTplInfoItem } from '@/types/setting/shippingTpl';
-import { getShippingTpl, updateShippingTpl } from "@/api/setting/shippingTpl";
+import { getShippingTpl, updateShippingTpl, getShippingTplConfig } from "@/api/setting/shippingTpl";
 import { DialogForm } from '@/components/dialog'
 import { Checkbox } from "@/components/radio";
 import { useRegionStore } from "@/store/region";
@@ -188,7 +188,7 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<ShippingTplFormState>({
     shipping_tpl_info:[]
@@ -260,9 +260,30 @@ const getDefaultRegion = (shipping_type_id:any, shipping_type_name:any, is_defau
 }
 
 onMounted(() => {
-    // 获取详情数据
-    fetchShippingTpl();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchShippingTpl();
+    } else {
+        loading.value = false;
+    }
+    fetchShippingTplConfig()
 });
+const fetchShippingTplConfig = async () => {
+    try {
+        const result = await getShippingTplConfig();
+        result.shipping_tpl_info.forEach((row:any) => {
+            row.default_tpl_info = getDefaultRegion(row.shipping_type_id, row.shipping_type_name, 1)
+            row.area_tpl_info = [];
+            row.is_checked = 0;
+        });
+        // formState.shipping_tpl_info = result.shipping_tpl_info
+    } catch (error:any) {
+        message.error(error.message);
+        emit('close');
+    } finally {
+        loading.value = false;
+    }
+};
 // 表单通过验证后提交
 const onSubmit = async () => {
     await formRef.value.validate();

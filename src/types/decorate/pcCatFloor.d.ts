@@ -40,7 +40,7 @@ export interface PcCatFloorFormState {
     hot_cat?: string;
     floor_ico?: string;
     floor_ico_font?: string;
-    is_show?: boolean;
+    is_show?: number;
     sort_order?: number;
 
 }

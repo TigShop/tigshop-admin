@@ -36,7 +36,7 @@
                             <el-button plain @click="handleSearch">搜索</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button plain @click="handleExport" :loading="handleExport">导出EXCEL</el-button>
+                            <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                         </el-form-item>
                     </div>
                 </el-form>

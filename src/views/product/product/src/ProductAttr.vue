@@ -164,7 +164,7 @@ import request from '@/utils/request'
 import { imageFormat } from "@/utils/format";
 const visible = ref(false);
 const props = defineProps({
-    attrList: { type: [Object, Array], default: [] },
+    attrList: { type: Object, default: { normal: [], spe: [], extra: [] } },
     productList: { type: [Object, Array], default: [] },
     attrChanged: { type: Boolean, default: false },
     attrTplList: {
@@ -184,9 +184,9 @@ const typeId = {
 };
 const attrTplId = ref(null);
 
-const batchInput = <any>ref({})
-const attrList = <any>ref(props.attrList)
-const productList = <any>ref(props.productList)
+const batchInput = ref<any>({})
+const attrList = ref<any>(props.attrList)
+const productList = ref<any>(props.productList)
 const newAttrState = ref({
     name: '',
     type: ''

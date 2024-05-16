@@ -95,9 +95,8 @@
                                 </template>
                             </el-table-column>
                             <el-table-column :width="240" fixed="right" label="操作">
-
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.category_id }"
+                                    <DialogForm :params="{ act: 'detail', id: row.category_id }"
                                         :data="{ parentId: row.parent_id }" isDrawer path="product/category/Info"
                                         title="编辑分类" width="600px" @okCallback="updateChildFilter">
                                         <a class="btn-link">编辑</a>

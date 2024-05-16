@@ -40,6 +40,13 @@ export const getProductActivity = (action: string, params: object) => {
         params
     });
 }
+// 获取优惠活动配置项
+export const getProductActivityConfig = () => {
+    return request<ProductActivityFormResult>({
+        url: "promotion/product_promotion/config",
+        method: "get",
+    });
+}
 // 更新优惠活动
 export const updateProductActivity = (operation: string, data: object) => {
     return request({

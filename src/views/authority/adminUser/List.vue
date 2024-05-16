@@ -49,7 +49,7 @@
                             <el-table-column :width="200" label="电话" prop="mobile"></el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.admin_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.admin_id }" isDrawer
                                                 path="authority/adminUser/Info"
                                                 title="编辑管理员" width="800px"
                                                 @okCallback="loadFilter">

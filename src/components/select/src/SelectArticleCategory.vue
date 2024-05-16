@@ -27,7 +27,7 @@ const ids = ref(props.modelValue)
 const emit = defineEmits(['update:modelValue'])
 // 加载分类
 onMounted(() => {
-    if (props.modelValue) {
+    if (props.modelValue != null) {
         loadRegion()
     }
 });

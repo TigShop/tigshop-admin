@@ -3,7 +3,7 @@
         <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
             <el-form-item> </el-form-item>
             <el-form-item label="转移至" prop="target_cat">
-                <SelectArticleCat :min-width="'100%'" v-model="formState.target_cat"></SelectArticleCat>
+                <SelectArticleCategory :min-width="'100%'" v-model="formState.target_cat"></SelectArticleCategory>
             </el-form-item>
             <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4, span: 16 }">
                 <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit(formRef)">提交 </el-button>
@@ -12,7 +12,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { SelectArticleCat, SelectCategory } from "@/components/select";
+import { SelectArticleCategory } from "@/components/select";
 import { ref, reactive, onMounted } from "vue";
 import request from "@/utils/request";
 import { message } from "ant-design-vue";
@@ -29,7 +29,8 @@ const props = defineProps({
 // 表单参数初使化
 const formRef = ref<FormInstance>(); //表单Ref
 const formState = reactive<any>({
-    ids: props.ids
+    ids: props.ids,
+    target_cat: []
 }); //表单数据
 // 父组件回调
 const emit = defineEmits([
@@ -53,7 +54,7 @@ const onSubmit = async (e: FormInstance | undefined) => {
             //values返回的是前端表单内有name的项
             new Promise((resolve, reject) => {
                 request({
-                    url: "article/batch",
+                    url: "content/article/batch",
                     method: "post",
                     data: {
                         ids: props.ids.join(","),

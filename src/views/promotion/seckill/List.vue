@@ -36,7 +36,7 @@
                             </el-table-column>
                             <el-table-column :width="100" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.seckill_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.seckill_id }" isDrawer
                                                 title="编辑限时秒杀" width="800px"
                                                 path="promotion/seckill/Info"
                                                 @okCallback="loadFilter">
@@ -85,8 +85,7 @@ import {message} from "ant-design-vue";
 import {useConfigStore} from "@/store/config";
 import {SeckillFilterParams, SeckillFilterState} from "@/types/promotion/seckill.d";
 import {batchSubmit, delSeckill, getSeckillList} from "@/api/promotion/seckill";
-
-const config = useConfigStore();
+const config:any = useConfigStore();
 // 基本参数定义
 const filterState = ref<SeckillFilterState[]>([]);
 const loading = ref<boolean>(true);
@@ -140,6 +139,6 @@ const onBatchSubmit = async (action: string) => {
 };
 // 多选操作
 const onSelectChange = (e: SeckillFilterState[]) => {
-    selectedIds.value = e.map((item) => item.seckill_id);
+    selectedIds.value = e.map((item:any) => item.seckill_id);
 };
 </script>

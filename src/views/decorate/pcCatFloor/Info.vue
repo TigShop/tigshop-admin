@@ -84,9 +84,12 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<PcCatFloorFormState>({});
+const formState = ref<PcCatFloorFormState>({
+    is_show:1,
+    sort_order:50
+});
 const fetchPcCatFloor = async () => {
     try {
         const result = await getPcCatFloor(action.value, { id: id.value });
@@ -117,14 +120,18 @@ const fetchPcCatFloor = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchPcCatFloor();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchPcCatFloor();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交
 const onSubmit = async () => {
+    await formRef.value.validate();
     try {
-        await formRef.value.validate();
         emit('update:confirmLoading', true);
         processCategoryList();
         processBrandList();

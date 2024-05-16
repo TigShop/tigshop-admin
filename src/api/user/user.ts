@@ -3,7 +3,7 @@ import {UserFilterParams, UserFilterResult, UserFormResult, UserFundFilterResult
 // 获取会员列表
 export const getUserList = (params: UserFilterParams) => {
     return request<UserFilterResult>({
-        url: "user/list",
+        url: "user/user/list",
         method: "get",
         params,
     });
@@ -12,7 +12,7 @@ export const getUserList = (params: UserFilterParams) => {
 // 删除
 export const delUser= (data: object) => {
     return request({
-        url: "user/del",
+        url: "user/user/del",
         method: "post",
         data,
     });
@@ -20,7 +20,7 @@ export const delUser= (data: object) => {
 
 export const recallUser= (data: object) => {
     return request({
-        url: "user/recall",
+        url: "user/user/recall",
         method: "post",
         data,
     });
@@ -28,7 +28,7 @@ export const recallUser= (data: object) => {
 //获取会员详情
 export const getUser  = (action: string, params: object) => {
     return request<UserFormResult>({
-        url: "user/" + action,
+        url: "user/user/" + action,
         method: "get",
         params
     });
@@ -37,7 +37,7 @@ export const getUser  = (action: string, params: object) => {
 // 更新用户信息
 export const updateUser = (operation: string, data: object) => {
     return request({
-        url: "user/" + operation,
+        url: "user/user/" + operation,
         method: "post",
         data
     });
@@ -46,14 +46,14 @@ export const updateUser = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: "user/batch?type=" + type,
+        url: "user/user/batch?type=" + type,
         method: "post",
         params,
     });
 }
 export const updateUserField = (data:object) => {
     return request({
-        url: "user/update_field",
+        url: "user/user/update_field",
         method: "post",
         data
     });
@@ -62,7 +62,7 @@ export const updateUserField = (data:object) => {
 // 资金管理
 export const updateUserFundManagement = (data: object) => {
     return request({
-        url: "user/fund_management",
+        url: "user/user/fund_management",
         method: "post",
         data
     });
@@ -70,7 +70,7 @@ export const updateUserFundManagement = (data: object) => {
 
 export const getUserFundList = (params: UserFilterParams) => {
     return request<UserFundFilterResult>({
-        url: "user/user_fund_detail",
+        url: "user/user/user_fund_detail",
         method: "get",
         params,
     });

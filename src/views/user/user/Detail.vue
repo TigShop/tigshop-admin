@@ -7,7 +7,7 @@
                         <div class="title">
                             <span class="mr10">基本信息</span>
                             <DialogForm
-                                :params="{ act: 'edit', id: formState.user_id }"
+                                :params="{ act: 'detail', id: formState.user_id }"
                                 isDrawer
                                 path="user/user/Info"
                                 title="编辑会员"
@@ -65,7 +65,7 @@
                     <div class="container-card">
                         <div class="title">
                             <span class="mr10">资金信息</span>
-                            <DialogForm :params="{ act: 'edit', id: formState.user_id }" isDrawer path="user/user/EditAccount" title="资金管理" width="600px">
+                            <DialogForm :params="{ act: 'detail', id: formState.user_id }" isDrawer path="user/user/EditAccount" title="资金管理" width="600px">
                                 <a class="btn-link">管理</a>
                             </DialogForm>
                         </div>

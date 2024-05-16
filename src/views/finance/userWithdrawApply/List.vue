@@ -65,7 +65,7 @@
                             <el-table-column label="到款状态" prop="status_type" ></el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.id }" isDrawer
                                                 path="finance/userWithdrawApply/Info"
                                                 title="查看申请" width="600px"
                                                 @okCallback="loadFilter">

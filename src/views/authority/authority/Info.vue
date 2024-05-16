@@ -96,7 +96,7 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<AuthorityFormState>({
     child_auth: []
@@ -118,11 +118,13 @@ const fetchAuthority = async () => {
 }
 
 onMounted(() => {
-    // 获取详情数据
-    fetchAuthority();
-    console.log(operation);
-    console.log(props.parentId);
-    if (operation === 'insert') {
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchAuthority();
+    } else {
+        loading.value = false;
+    }
+    if (operation === 'create') {
         formState.value.parent_id = props.parentId
     }
 });

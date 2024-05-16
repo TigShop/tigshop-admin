@@ -78,15 +78,19 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<ProductAttributesTplFormState>({
 
 });
 
 onMounted(() => {
-    // 获取详情数据
-    fetchTpl();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchTpl();
+    } else {
+        loading.value = false;
+    }
 });
 const fetchTpl = async () => {
     try {

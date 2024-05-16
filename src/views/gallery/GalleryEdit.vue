@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 
-import { ref, reactive, toRefs } from "vue"
+import { ref, reactive, toRefs, onMounted } from "vue"
 import request from '../../utils/request'
 import { useRouter } from 'vue-router'
 import { avatarProps } from "ant-design-vue/es/avatar";
@@ -44,25 +44,33 @@ const props = defineProps({
 })
 const { parentId, id, act } = toRefs(props);
 // 判断是处理更新还是添加
-const operation = act.value == 'add' ? 'insert' : 'update';
+const operation = act.value == 'add' ? 'create' : 'update';
 
 // 表单参数初使化
 const formRef = ref();  //表单Ref
-let formState = reactive<any>({});  //表单数据
-// 获取详情数据
-request({
-    url: 'setting/gallery/' + act.value + '/',
-    method: 'get',
-    params: {
-        id: id.value
+let formState = reactive<any>({
+    gallery_sort: 50
+});  //表单数据
+onMounted(() => {
+    if (act.value === "detail") {
+        // 获取详情数据
+        // 获取详情数据
+        request({
+            url: 'setting/gallery/' + act.value,
+            method: 'get',
+            params: {
+                id: id.value
+            }
+        }).then((result: any) => {
+            // 合并前端的初使参数和获取到的参数
+            formState = Object.assign(
+                formState,
+                result.item
+            )
+        });
     }
-}).then((result: any) => {
-    // 合并前端的初使参数和获取到的参数
-    formState = Object.assign(
-        formState,
-        result.item
-    )
 });
+
 console.log(parentId.value)
 // 父组件回调
 const emit = defineEmits(["submitCallback", "okType"])
@@ -72,7 +80,7 @@ const formSubmit = (values: any) => {
     //values返回的是前端表单内有name的项
     formRef.value.validate().then(() => {
         request({
-            url: 'setting/gallery/' + operation + '/',
+            url: 'setting/gallery/' + operation,
             method: 'post',
             data: {
                 id: id.value,

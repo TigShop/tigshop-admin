@@ -124,7 +124,7 @@
                             <el-table-column :width="160" label="注册日期" prop="reg_time" sortable="custom"></el-table-column>
                             <el-table-column :width="250" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.user_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.user_id }" isDrawer
                                                 path="user/user/Detail"
                                                 title="会员管理" width="800px"
                                                 @okCallback="loadFilter" @callback="loadFilter">
@@ -144,7 +144,7 @@
                                         <a class="btn-link">账目明细</a>
                                     </DialogForm>
                                     <el-divider direction="vertical"/>
-                                    <DeleteRecord :params="{ id: row.brand_id }" :requestApi="delUser"
+                                    <DeleteRecord :params="{ id: row.user_id }" :requestApi="delUser"
                                                   @afterDelete="loadFilter">删除
                                     </DeleteRecord>
                                 </template>

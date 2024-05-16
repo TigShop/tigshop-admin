@@ -37,7 +37,7 @@
                 <el-button v-if="formState.available_actions.del_order" bg size="small" text type="primary" @click="onDelClick"> 删除订单 </el-button>
                 <DialogForm
                     v-if="formState.available_actions.deliver"
-                    :params="{ act: 'info', id: formState.order_id }"
+                    :params="{ act: 'detail', id: formState.order_id }"
                     :title="'订单发货 ' + formState.order_sn"
                     isDrawer
                     path="order/order/src/ToShip"
@@ -50,7 +50,7 @@
                     拆分店铺订单<Tooltip ico content="该订单来自多个店铺且还未拆分，在做任何操作前，您需要先拆分该订单" />
                 </el-button>
                 <DialogForm
-                    :params="{ act: 'info', id: formState.order_id, valueName: 'admin_note' }"
+                    :params="{ act: 'detail', id: formState.order_id, valueName: 'admin_note' }"
                     isDrawer
                     path="order/order/src/EditRemark"
                     title="编辑备注"
@@ -70,7 +70,7 @@
             <div v-if="formState.admin_note">
                 <span class="orange">商家备注：</span>{{ formState.admin_note }}
                 <DialogForm
-                    :params="{ act: 'info', id: formState.order_id, valueName: 'admin_note' }"
+                    :params="{ act: 'detail', id: formState.order_id, valueName: 'admin_note' }"
                     isDrawer
                     path="order/order/src/EditRemark"
                     title="编辑备注"
@@ -87,7 +87,7 @@
                     <div class="min-title">
                         收货人信息
                         <DialogForm
-                            :params="{ act: 'info', id: formState.order_id, form: formState}"
+                            :params="{ act: 'detail', id: formState.order_id, form: formState}"
                             isDrawer
                             path="order/order/src/EditConsignee"
                             title="编辑收货人信息"
@@ -127,7 +127,7 @@
                     <div class="min-title">
                         配送信息
                         <DialogForm
-                            :params="{ act: 'edit', id: formState.order_id }"
+                            :params="{ act: 'detail', id: formState.order_id }"
                             isDrawer
                             path="order/order/src/EditShipping"
                             title="编辑配送方式"
@@ -175,7 +175,7 @@
             <div class="title">
                 商品信息
                 <DialogForm
-                    :params="{ act: 'info', id: formState.order_id }"
+                    :params="{ act: 'detail', id: formState.order_id }"
                     isDrawer
                     path="order/order/src/EditProduct"
                     title="编辑商品信息"
@@ -218,7 +218,7 @@
             <div class="title">
                 订单金额
                 <DialogForm
-                    :params="{ act: 'info', id: formState.order_id }"
+                    :params="{ act: 'detail', id: formState.order_id }"
                     isDrawer
                     path="order/order/src/EditMoney"
                     title="编辑金额"
@@ -301,7 +301,7 @@ const query = useRouter().currentRoute.value.query;
 console.log(useRouter().currentRoute);
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<OrderFormState>({
     balance: 0,

@@ -81,15 +81,15 @@
                                 </el-table-column>
                                 <el-table-column :width="220" fixed="right" label="操作">
                                     <template #default="{ row }">
-                                        <DialogForm :params="{ act: 'edit', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
+                                        <DialogForm :params="{ act: 'detail', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
                                             <a class="btn-link">编辑</a>
                                         </DialogForm>
                                         <el-divider direction="vertical" />
-                                        <DialogForm :params="{ act: 'edit', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
+                                        <DialogForm :params="{ act: 'detail', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
                                             <a class="btn-link">查看店铺</a>
                                         </DialogForm>
                                         <el-divider direction="vertical" />
-                                        <DialogForm :params="{ act: 'edit', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
+                                        <DialogForm :params="{ act: 'detail', id: row.store_id }" isDrawer path="store/store/Info" title="编辑用户评论" width="600px" @okCallback="loadFilter">
                                             <a class="btn-link">进入后台</a>
                                         </DialogForm>
                                         <el-divider direction="vertical" />

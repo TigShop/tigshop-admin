@@ -21,7 +21,7 @@ export const getAllAuthority = (params?: object) => {
 // 商品分类页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: "authority/authority/batch/?type=" + type,
+        url: "authority/authority/batch?type=" + type,
         method: "post",
         data,
     });

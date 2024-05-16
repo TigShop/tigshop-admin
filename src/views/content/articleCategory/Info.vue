@@ -60,19 +60,23 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<FormState>({
     article_category_name: "",
-    parent_id: 0,
+    parent_id: props.parentId,
     keywords: "",
     description: "",
-    sort_order: 0
+    sort_order: 50
 });
 
 onMounted(() => {
-    // 获取详情数据
-    fetchArticle();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchArticle();
+    } else {
+        loading.value = false;
+    }
 });
 const fetchArticle = async () => {
     try {

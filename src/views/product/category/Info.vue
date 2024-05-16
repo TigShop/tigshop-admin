@@ -96,10 +96,12 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
-const formState = ref<CategoryFormState>({});
-
+const formState = ref<CategoryFormState>({
+    is_show: 1,
+    sort_order: 50,
+});
 const fetchCategory = async () => {
     try {
         const result = await getCategory(action.value, { id: id.value });
@@ -118,9 +120,13 @@ const fetchCategory = async () => {
 };
 
 onMounted(() => {
-    // 获取详情数据
-    fetchCategory();
-    if (operation === "insert") {
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchCategory();
+    } else {
+        loading.value = false;
+    }
+    if (operation === "create") {
         formState.value.parent_id = props.parentId;
         console.log(formState.value.parent_id);
     }

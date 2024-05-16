@@ -29,6 +29,7 @@
                             <p> 会员金额信息</p>
                             <hr style="border: 0.5px solid #dddddd;">
                             金额：{{ priceFormat(formState.amount)}}<br>
+                            赠送金额：{{ priceFormat(formState.discount_money)}}<br>
                             操作日期：{{formState.add_time}}
                         </div>
                         <el-form-item  :rules="[{ required: true, message: '管理员备注不能为空!' }]"  label="管理员备注" prop="postscript">
@@ -73,10 +74,11 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<UserRechargeOrderFormState>({
-    amount: 0
+    amount: 0,
+    status: 0
 });
 const fetchUserRechargeOrder = async () => {
     try {
@@ -95,8 +97,12 @@ const fetchUserRechargeOrder = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchUserRechargeOrder();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchUserRechargeOrder();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交

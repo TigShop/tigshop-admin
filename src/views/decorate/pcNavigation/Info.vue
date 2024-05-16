@@ -82,19 +82,22 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<PcNavigationFormState>({
-    type: 0
+    type: props.type,
+    is_show:1,
+    is_blank:0
 });
 const fetchPcNavigation = async () => {
     try {
         const result = await getPcNavigation(action.value, { id: id.value });
         Object.assign(formState.value, result.item);
-        if (operation === "insert") {
+        if (operation === "create") {
             formState.value.type = props.type;
             formState.value.type_name = props.type_name;
         }
+        getOptions(formState.value.type);
     } catch (error: any) {
         message.error(error.message);
         emit("close");
@@ -109,14 +112,12 @@ const getOptions = async (value: number) => {
 };
 
 onMounted(() => {
-    // 获取详情数据
-    fetchPcNavigation().then(() => {
-        if (operation === "insert") {
-            getOptions(props.type);
-        } else {
-            getOptions(formState.value.type);
-        }
-    });
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchPcNavigation();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交

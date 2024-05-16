@@ -3,7 +3,7 @@
         <div class="title">
             操作日志
             <DialogForm
-              :params="{ act: 'info', id: filterParams.order_id, valueName: 'add_note' }"
+              :params="{ act: 'detail', id: filterParams.order_id, valueName: 'add_note' }"
               isDrawer
               path="order/order/src/EditRemark"
               title="添加日志"

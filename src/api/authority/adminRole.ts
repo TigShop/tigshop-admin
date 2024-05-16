@@ -12,7 +12,7 @@ export const getAdminRoleList = (params: AdminRoleFilterParams) => {
 // 商品分类页面批量操作
 export const batchSubmit = (type: string, data: object) => {
     return request({
-        url: "authority/admin_role/batch/?type=" + type,
+        url: "authority/admin_role/batch?type=" + type,
         method: "post",
         data,
     });

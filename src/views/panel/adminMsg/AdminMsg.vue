@@ -38,7 +38,7 @@ import Collapse from "./src/Collapse.vue";
 import type { AdminMsgFilterParams, AdminMsgFilterState, AdminMsgMsgTypeFilterState } from "@/types/panel/adminMsg";
 import { getAdminMsgList, getAdminMsgSetAllReaded } from "@/api/panel/adminMsg";
 
-const config = useConfigStore();
+const config:any = useConfigStore();
 const msgList = ref<AdminMsgMsgTypeFilterState[]>([]);
 interface childFrom {
     msg_type: number;
@@ -53,9 +53,6 @@ const filterParams = reactive<AdminMsgFilterParams>({
     //初使化用于查询的参数
     page: 1,
     size: config.get("page_size"),
-    sort_field: "",
-    sort_order: "",
-    keyword: "",
     msg_type: 11,
 });
 const filterState = ref(<AdminMsgFilterState[]>[]);

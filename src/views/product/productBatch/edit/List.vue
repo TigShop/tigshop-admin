@@ -335,7 +335,7 @@ const onReset = () => {
 // 提交前的验证函数
 const validateProducts = (data:any) => {
   for (let product of data) {
-    if (!product.product_name || !product.product_sn) {
+    if (product.product_name == "" || product.product_sn == "") {
       message.error(`商品名称或商品货号不能为空`);
       return false; // 验证失败，直接返回
     }

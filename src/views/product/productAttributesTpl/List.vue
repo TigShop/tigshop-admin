@@ -45,7 +45,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.tpl_id }" isDrawer path="product/productAttributesTpl/Info" title="编辑属性模板" width="600px"
+                                    <DialogForm :params="{ act: 'detail', id: row.tpl_id }" isDrawer path="product/productAttributesTpl/Info" title="编辑属性模板" width="600px"
                                                 @okCallback="loadFilter">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>

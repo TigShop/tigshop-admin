@@ -87,7 +87,7 @@
                             <el-table-column label="操作" fixed="right" :width="150">
                                 <template #default="{ row }">
                                     <DialogForm isDrawer @okCallback="loadFilter" title="编辑积分商品" width="600px"
-                                        path="promotion/pointsExchange/Info" :params="{ act: 'edit', id: row.id }">
+                                        path="promotion/pointsExchange/Info" :params="{ act: 'detail', id: row.id }">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                     <el-divider direction="vertical" />

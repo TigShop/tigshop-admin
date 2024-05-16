@@ -26,7 +26,7 @@ export function priceFormat(price: number | undefined, currencyFormat = true) {
 }
 
 // 链接格式化
-export function urlFormat(params: string | { path: string; [key: string]: any; platform: string }): string {
+export function urlFormat(params: string | { path: string; [key: string]: any; platform?: string }): string {
     const config = useConfigStore();
     const domain = config.get("pc_domain") ? config.get("pc_domain") : config.get("h5_domain");
     if (typeof params === "string") {
