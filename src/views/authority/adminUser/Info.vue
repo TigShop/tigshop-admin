@@ -49,7 +49,7 @@
                     <el-form-item v-if="formState.role_id === 0" label="" prop="auth_list">
                         <AuthoritySelect v-model="formState.auth_list"></AuthoritySelect>
                     </el-form-item>
-                    <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4, span: 16 }">
+                    <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4,span: 16 }">
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
                 </el-form>
@@ -101,10 +101,6 @@ const fetchAdminUser = async () => {
     try {
         const result = await getAdminUser(action.value, { id: id.value });
         Object.assign(formState.value, result.item);
-        if (operation != "update" && props.type === "suppliers") {
-            formState.value.role_id = 2;
-            formState.value.suppliers_id = props.suppliers_id;
-        }
         let temp = extractContent(String(formState.value.avatar));
         if(temp){
             formState.value.def_avatar = temp
@@ -132,6 +128,10 @@ onMounted(() => {
         fetchAdminUser();
     } else {
         loading.value = false;
+    }
+    if (operation != "update" && props.type === "suppliers") {
+        formState.value.role_id = 2;
+        formState.value.suppliers_id = props.suppliers_id;
     }
     fetchAdminUserConfit()
 });
