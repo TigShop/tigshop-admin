@@ -13,9 +13,6 @@
                                         { key: 2, title: '虚拟商品' }
                                     ]"
                                 ></RadioType>
-                                        { key: 2, title: '虚拟商品' }
-                                    ]"
-                                ></RadioType>
                             </el-form-item>
                             <el-form-item :rules="[{ required: true, message: '商品名称不能为空' }]" label="商品名称" prop="product_name">
                                 <el-input v-model="formState.product_name" description="请输入您的姓名" />
@@ -40,8 +37,6 @@
                                     v-if="!loading"
                                     v-model:category_id="formState.category_id"
                                     :multiple="false"
-                                    style="width: 100%"
-                                ></SelectCategory>
                                     style="width: 100%"
                                 ></SelectCategory>
                             </el-form-item>
@@ -90,8 +85,6 @@
                                         :label="item.shipping_tpl_name"
                                         :value="item.shipping_tpl_id"
                                     />
-                                        :value="item.shipping_tpl_id"
-                                    />
                                 </el-select>
                                 <div class="extra">不选择则时，该商品运费按默认运费模板计算。当前默认运费模板：默认模板</div>
                             </el-form-item>
@@ -125,6 +118,30 @@
                                 <Checkbox v-model="formState.is_hot">
                                     <template #default> 热销</template>
                                 </Checkbox>
+                            </el-form-item>
+                            <el-form-item prop="promote_price">
+                                <template #label>
+                                    <Checkbox v-model="formState.is_promote">
+                                        <template #default> 促销价</template>
+                                    </Checkbox>
+                                </template>
+                                <el-input v-model="formState.promote_price"></el-input>
+                            </el-form-item>
+                            <el-form-item v-if="formState.is_promote" label="促销时间" prop="promote_date" style="width:600px;">
+                                <!-- <el-date-picker
+                                    v-model="promoteDate"
+                                    :shortcuts="shortcuts"
+                                    end-placeholder="结束时间"
+                                    range-separator="-"
+                                    start-placeholder="开始时间"
+                                    type="datetimerange" /> -->
+                                <SelectTimeInterval
+                                    type="datetime"
+                                    v-model:start-date="formState.promote_start_date"
+                                    v-model:end-date="formState.promote_end_date"
+                                    value-format="YYYY-MM-DD HH:mm:ss"
+                                ></SelectTimeInterval>
+                                <div class="extra">需先钩选促销价</div>
                             </el-form-item>
                             <!-- <el-form-item label="阶梯价格" prop="volume_list">
                                 <DynamicList
