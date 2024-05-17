@@ -493,6 +493,7 @@ defineExpose({onFormSubmit});
             display: flex;
             flex-direction: row;
             gap: 10px;
+            flex-wrap: wrap;
 
             .bg-card {
                 font-size: 8px;
