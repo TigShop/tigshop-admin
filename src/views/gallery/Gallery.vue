@@ -335,6 +335,8 @@ const delPic = async (pic_id: number) => {
     try {
         const result = await delGalleryPicField({ id: pic_id });
         message.success(result.message);
+        topGalleryId.value = 0;
+        galleryId.value = 0;
         loadGallery();
     } catch (error: any) {
         message.error(error.message);
