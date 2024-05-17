@@ -19,7 +19,7 @@
                         </div>
                         <div class="extra">如果未设置自定义头像，将采用系统头像</div>
                     </el-form-item>
-                    <template v-if="operation == 'insert'">
+                    <template v-if="operation == 'create'">
                         <el-form-item :rules="[{ required: true, message: '设置密码不能为空!' }]" label="设置密码" prop="password">
                             <el-input v-model="formState.password" type="password" />
                         </el-form-item>
@@ -62,7 +62,7 @@ import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import {DefaultAvatar, FormAddGallery} from "@/components/gallery";
 import { AdminUserFormState, AdminUserRoleListItem } from "@/types/authority/adminUser";
-import { getAdminUser, updateAdminUser } from "@/api/authority/adminUser";
+import { getAdminUser, updateAdminUser, getAdminUserConfig } from "@/api/authority/adminUser";
 import AuthoritySelect from "@/views/authority/AuthoritySelect.vue";
 import {extractContent} from "@/utils/util";
 // 父组件回调
@@ -99,7 +99,6 @@ const fetchAdminUser = async () => {
     try {
         const result = await getAdminUser(action.value, { id: id.value });
         Object.assign(formState.value, result.item);
-        role_list.value = result.role_list;
         if (operation != "update" && props.type === "suppliers") {
             formState.value.role_id = 2;
             formState.value.suppliers_id = props.suppliers_id;
@@ -116,7 +115,14 @@ const fetchAdminUser = async () => {
         loading.value = false;
     }
 };
-
+const fetchAdminUserConfit = async () => {
+    try {
+        const result = await getAdminUserConfig();
+        role_list.value = result.role_list;
+    } catch (error: any) {
+        message.error(error.message);
+    }
+};
 
 onMounted(() => {
     if (action.value === "detail") {
@@ -125,6 +131,7 @@ onMounted(() => {
     } else {
         loading.value = false;
     }
+    fetchAdminUserConfit()
 });
 
 // 表单通过验证后提交
