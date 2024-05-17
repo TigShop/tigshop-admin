@@ -94,6 +94,7 @@ body {
   margin: 0;
   color: rgba(0, 0, 0, 0.85);
   font-size: 12px;
+  overflow-y: scroll;
   font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
   font-variant: tabular-nums;
   background-color: #fff;
@@ -574,4 +575,24 @@ body .el-tabs__content {
   margin-bottom: 20px;
   line-height: 26px;
   white-space: normal;
+}
+@media only screen and (max-width: 767px) {
+  .el-form-item__label {
+    max-width: 92px;
+    text-align: right;
+    line-height: 16px;
+    padding-top: 7px;
+  }
+  .main-panel ul {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .filtrate-menu {
+    flex-wrap: wrap;
+  }
+  .filtrate-menu .asterisk-left {
+    width: 100%;
+  }
+  .ant-drawer .ant-drawer-body {
+    padding: 20px;
+  }
 }

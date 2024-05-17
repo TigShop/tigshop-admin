@@ -33,7 +33,7 @@ export interface MobileCatNavFormState {
     child_cat_ids?: number[];
     brand_ids: any[];
     is_show?: number;
-    sort_order?: string;
+    sort_order?: number;
 }
 
 export interface MobileCatNavFormResult {

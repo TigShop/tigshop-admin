@@ -7,7 +7,8 @@
                 path="product/product/src/SelectProduct"
                 title="选择商品"
                 width="600px"
-                @okCallback="onOk">
+                @okCallback="onOk"
+            >
                 <el-button :disabled="max > 0 && ids?.length >= max" type="primary">选择商品</el-button>
             </DialogForm>
             <span v-if="isMultiple && ids?.length > 0" class="ml10"
@@ -42,7 +43,8 @@
                     :total="total"
                     @callback="loadList"
                     layout="slot ,prev, pager, next"
-                    :background="false" />
+                    :background="false"
+                />
             </div>
         </div>
     </div>
@@ -63,8 +65,8 @@ const props = defineProps({
     // 单选还是多选
     isMultiple: {
         type: Boolean,
-        default: true,
-    },
+        default: true
+    }
 });
 
 const ids = defineModel<number[]>("ids", { type: Array, default: [] });
@@ -85,7 +87,7 @@ const filterParams = reactive<ProductFilterParams>({
     size: config.get("page_size"),
     sort_field: "",
     sort_order: "",
-    keyword: "",
+    keyword: ""
 });
 const loadList = async (id: number[]) => {
     loading.value = true;
@@ -118,12 +120,12 @@ const clear = () => {
 // 删除
 const del = (key: number) => {
     let del_product_id = productList.value[key].product_id;
-    ids.value = ids.value.filter(num => num !== del_product_id);
+    ids.value = ids.value.filter((num) => num !== del_product_id);
     productList.value.splice(<any>key, 1);
 };
 defineExpose({
     ids,
-    productList,
+    productList
 });
 </script>
 
@@ -219,5 +221,24 @@ defineExpose({
 
 .lyecs-product-select-group .product-selected-list-tr .product-info img {
     margin-right: 10px;
+}
+@media only screen and (max-width: 767px) {
+    .lyecs-product-selected-con {
+        overflow-x: auto;
+        max-width: 100% !important;
+    }
+    .lyecs-product-select-group .product-selected-list {
+        min-width: auto;
+    }
+    .lyecs-product-select-group .product-selected-list-tr .col1 {
+        width: 50px;
+        word-break: break-all;
+    }
+    .lyecs-product-select-group .product-selected-list-tr .col3 {
+        width: 30px;
+    }
+    .lyecs-product-select-group .product-selected-list-tr .product-info {
+        flex-wrap: wrap;
+    }
 }
 </style>

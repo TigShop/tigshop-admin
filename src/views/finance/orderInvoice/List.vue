@@ -72,7 +72,7 @@
                                 <el-table-column label="金额(￥)" prop="amount" width="80"></el-table-column>
                                 <el-table-column label="申请订单">
                                     <template #default="{ row }">
-                                        <DialogForm :params="{ act: 'info', id: row.order_id }" :showClose="false" :showOnOk="false" :title="'订单详情 ' + row.order_sn" isDrawer
+                                        <DialogForm :params="{ act: 'detail', id: row.order_id }" :showClose="false" :showOnOk="false" :title="'订单详情 ' + row.order_sn" isDrawer
                                                     path="order/order/Info" width="880px" @callback="loadFilter">
                                             <a class="btn-link"> {{ row.order_sn }}</a>
                                         </DialogForm>
@@ -86,7 +86,7 @@
                                 </el-table-column>
                                 <el-table-column :width="150" fixed="right" label="操作">
                                     <template #default="{ row }">
-                                        <DialogForm :params="{ act: 'edit', id: row.id }" isDrawer path="finance/orderInvoice/Info"
+                                        <DialogForm :params="{ act: 'detail', id: row.id }" isDrawer path="finance/orderInvoice/Info"
                                                     title="编辑用户评论" width="700px"
                                                     @okCallback="loadFilter">
                                             <a class="btn-link">编辑</a>

@@ -60,7 +60,7 @@ import { ref, shallowRef, onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { ProductActivityFormState, RankList } from "@/types/promotion/productActivity.d";
-import { getProductActivity, updateProductActivity } from "@/api/promotion/productActivity";
+import { getProductActivity, updateProductActivity, getProductActivityConfig } from "@/api/promotion/productActivity";
 import type { FormRules } from "element-plus";
 import { SelectGoodsRange, SelectGift } from "@/components/select";
 import { SelectTimeInterval } from "@/components/select";
@@ -108,19 +108,22 @@ const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const promotion_type = ref<number>(props.isDialog ? props.promotion_type : Number(query.coupon_type) || 0);
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<ProductActivityFormState>({
-    range: 0,
     max_order_amount: 0,
-    min_order_amount: 0,
     promotion_type: promotion_type.value || 0,
     promotion_type_data: promotion_type.value == 0 ? [] : 0
 });
 
 onMounted(() => {
-    // 获取详情数据
-    fetchProductActivity();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchProductActivity();
+    } else {
+        loading.value = false;
+    }
+    fetchProductActivityConfig()
 });
 
 const fetchProductActivity = async () => {
@@ -133,9 +136,6 @@ const fetchProductActivity = async () => {
             promotion_type.value = result.item.promotion_type;
         }
         Object.assign(formState.value, result.item);
-        let obj = { rank_id: 0, rank_name: "非会员" };
-        result.rank_list.unshift(obj);
-        rankList.value = result.rank_list;
     } catch (error: any) {
         message.error(error.message);
         emit("close");
@@ -143,11 +143,23 @@ const fetchProductActivity = async () => {
         loading.value = false;
     }
 };
+const fetchProductActivityConfig = async () => {
+    try {
+        const result = await getProductActivityConfig();
+        let obj = { rank_id: 0, rank_name: "非会员" };
+        result.rank_list.unshift(obj);
+        rankList.value = result.rank_list;
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+};
 
 // 表单通过验证后提交
 const onSubmit = async () => {
+    await formRef.value.validate();
     try {
-        await formRef.value.validate();
         emit("update:confirmLoading", true);
         const result = await updateProductActivity(operation, { id: id.value, ...formState.value });
         emit("submitCallback", result);

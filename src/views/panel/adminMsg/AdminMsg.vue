@@ -1,12 +1,12 @@
 <template>
     <div class="message_center">
-        <div class="tab_box">
+        <div class="tab_box tab_box1">
             <div class="tab" v-for="(item, index) in msgList" :class="msgIndex == index ? 'current' : ''" @click="msgChange(index)">
                 <p>{{ item.cat_name }}</p>
                 <p class="num" v-if="item.unread_count > 0">{{ item.unread_count }}</p>
             </div>
         </div>
-        <div class="tab_box">
+        <div class="tab_box tab_box2">
             <div class="tab" v-for="(item, index) in childList" :class="childIndex == index ? 'current' : ''" @click="childChange(index)">
                 <p>{{ item.name }}</p>
                 <p class="num" v-if="item.unread_count > 0">{{ item.unread_count }}</p>
@@ -20,12 +20,12 @@
                 <img src="/src/style/images/common/empty-bg.png" alt="" />
                 <p>当前暂无任何消息哟</p>
             </div>
+            <div v-if="filterState.length > 0 && total > 0" class="pagination-con">
+                <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :background="false" :total="total" @callback="loadFilter" />
+            </div>
         </div>
         <div class="btn">
             <el-button @click="setAllReaded">全部已读</el-button>
-        </div>
-        <div v-if="filterState.length > 0 && total > 0" class="pagination-con">
-            <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
         </div>
     </div>
 </template>
@@ -38,7 +38,7 @@ import Collapse from "./src/Collapse.vue";
 import type { AdminMsgFilterParams, AdminMsgFilterState, AdminMsgMsgTypeFilterState } from "@/types/panel/adminMsg";
 import { getAdminMsgList, getAdminMsgSetAllReaded } from "@/api/panel/adminMsg";
 
-const config = useConfigStore();
+const config: any = useConfigStore();
 const msgList = ref<AdminMsgMsgTypeFilterState[]>([]);
 interface childFrom {
     msg_type: number;
@@ -53,10 +53,7 @@ const filterParams = reactive<AdminMsgFilterParams>({
     //初使化用于查询的参数
     page: 1,
     size: config.get("page_size"),
-    sort_field: "",
-    sort_order: "",
-    keyword: "",
-    msg_type: 11,
+    msg_type: 11
 });
 const filterState = ref(<AdminMsgFilterState[]>[]);
 const total = ref<number>(0);
@@ -119,7 +116,6 @@ const toArray = (arr: any) => {
         width: 150px;
         padding: 20px 10px;
         border-right: 1px solid #eee;
-
         .tab {
             padding: 7px 20px;
             line-height: 20px;
@@ -155,7 +151,7 @@ const toArray = (arr: any) => {
         flex: 1;
         padding: 10px 20px;
         .item {
-            height: 370px;
+            height: 380px;
             overflow: auto;
             &::-webkit-scrollbar-thumb {
                 border-radius: 8px;
@@ -176,9 +172,7 @@ const toArray = (arr: any) => {
         }
     }
     .pagination-con {
-        position: absolute;
-        right: 20px;
-        bottom: 10px;
+        margin-bottom: 0;
     }
     .btn {
         position: absolute;
@@ -186,26 +180,40 @@ const toArray = (arr: any) => {
         bottom: 20px;
     }
 }
+@media only screen and (max-width: 767px) {
+    .message_center {
+        flex-wrap: wrap;
+    }
+    .message_center .tab_box {
+        padding: 0;
+        display: flex;
+        height: auto;
+        width: 100%;
+        flex-wrap: nowrap;
+        border-bottom: 1px solid #eee;
+        .tab {
+            flex: 1;
+            padding: 7px 10px;
+            box-sizing: border-box;
+            p {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+            }
+        }
+    }
+    .message_center .tab_box1 {
+        background-color: #f2f2f2;
+    }
+    .message_center .tab_box2 {
+        flex-wrap: wrap;
+        .tab {
+            width: auto;
+            flex: none;
+            background-color: #fff;
+        }
+    }
+}
 </style>
-<!-- 
-    <div class="message_center">
-        <div class="tab_box" v-for="item in msgList">
-            <div class="tab">
-                {{ item.name }}
-            </div>
-        </div>
-        <div class="tab_box" v-for="item in childList">
-            <div class="tab">
-                {{ item.name }}
-            </div>
-        </div>
-        <div class="list_box" style="height: 418px;">
-            <div class="demo-collapse">
-                <div class="table-empty">
-                    <img src="/src/style/images/common/empty-bg.png" alt="">
-                    <p>当前暂无任何消息哟</p>
-                </div> 
-            </div>
-        </div>
-    </div>
- -->

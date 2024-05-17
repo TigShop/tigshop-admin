@@ -57,7 +57,7 @@
                             <el-table-column label="操作" fixed="right" :width="150">
                                 <template #default="{ row }">
                                     <DialogForm isDrawer @okCallback="loadFilter" title="编辑示例模板" width="600px" path="promotion/rechargeSetting/Info"
-                                        :params="{ act: 'edit', id: row.recharge_id }">
+                                        :params="{ act: 'detail', id: row.recharge_id }">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                     <el-divider direction="vertical" />

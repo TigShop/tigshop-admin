@@ -1,16 +1,14 @@
 <template>
     <div class="body-menu-mask"></div>
     <div class="main-warp">
-        <perfect-scrollbar class="main-layout-box">
-            <div class="page-grid-content">
-                <pageHeader></pageHeader>
-                <router-view :key="$route.fullPath" />
-            </div>
-        </perfect-scrollbar>
+        <div class="page-grid-content">
+            <pageHeader></pageHeader>
+            <router-view :key="$route.fullPath" />
+        </div>
     </div>
 </template>
-<script setup lang="ts" >
-import pageHeader from './pageHeader.vue'
+<script setup lang="ts">
+import pageHeader from "./pageHeader.vue";
 </script>
 <style lang="less">
 .main-warp {
@@ -19,6 +17,7 @@ import pageHeader from './pageHeader.vue'
     z-index: 10;
     left: 268px;
     right: 0;
+    padding-top: 60px;
 }
 
 .main-layout-box {
@@ -30,4 +29,12 @@ import pageHeader from './pageHeader.vue'
     background: #fff;
     bottom: 0;
     overflow-y: auto;
-}</style>
+}
+
+@media only screen and (max-width: 767px) {
+    .main-warp {
+        left: 0 !important;
+        padding-top: 0px !important;
+    }
+}
+</style>

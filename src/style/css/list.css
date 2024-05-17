@@ -66,6 +66,11 @@
   background: #f7f7f7;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16);
 }
+.simple-form-warp {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
 .list-table-tool .simple-form-field {
   display: inline-block;
   margin-bottom: 0;
@@ -73,7 +78,7 @@
   margin-bottom: 16px;
 }
 .list-table-tool .simple-form-field .form-group {
-  clear: both;
+  width: 100%;
   display: flex;
 }
 .list-table-tool .simple-form-field .control-label {
@@ -91,7 +96,7 @@
   position: relative;
   min-height: 1px;
   padding-right: 15px;
-  min-width: 180px;
+  flex: 1;
 }
 .list-table-tool .simple-form-field .control-container .select_div {
   vertical-align: initial;
@@ -241,4 +246,34 @@ tr:hover .lyecs-popedit-btn {
 }
 .table-switch-off i {
   left: 2px;
+}
+@media only screen and (max-width: 767px) {
+  .list-table-tool .simple-form-field {
+    width: 100%;
+  }
+  .list-table-tool .simple-form-field .el-button--primary {
+    width: 100%;
+  }
+  .list-table-tool-row {
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .control-container {
+    padding-right: 0 !important;
+  }
+  .advanced-search-btn {
+    margin: 10px 0 10px 0;
+    margin-left: 0 !important;
+  }
+  .list-table-tool-col .el-space {
+    flex-wrap: wrap;
+    gap: 8px !important;
+  }
+  .filtrate-menu {
+    flex-wrap: wrap;
+  }
+  .filtrate-menu .asterisk-left {
+    width: 100%;
+  }
 }

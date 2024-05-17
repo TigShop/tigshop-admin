@@ -329,7 +329,7 @@ export default {
             }
             request({
                 url: 'common/verification/captcha',
-                method: 'post',
+                method: 'get',
                 data: data
             }).then(result => {
                 backImgBase.value = result.originalImageBase64

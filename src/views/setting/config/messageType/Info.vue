@@ -159,7 +159,7 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<MessageTypeFormState>({
     template_message: {
@@ -208,8 +208,12 @@ const fetchMessageType = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchMessageType();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchMessageType();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交

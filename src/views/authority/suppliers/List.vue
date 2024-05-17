@@ -53,7 +53,7 @@
                             </el-table-column>
                             <el-table-column :width="180" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.suppliers_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.suppliers_id }" isDrawer
                                                 path="authority/suppliers/Info"
                                                 title="编辑供应商" width="600px"
                                                 @okCallback="loadFilter">

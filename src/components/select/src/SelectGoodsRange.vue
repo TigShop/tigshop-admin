@@ -11,20 +11,16 @@
         </el-space>
     </div>
     <div class="tags" v-if="type == 'productBatch'">
-        <el-tag v-for="(tag,index) in tagList" :key="tag" closable @close="onClose(index)">
+        <el-tag v-for="(tag, index) in tagList" :key="tag" closable @close="onClose(index)">
             {{ tag.brand_name }}
         </el-tag>
     </div>
     <div v-if="rangeType == 1">
-        <SelectCategory :multiple="true" style="width: 260px;" v-model:category_id="rangeIds"
-            @update:category_id="selectChange">
-        </SelectCategory>
+        <SelectCategory :multiple="true" style="width: 260px" v-model:category_id="rangeIds" @update:category_id="selectChange"> </SelectCategory>
     </div>
     <div v-if="rangeType == 2">
-        <SelectBrand v-if="type == 'productBatch'"  style="width: 260px;" v-model:brand_form="brandForm">
-        </SelectBrand>
-        <SelectBrand v-else  style="width: 260px;" v-model:brand_id="rangeIds">
-        </SelectBrand>
+        <SelectBrand v-if="type == 'productBatch'" style="width: 260px" v-model:brand_form="brandForm"> </SelectBrand>
+        <SelectBrand v-else style="width: 260px" v-model:brand_id="rangeIds"> </SelectBrand>
         <el-button v-if="type == 'productBatch'" class="addBtn" type="primary" @click="add">添加</el-button>
     </div>
     <div v-show="rangeType == 3">
@@ -35,9 +31,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { defineModel, ref } from "vue"
-import {SelectCategory, SelectBrand, SelectProduct} from '@/components/select'
-import {message} from 'ant-design-vue'
+import { defineModel, ref } from "vue";
+import { SelectCategory, SelectBrand, SelectProduct } from "@/components/select";
+import { message } from "ant-design-vue";
 // 传值
 const props = defineProps({
     disabled: {
@@ -49,62 +45,61 @@ const props = defineProps({
         default: ""
     }
 });
-const tagList = ref<any>([])
-const brandForm = ref<any>({})
-const rangeIds = defineModel<any>('rangeIds');
-const rangeType = defineModel<Number>('rangeType');
-const emit = defineEmits(['update:rangeType', 'update:rangeIds'])
-const onChange = (e:any) => {
-    rangeType.value = e
-    tagList.value = []
-    if(e == 2 && props.type != 'productBatch'){
-        rangeIds.value = ''
-    }else{
-        rangeIds.value = []
+const tagList = ref<any>([]);
+const brandForm = ref<any>({});
+const rangeIds = defineModel<any>("rangeIds");
+const rangeType = defineModel<Number>("rangeType");
+const emit = defineEmits(["update:rangeType", "update:rangeIds"]);
+const onChange = (e: any) => {
+    rangeType.value = e;
+    tagList.value = [];
+    if (e == 2 && props.type != "productBatch") {
+        rangeIds.value = "";
+    } else {
+        rangeIds.value = [];
     }
-}
-const selectChange = (e:any) => {
-    rangeIds.value = e
-}
-const onClose = (index:number) => {
+};
+const selectChange = (e: any) => {
+    rangeIds.value = e;
+};
+const onClose = (index: number) => {
     tagList.value.splice(index, 1);
-    rangeIds.value = screenBrand(tagList.value)
-}
+    rangeIds.value = screenBrand(tagList.value);
+};
 const add = () => {
-    const isContain = tagList.value.some((itemB:any) => {  
-        return itemB.brand_id === brandForm.value.brand_id && itemB.brand_name === brandForm.value.brand_name;  
+    const isContain = tagList.value.some((itemB: any) => {
+        return itemB.brand_id === brandForm.value.brand_id && itemB.brand_name === brandForm.value.brand_name;
     });
-    if(!isContain){
+    if (!isContain) {
         tagList.value.push(brandForm.value);
-        rangeIds.value = screenBrand(tagList.value)
-    }else{
-        message.error('已存在相同品牌');
+        rangeIds.value = screenBrand(tagList.value);
+    } else {
+        message.error("已存在相同品牌");
     }
-}
-const screenBrand = (tagList:Object[]) => {
-    let arr:number[] = []
-    tagList.some((item:any) => {  
-        arr.push(item.brand_id)   
+};
+const screenBrand = (tagList: Object[]) => {
+    let arr: number[] = [];
+    tagList.some((item: any) => {
+        arr.push(item.brand_id);
     });
     return arr;
-}
+};
 </script>
 
 <style lang="less" scoped>
 .range-con {
     margin-bottom: 10px;
     width: 100%;
-    height: 30px;
     display: flex;
     align-items: center;
 }
-.addBtn{
+.addBtn {
     margin-left: 10px;
 }
-.tags{
+.tags {
     width: 100%;
     margin-bottom: 10px;
-    .el-tag{
+    .el-tag {
         margin-right: 10px;
     }
 }

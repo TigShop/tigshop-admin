@@ -27,7 +27,7 @@ onMounted(async () => {
 function loadList() {
     if (loaded.value == false) {
         request({
-            url: 'article_cat/list/',
+            url: 'content/article_cat/list',
             method: 'post',
             data: {
                 ids: props.cat_id,

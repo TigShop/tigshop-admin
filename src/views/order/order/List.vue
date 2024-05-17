@@ -102,8 +102,6 @@
                                                 type="date"
                                                 value-format="YYYY-MM-DD"
                                             ></SelectTimeInterval>
-                                            <!-- <el-date-picker v-model="filterParams.add_time" class="width240" end-placeholder="结束时间" range-separator="-" start-placeholder="起始时间"
-                                                            type="daterange"/> -->
                                         </div>
                                     </div>
                                 </div>
@@ -194,7 +192,7 @@
                                             <el-button bg class="buttonColor mr10" size="small" text type="primary"> 查看详情 </el-button>
                                         </DialogForm>
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                            :params="{ act: 'detail', id: item.order_id, valueName: 'admin_note' }"
                                             isDrawer
                                             path="order/order/src/EditRemark"
                                             title="编辑备注"
@@ -245,7 +243,7 @@
                                             <div>
                                                 <DialogForm
                                                     v-if="item.status === 6 || item.status === 7"
-                                                    :params="{ act: 'edit', id: item.aftersale_id }"
+                                                    :params="{ act: 'detail', id: item.aftersale_id }"
                                                     isDrawer
                                                     path="order/aftersales/Info"
                                                     :title="'售后详情 ' + item.aftersales_sn"
@@ -265,7 +263,7 @@
                                             <div class="gray">
                                                 会员名：
                                                 <DialogForm
-                                                    :params="{ act: 'edit', id: item.user_id }"
+                                                    :params="{ act: 'detail', id: item.user_id }"
                                                     isDrawer
                                                     path="order/order/src/Users"
                                                     title="用户信息"
@@ -310,15 +308,34 @@
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.items.length">
                                         <div class="buttonStyle">
-                                            <el-button v-if="item.available_actions.del_order" bg size="small" text type="primary"> 删除 </el-button>
-                                            <el-button v-if="item.available_actions.cancel_order" bg size="small" text type="primary"> 取消订单 </el-button>
-                                            <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button>
+                                            <DialogForm
+                                                v-if="item.available_actions.cancel_order"
+                                                :params="{ act: 'cancel_order', id: item.order_id }"
+                                                isDrawer
+                                                path="order/order/src/Operation"
+                                                title="取消订单"
+                                                width="600px"
+                                                @okCallback="loadFilter"
+                                            >
+                                                <el-button bg class="buttonColor" size="small" text type="primary"> 取消订单 </el-button>
+                                            </DialogForm>
+                                            <el-button
+                                                v-if="item.available_actions.del_order"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="primary"
+                                                @click="onDelClick(item.order_id)"
+                                            >
+                                                删除订单
+                                            </el-button>
+                                            <!-- <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button> -->
                                             <!--<el-button bg size="small" text type="primary">-->
                                             <!--处理退款-->
                                             <!--</el-button>-->
 
                                             <DialogForm
-                                                :params="{ act: 'info', id: item.order_id }"
+                                                :params="{ act: 'detail', id: item.order_id }"
                                                 :title="'订单发货 ' + item.order_sn"
                                                 isDrawer
                                                 path="order/order/src/ToShip"
@@ -328,7 +345,16 @@
                                             >
                                                 <el-button bg size="small" text type="danger"> 去发货 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger"> 确认收货 </el-button>
+                                            <el-button
+                                                v-if="item.available_actions.confirm_receipt"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="danger"
+                                                @click="onReceiptClick(item.order_id)"
+                                            >
+                                                确认收货
+                                            </el-button>
                                         </div>
                                     </td>
                                 </tr>
@@ -336,7 +362,7 @@
                                     <td colspan="6">
                                         <span class="orange">商家备注：</span>{{ item.admin_note }}
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                            :params="{ act: 'detail', id: item.order_id, valueName: 'admin_note' }"
                                             isDrawer
                                             path="order/order/src/EditRemark"
                                             title="编辑备注"
@@ -377,10 +403,10 @@
 import "@/style/css/list.less";
 import { computed, onMounted, reactive, ref } from "vue";
 import { Pagination, ProductCard } from "@/components/list";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
 import { OrderFilterParams, OrderFilterState } from "@/types/order/order.d";
-import { batchSubmit, getOrderList } from "@/api/order/order";
+import { batchSubmit, getOrderList, operationOrder } from "@/api/order/order";
 import { SelectStore, SelectLogisticsCompany } from "@/components/select";
 import { DialogForm } from "@/components/dialog";
 import SortButton from "../../../components/list/src/SortButton.vue";
@@ -507,6 +533,39 @@ const onBatchSubmit = async (action: string) => {
     } catch (error: any) {
         message.error(error.message);
     }
+};
+const onDelClick = (id: any) => {
+    Modal.confirm({
+        title: "确认删除订单吗？",
+        content: "被删除的订单可以通过筛选查找并恢复",
+        onOk: async () => {
+            try {
+                const result = await operationOrder("del_order", { id: id });
+                message.success(result.message);
+                loadFilter();
+            } catch (error: any) {
+                message.error(error.message);
+            } finally {
+                loading.value = false;
+            }
+        }
+    });
+};
+const onReceiptClick = (id: any) => {
+    Modal.confirm({
+        title: "确认订单已收货吗？",
+        onOk: async () => {
+            try {
+                const result = await operationOrder("confirm_receipt", { id: id });
+                message.success(result.message);
+                loadFilter();
+            } catch (error: any) {
+                message.error(error.message);
+            } finally {
+                loading.value = false;
+            }
+        }
+    });
 };
 
 // 多选操作
@@ -716,13 +775,29 @@ const onSelectChange = (e: any) => {
         border: 1px solid #fff;
         cursor: pointer;
         &:hover {
-            color: #1890ff;
+            color: var(--tig-primary);
         }
     }
     .active {
-        color: #1890ff;
+        color: var(--tig-primary);
         background-color: rgba(61, 127, 255, 0.06);
-        border: 1px solid #1890ff;
+        border: 1px solid var(--tig-primary);
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .tabs {
+        flex-wrap: wrap;
+        gap: 10px !important;
+        .item {
+            margin: 0 !important;
+        }
+    }
+    .table-container {
+        overflow-x: auto;
+        .table-container-con {
+            min-width: 800px;
+        }
     }
 }
 </style>

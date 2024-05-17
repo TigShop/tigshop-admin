@@ -41,7 +41,7 @@ const myChartOptions = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#64a9ff"
+                color: "#1456f0"
             },
             areaStyle: {
                 color: {
@@ -63,7 +63,7 @@ const myChartOptions = ref<any>({
                     global: !1
                 }
             },
-            color: "#5CA5FF",
+            color: "#1456f0",
             emphasis: {
                 scale: !1
             }

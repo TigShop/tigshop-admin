@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 export  const getAppVersion = () => {
     return request<AppVersionFormResult>({
-        url: "setting/app_version/edit",
+        url: "setting/app_version/detail",
         method: "get"
     });
 }

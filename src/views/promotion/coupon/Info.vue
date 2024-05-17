@@ -137,7 +137,7 @@ const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const coupon_type = ref<number>(props.isDialog ? props.coupon_type : Number(query.coupon_type));
 const is_new_user = ref<number>(props.isDialog ? props.is_new_user : Number(query.is_new_user));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<CouponFormState>({
     send_range: 0,
@@ -153,8 +153,12 @@ const formState = ref<CouponFormState>({
 const orderAdmountType = ref(1);
 
 onMounted(() => {
-    // 获取详情数据
-    fetchCoupon();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchCoupon();
+    } else {
+        loading.value = false;
+    }
 });
 const fetchCoupon = async () => {
     try {
@@ -180,8 +184,8 @@ const onChangeIsGlobal = (value: number) => {
 };
 // 表单通过验证后提交
 const onSubmit = async () => {
+    await formRef.value.validate();
     try {
-        await formRef.value.validate();
         emit("update:confirmLoading", true);
         const result = await updateCoupon(operation, { id: id.value, ...formState.value });
         emit("submitCallback", result);

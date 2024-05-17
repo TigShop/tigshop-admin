@@ -27,7 +27,7 @@
                             <el-table-column label="操作" fixed="right" :width="150">
                                 <template #default="{ row }">
                                     <DialogForm isDrawer @okCallback="loadFilter" title="编辑示例模板" width="600px" path="promotion/signInSetting/Info"
-                                        :params="{ act: 'edit', id: row.id }">
+                                        :params="{ act: 'detail', id: row.id }">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                 </template>

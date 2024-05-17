@@ -193,7 +193,7 @@ const loadFilter = async () => {
 
 const fetchUser = async () => {
     try {
-        const result = await getUser('edit', { id: id.value });
+        const result = await getUser('detail', { id: id.value });
         Object.assign(formState.value, result.item);
     } catch (error: any) {
         message.error(error.message);

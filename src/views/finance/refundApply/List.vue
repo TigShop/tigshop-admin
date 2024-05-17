@@ -30,7 +30,7 @@
                             <el-table-column label="退款信息">
                                 <template #default="{ row }">
                                     <div  style="display: flex;justify-content: space-between;align-items: center">
-                                        <DialogForm :params="{ act: 'edit', id: row.aftersale_id, type: 2 }" isDrawer
+                                        <DialogForm :params="{ act: 'detail', id: row.aftersale_id, type: 2 }" isDrawer
                                                     path="order/aftersales/Info"
                                                     :title="'售后详情 ' + row.aftersales_sn" width="800px"
                                                     @okCallback="loadFilter" :showClose="false" :showOnOk="false">
@@ -43,7 +43,7 @@
                             <el-table-column label="申请时间" :width="160" prop="add_time"></el-table-column>
                             <el-table-column :width="120" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.refund_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.refund_id }" isDrawer
                                            title="编辑退款申请" width="800px"
                                                      path="finance/refundApply/Info"
                                                 @okCallback="loadFilter" :showClose="false" :showOnOk="false">

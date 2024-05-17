@@ -33,6 +33,12 @@ export const delShippingTpl = (data: object) => {
     });
 }
 
+export const getShippingTplConfig = () => {
+    return request<any>({
+        url: "setting/shipping_tpl/config",
+        method: "get"
+    });
+}
 export const getShippingTpl = (action: string, params: object) => {
     return request<ShippingTplFormResult>({
         url: "setting/shipping_tpl/" + action,

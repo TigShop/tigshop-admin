@@ -57,7 +57,7 @@
                             <el-table-column :width="80" label="回复" prop="status_name"></el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.id }" isDrawer
                                                 path="user/feedback/Info"
                                                 title="编辑会员留言" width="600px"
                                                 @okCallback="loadFilter">

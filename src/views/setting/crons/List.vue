@@ -20,7 +20,7 @@
                             </el-table-column>
                             <el-table-column :width="100" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.cron_id }" isDrawer path="setting/crons/Info"
+                                    <DialogForm :params="{ act: 'detail', id: row.cron_id }" isDrawer path="setting/crons/Info"
                                                 title="编辑计划任务" width="600px"
                                                 @okCallback="loadFilter">
                                         <a class="btn-link">编辑</a>

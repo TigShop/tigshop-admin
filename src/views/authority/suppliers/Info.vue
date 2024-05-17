@@ -61,9 +61,11 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<SuppliersFormState>({});
+const formState = ref<SuppliersFormState>({
+    is_check: 1
+});
 const fetchSuppliers = async () => {
     try {
         const result = await getSuppliers(action.value, {id: id.value});
@@ -79,16 +81,19 @@ const fetchSuppliers = async () => {
     }
 };
 
-
 onMounted(() => {
-    // 获取详情数据
-    fetchSuppliers();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchSuppliers();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交
 const onSubmit = async () => {
+    await formRef.value.validate();
     try {
-        await formRef.value.validate();
         emit('update:confirmLoading', true);
         const result = await updateSuppliers(operation, {id: id.value, ...formState.value});
         emit('submitCallback', result);

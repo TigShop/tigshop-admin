@@ -54,7 +54,7 @@ import { imageFormat } from "@/utils/format";
 import { reactive, ref, onMounted } from "vue";
 import { getAdminMsgSetReaded } from "@/api/panel/adminMsg";
 const props = defineProps({
-    item: { type: Object, default: {} },
+    item: { type: Object, default: {} }
 });
 const emit = defineEmits(["setReadedCallback"]);
 const show = ref(false);
@@ -209,6 +209,18 @@ const toPage = (url: any) => {
                 }
             }
         }
+    }
+}
+@media only screen and (max-width: 767px) {
+    .collapse .cell {
+        padding: 10px 0;
+    }
+    .collapse .cell .left .text {
+        width: auto;
+        -webkit-line-clamp: inherit;
+    }
+    .collapse .cell .right .time {
+        text-align: right;
     }
 }
 </style>

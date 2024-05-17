@@ -2,7 +2,7 @@
     <div class="container">
         <div class="content_wrapper">
             <div class="lyecs-form-table">
-                <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
+                <el-form ref="formRef" :model="formState" label-width="auto">
                     <el-form-item :rules="[{ required: true, message: '标题不能为空!' }]" label="标题" prop="message_title">
                         <el-input v-model="formState.message_title"/>
                     </el-form-item>
@@ -20,7 +20,7 @@
                             <el-option :value="3" label="部分会员"/>
                         </el-select>
                         <template v-if="formState.send_user_type===1">
-                            <SelectUser v-model="formState.user_ids"></SelectUser>
+                            <SelectUser :multiple="false" v-model:user_id="formState.user_ids"></SelectUser>
                         </template>
                         <template v-else-if="formState.send_user_type===2">
                             <SelectRankList v-model="formState.user_rank"></SelectRankList>
@@ -37,7 +37,6 @@
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
                 </el-form>
-                <a-spin :spinning="loading" style="width:100%;margin-top:100px"/>
             </div>
         </div>
     </div>
@@ -63,33 +62,12 @@ const props = defineProps({
     },
     isDialog: Boolean
 });
-const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<MessageLogFormState>({});
-const fetchMessageLog = async () => {
-    try {
-        const result = await getMessageLog(action.value, {id: id.value});
-        Object.assign(
-          formState.value,
-          result.item
-        )
-    } catch (error: any) {
-        message.error(error.message);
-        emit('close');
-    } finally {
-        loading.value = false;
-    }
-};
-
-
-onMounted(() => {
-    // 获取详情数据
-    fetchMessageLog();
-});
 
 // 表单通过验证后提交
 const onSubmit = async () => {

@@ -54,7 +54,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.cat_floor_id }" isDrawer path="decorate/pcCatFloor/Info" title="编辑抽屉楼层" width="800px"
+                                    <DialogForm :params="{ act: 'detail', id: row.cat_floor_id }" isDrawer path="decorate/pcCatFloor/Info" title="编辑抽屉楼层" width="800px"
                                         @okCallback="loadFilter">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>

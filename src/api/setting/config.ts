@@ -3,7 +3,7 @@ import type { BaseFormResult, BaseFormState } from "@/types/setting/config";
 
 export const getIcon = () => {
     return request({
-        url: "setting/config/get_ico",
+        url: "setting/config/get_icon",
         method: "get",
     });
 };

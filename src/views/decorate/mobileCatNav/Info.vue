@@ -75,10 +75,12 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<MobileCatNavFormState>({
-    brand_ids:[]
+    brand_ids:[],
+    is_show: 1,
+    sort_order: 50
 });
 const fetchPcNavigation = async () => {
     try {
@@ -95,8 +97,12 @@ const fetchPcNavigation = async () => {
     }
 };
 onMounted(() => {
-    // 获取详情数据
-    fetchPcNavigation()
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchPcNavigation();
+    } else {
+        loading.value = false;
+    }
 });
 // 表单通过验证后提交
 const onSubmit = async () => {

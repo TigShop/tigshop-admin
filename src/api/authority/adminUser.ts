@@ -1,11 +1,18 @@
 import request from "@/utils/request";
 import {AdminUserFilterResult, AdminUserFormResult, AdminUserFilterParams} from "@/types/authority/adminUser"
-// 获取商品分类列表
+// 获取管理员列表列表
 export const getAdminUserList = (params: AdminUserFilterParams) => {
     return request<AdminUserFilterResult>({
         url: "authority/admin_user/list",
         method: "get",
         params,
+    });
+}
+// 获取管理员列表配置
+export const getAdminUserConfig = () => {
+    return request<any>({
+        url: "authority/admin_user/config",
+        method: "get"
     });
 }
 
@@ -17,7 +24,7 @@ export const delAdminUser= (data: object) => {
         data,
     });
 }
-//获取分类详情
+//获取详情
 export const getAdminUser  = (action: string, params: object) => {
     return request<AdminUserFormResult>({
         url: "authority/admin_user/" + action,
@@ -26,7 +33,7 @@ export const getAdminUser  = (action: string, params: object) => {
     });
 }
 
-// 更新分类
+// 更新列表
 export const updateAdminUser = (operation: string, data: object) => {
     return request({
         url: "authority/admin_user/" + operation,

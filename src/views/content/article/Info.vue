@@ -14,6 +14,7 @@
                             </el-form-item>
                             <el-form-item label="文章分类" prop="article_category_id">
                                 <SelectArticleCategory v-model="formState.article_category_id" :min-width="'100%'"></SelectArticleCategory>
+                                <!-- <SelectArticleCategory v-model="formState.article_category_id" :min-width="'100%'"></SelectArticleCategory> -->
                             </el-form-item>
                             <el-form-item label="缩略图" prop="article_thumb">
                                 <FormAddGallery v-model:photo="formState.article_thumb"></FormAddGallery>
@@ -105,13 +106,23 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
-const formState = ref<ArticleFormState>({});
+const formState = ref<ArticleFormState>({
+    is_show:1,
+    is_hot:0,
+    is_top:0,
+    article_type:1,
+    article_category_id: [],
+});
 
 onMounted(() => {
-    // 获取详情数据
-    fetchArticle();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchArticle();
+    } else {
+        loading.value = false;
+    }
 });
 const fetchArticle = async () => {
     try {

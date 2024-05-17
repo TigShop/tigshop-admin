@@ -28,8 +28,8 @@
                         <el-table :data="filterState" :loading="loading" :total="total" row-key="admin_id"
                                   @selection-change="onSelectChange" @sort-change="onSortChange">
                             <el-table-column type="selection" width="32"/>
-                            <el-table-column label="管理员名称" prop="username" sortable="custom"></el-table-column>
-                            <el-table-column label="权限组" prop="role_name" sortable="custom">
+                            <el-table-column label="管理员名称" prop="username"></el-table-column>
+                            <el-table-column label="权限组" prop="role_name">
                                 <template #default="{ row }">
                                     <span :class="row.role_name ? 'green' : 'gray'">{{ row.role_name || '-' }}</span>
                                 </template>
@@ -49,7 +49,7 @@
                             <el-table-column :width="200" label="电话" prop="mobile"></el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.admin_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.admin_id }" isDrawer
                                                 path="authority/adminUser/Info"
                                                 title="编辑管理员" width="800px"
                                                 @okCallback="loadFilter">

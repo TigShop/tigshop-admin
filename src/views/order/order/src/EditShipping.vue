@@ -66,7 +66,7 @@ onMounted(() => {
 });
 const fetchOrder = async () => {
     try {
-        const result = await getOrder("info", { id: id.value });
+        const result = await getOrder("detail", { id: id.value });
         Object.assign(formState.value, result.item);
     } catch (error: any) {
         message.error(error.message);

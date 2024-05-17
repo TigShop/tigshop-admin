@@ -1,5 +1,5 @@
 <template>
-    <div class="body-menu">
+    <div class="body-menu" :class="{ active: menusStore.menuActive }">
         <perfect-scrollbar class="main-menu">
             <div class="main-menu-logo">
                 <a class="lyecs-openPage" data-href="index.html" data-tag="default" title="起始页" style="padding: 0 3px">
@@ -9,7 +9,7 @@
             <ul v-if="menus">
                 <template v-for="(menu, key) in menus">
                     <li v-if="menu.is_show" :class="'main-menu-item menu_' + menu.authority_sn + ' ' + (menu.current ? 'current' : '')">
-                        <a @click.prevent="actionPush(menu.route_link, menu.blank)" class="menu-tit" :href="'/' + menu.route_link">
+                        <a @click.prevent="actionPush(menu, true)" class="menu-tit" :href="'/' + menu.route_link">
                             <i :class="menu.authority_ico"></i>
                             <span class="nav-tit">{{ menu.authority_name }}</span>
                         </a>
@@ -20,7 +20,7 @@
         </perfect-scrollbar>
         <div :class="'child-menu ' + (childMenuShow ? 'child-menu-show' : '')">
             <template v-for="(menu, key) in menus">
-                <perfect-scrollbar class="child_warp" v-if="menu.current && menu.is_show">
+                <perfect-scrollbar class="child_warp" v-if="menu.current && menu.is_show" :options="{ suppressScrollX: true }">
                     <div class="child-tit">{{ menu.authority_name }}</div>
                     <ul>
                         <template v-for="(child, ckey) in menu.children">
@@ -33,7 +33,7 @@
                                         <ul>
                                             <template v-for="(childer, m_ckey) in child.children">
                                                 <li :class="'menu-item menu-chider-item ' + (childer.current ? 'current' : '')" v-if="childer.is_show">
-                                                    <a class="" @click.prevent="actionPush(childer.route_link, childer.blank)">
+                                                    <a class="" @click.prevent="actionPush(childer)">
                                                         <i class="nav-icon iconfont"></i>
                                                         <span class="nav-title">{{ childer.authority_name }}</span>
                                                     </a>
@@ -45,7 +45,7 @@
                             </template>
                             <template v-else>
                                 <li :class="'menu-item ' + (routerMatched[2].name == `${child.authority_sn}` ? 'current' : '')" v-if="child.is_show">
-                                    <a class="menu-item-a" :target="child.blank ? '_blank' : ''" @click.prevent="actionPush(child.route_link, child.blank)">
+                                    <a class="menu-item-a" :target="child.blank ? '_blank' : ''" @click.prevent="actionPush(child)">
                                         <span class="nav-title">{{ child.authority_name }}</span>
                                     </a>
                                 </li>
@@ -66,25 +66,28 @@
             </div>
         </div>
     </div>
+    <div class="body-menu-mask" :class="{ active: menusStore.menuActive }" @click="menusStore.menuActive = !menusStore.menuActive"></div>
 </template>
 <script setup lang="ts">
 import { ref, reactive, watchEffect, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import request from "@/utils/request";
+import { useRouter } from "vue-router";
 import { useMenusStore } from "@/store/menu";
-// 菜单
-const menus = ref({} as any);
+import type {MainMenu} from "@/types/common/common.d";
+
+const menusStore = useMenusStore();
 // 路由
 const router = useRouter();
-const store = <any>useMenusStore();
-const routerMatched = ref(<any>[]);
+const store = useMenusStore();
+const routerMatched = ref<any>([]);
 // 伸缩子菜单
 const childMenuShow = ref(true);
-const showChildStatus = ref<any>([]);
+const showChildStatus = ref<any[]>([]);
 // 获取当前路由用于匹配菜单选中状态
 routerMatched.value = router.currentRoute.value.matched;
+// 菜单
+const menus = ref<MainMenu[]>(store.mainMenu);
 // 加载菜单
-menus.value = reactive(store.mainMenu);
+// menus.value = reactive(store.mainMenu);
 onMounted(() => {
     updateCurrentStatus(menus.value);
 });
@@ -115,12 +118,27 @@ const showChild = (key: any, ckey: any) => {
     showChildStatus.value[ckey] = !showChildStatus.value[ckey];
 };
 // 跳转页面
-const actionPush = (action: string, isBlank: boolean) => {
-    console.log(action);
-    if (!isBlank) {
-        router.push("/" + action);
+const actionPush = (menu: any, isMain = false) => {
+    if (window.innerWidth <= 756) {
+        if (isMain) {
+            menus.value.forEach((element: any) => {
+                element.current = false;
+            });
+            menu.current = true;
+        } else {
+            if (!menu.blank) {
+                router.push("/" + menu.route_link);
+            } else {
+                window.open("/" + menu.route_link, "_blank");
+            }
+            menusStore.menuActive = false;
+        }
     } else {
-        window.open("/" + action, "_blank");
+        if (!menu.blank) {
+            router.push("/" + menu.route_link);
+        } else {
+            window.open("/" + menu.route_link, "_blank");
+        }
     }
 };
 // 监听路由的变化
@@ -213,6 +231,7 @@ watchEffect(() => {
     overflow: hidden;
     position: relative;
     top: 60px;
+    bottom: 0;
     left: 0;
     height: 100%;
 }
@@ -495,5 +514,61 @@ watchEffect(() => {
     border-color: transparent #f7f7f7 transparent -moz-use-text-color;
     border-style: solid solid solid none;
     border-width: 8px 20px 8px medium;
+}
+.body-menu-mask {
+    display: none;
+}
+@media only screen and (max-width: 767px) {
+    .body-menu {
+        transform: translateX(-100%);
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1010;
+        transition:
+            transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1),
+            box-shadow 0.3s cubic-bezier(0.7, 0.3, 0.1, 1),
+            -webkit-transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1),
+            -webkit-box-shadow 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
+        width: 287px;
+        &.active {
+            visibility: visible;
+            transform: translateX(0px);
+        }
+    }
+    .main-menu {
+        position: absolute;
+        z-index: 9;
+    }
+    .child-menu {
+        position: absolute;
+        border-right: 0;
+        box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    }
+    .body-menu-mask {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 0, 0);
+        opacity: 0;
+        z-index: 1000;
+        position: fixed;
+        transition: all 0.5s;
+        visibility: hidden;
+        display: block;
+        &.active {
+            visibility: inherit;
+            display: block;
+            opacity: 0.5;
+        }
+    }
+    .menu-bar-btn {
+        display: none;
+    }
+    .child_warp {
+        top: 0;
+    }
 }
 </style>

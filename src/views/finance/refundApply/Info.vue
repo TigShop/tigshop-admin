@@ -31,15 +31,15 @@
                 </el-table>
                 <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
                     <el-form-item :label="'售后编号'" prop="order_sn">
-                        <DialogForm :params="{ act: 'edit', id: formState.aftersale_id }" isDrawer
+                        <DialogForm :params="{ act: 'detail', id: formState.aftersale_id }" isDrawer
                                     path="order/aftersales/Info" title="查看售后信息"
-                                    width="700px">
+                                    width="700px" :showClose="false" :showOnOk="false">
                             <a class="btn-link">{{ formState.aftersales_sn }}</a>
                         </DialogForm>
                     </el-form-item>
                     <el-form-item :label="'订单编号'" prop="order_sn">
                         <DialogForm 
-                            :params="{ act: 'info', id: formState.order_id }"
+                            :params="{ act: 'detail', id: formState.order_id }"
                             isDrawer
                             :showClose="false"
                             :showOnOk="false"

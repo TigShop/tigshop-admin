@@ -79,7 +79,7 @@
                             </el-table-column>
                             <el-table-column :width="220" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.authority_id }" :data="{ parentId: row.parent_id }" isDrawer path="authority/authority/Info" title="编辑权限" width="600px"
+                                    <DialogForm :params="{ act: 'detail', id: row.authority_id }" :data="{ parentId: row.parent_id }" isDrawer path="authority/authority/Info" title="编辑权限" width="600px"
                                                 @okCallback="updateChildFilter">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>

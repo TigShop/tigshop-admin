@@ -2,14 +2,14 @@
     <div class="page-top">
         <div class="page-top-warp">
             <div class="top-bar-left">
-                <div class="top-bar-item wap-show" v-if="0">
+                <div class="top-bar-item wap-show" @click="menusStore.menuActive = !menusStore.menuActive">
                     <span class="open-menu-btn icon-zhankai iconfont"></span>
                 </div>
-                <div class="top-bar-item wap-show" v-if="0">
+                <div class="top-bar-item wap-show">
                     <a class="wap-refresh-btn icon-shuaxin iconfont" href="javascript:;" onclick="location.reload();"></a>
                 </div>
-                <div class="top-bar-item wap-show" v-if="0">
-                    <a class="wap-openShop-btn icon-wangdianwaibao iconfont" href="javascript:;" target="_blank"></a>
+                <div class="top-bar-item wap-show" style="display: none">
+                    <a class="wap-openShop-btn icon-wangdianwaibao iconfont" :href="urlFormat('/')" target="_blank"></a>
                 </div>
                 <div class="top-bar-item top-bar-search-warp">
                     <div class="top-bar-search">
@@ -53,7 +53,7 @@
                 <div class="top-bar-item openShop-btn">
                     <a class="top-bar-btn" :href="urlFormat('/')" target="_blank"><i class="iconfont icon-guanli"></i><span>查看店铺</span></a>
                 </div>
-                <div class="top-bar-item" id="dropdown-memu">
+                <div class="top-bar-item top-bar-user" id="dropdown-memu">
                     <a-dropdown>
                         <a class="top-bar-btn" href="javascript:;">
                             <span class="admin-user-photo">
@@ -64,7 +64,8 @@
                                     <img :src="imageFormat(userInfo.avatar)" />
                                 </template>
                             </span>
-                            {{ userInfo.username }}<i class="iconfont icon-xiala"></i>
+                            <div class="admin-user-name">{{ userInfo.username }}</div>
+                            <i class="iconfont icon-xiala"></i>
                         </a>
                         <template #overlay>
                             <div class="dropdown-memu top-bar-memu">
@@ -115,7 +116,9 @@ import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { extractContent, getAssetsFile } from "@/utils/util";
 import { Image } from "@/components/image";
+import {cleanUp} from "@/api/common/common";
 const router = useRouter();
+const menusStore = useMenusStore();
 interface searchFrom {
     authority_name: string;
     route_link: string;
@@ -151,26 +154,24 @@ const { setUserInfo, logout } = useUserStore();
 const userInfo = computed(() => useUserStore().userInfo);
 const unreadMsg = ref(0);
 // 清除缓存
-const clearCache = () => {
-    request({
-        url: "common/cache_manage/cleanup",
-        method: "post",
-        params: {}
-    }).then((result: any) => {
+const clearCache = async () => {
+    try {
+        const result = await cleanUp();
         const config = useConfigStore();
-        const menus = useMenusStore();
         const cateGory = useCategoryStore();
         // 更新后台设置项
         setUserInfo(result.user_info);
         config.setConfig(result.config);
-        menus.setMenus(result.main_menu);
+        menusStore.setMenus(result.main_menu);
         // cateGory.getCategoryList('getNew')
         notification["success"]({
             message: "缓存已清除",
             description: "缓存清除后可刷新页面更新效果"
         });
-    });
-};
+    } catch (error: any) {
+        message.error(error.message);
+    }
+}
 const onLogout = () => {
     logout();
 };
@@ -181,7 +182,6 @@ const onLogout = () => {
     clear: both;
     font-size: 12px;
     height: 60px;
-    min-width: 990px;
     position: fixed;
     top: 0;
     left: 108px;
@@ -516,5 +516,74 @@ const onLogout = () => {
     left: 10px;
     top: 8px;
     font-size: 14px;
+}
+.wap-show {
+    display: none;
+}
+.top-bar-user {
+    .admin-user-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        word-break: keep-all;
+        max-width: 100px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .page-top {
+        left: 0;
+        min-width: 100%;
+    }
+    .wap-show {
+        display: block;
+    }
+    .openShop-btn {
+        display: none;
+    }
+    .open-menu-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 58px;
+        cursor: pointer;
+        color: #333;
+    }
+    .page-top-warp {
+        border-radius: 0;
+    }
+    .page-top-warp .wap-refresh-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 55px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+    .page-top-warp .wap-openShop-btn {
+        padding: 0 20px;
+        display: block;
+        line-height: 55px;
+        cursor: pointer;
+        font-size: 20px;
+        color: #333;
+    }
+    .page-top-warp .clearCache-btn {
+        display: none;
+    }
+    .top-bar-search-warp {
+        display: none;
+    }
+    .top-bar-item .top-bar-btn {
+        word-break: keep-all;
+        margin: 0;
+        padding-left: 10px;
+    }
+    .top-bar-user {
+        margin-left: 10px;
+        margin-right: 10px;
+        .admin-user-name {
+            max-width: 60px;
+        }
+    }
 }
 </style>

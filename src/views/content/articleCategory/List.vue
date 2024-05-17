@@ -62,7 +62,7 @@
                             </el-table-column>
                             <el-table-column :width="220" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.article_category_id, parentId: row.parent_id }" :data="{ parentId: row.parent_id }" isDrawer path="content/articleCategory/Info" title="编辑分类" width="600px"
+                                    <DialogForm :params="{ act: 'detail', id: row.article_category_id, parentId: row.parent_id }" :data="{ parentId: row.parent_id }" isDrawer path="content/articleCategory/Info" title="编辑分类" width="600px"
                                                 @okCallback="updateChildFilter">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>

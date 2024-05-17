@@ -3,7 +3,7 @@ import request from "@/utils/request";
 
 export const getAdminInfo = (params:Object) => {
     return request<AdminInfoFilterResult>({
-        url: "authority/admin_user/edit",
+        url: "authority/admin_user/detail",
         method: "get",
         params,
     });

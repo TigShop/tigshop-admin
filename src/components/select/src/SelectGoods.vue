@@ -1,10 +1,19 @@
 <template>
     <div class="lyecs-product-select-group">
         <el-space>
-            <DialogForm isDrawer @okCallback="onOk" title="选择商品" width="600px" path="product/product/src/SelectProduct" :params="{ selected_ids: ids, isMultiple: props.isMultiple }">
+            <DialogForm
+                isDrawer
+                @okCallback="onOk"
+                title="选择商品"
+                width="600px"
+                path="product/product/src/SelectProduct"
+                :params="{ selected_ids: ids, isMultiple: props.isMultiple }"
+            >
                 <el-button type="primary">选择商品</el-button>
             </DialogForm>
-            <span v-if="ids.length > 0" class="ml10">已选择 <b>{{ ids.length }}</b> 个商品</span>
+            <span v-if="ids.length > 0" class="ml10"
+                >已选择 <b>{{ ids.length }}</b> 个商品</span
+            >
             <el-button v-if="ids.length > 0" @click="clear">清空</el-button>
         </el-space>
         <div class="lyecs-product-selected-con" v-if="productList.length > 0">
@@ -18,7 +27,7 @@
                     <div class="product-selected-list-tr">
                         <div class="col col1">{{ item.product_sn }}</div>
                         <div class="col col2 product-info">
-                            <img width="50" height="50" :src="imageFormat(item.pic_thumb)">
+                            <img width="50" height="50" :src="imageFormat(item.pic_thumb)" />
                             <span>{{ item.product_name }}</span>
                         </div>
                         <div class="col col3">
@@ -27,21 +36,26 @@
                     </div>
                 </template>
             </div>
-            <div class="pagination-con" v-if="ids.length > 0" style="justify-content: right;">
-                <el-pagination size="small" @current-change="pageChange" :current-page="page" :page-size="size" layout="slot ,prev, pager, next" :total="ids.length">
-                    <template #default>
-                        第{{ (page - 1) * size + 1 }}-{{ page * size }} 条 / 总共 {{ ids.length }} 条
-                    </template>
+            <div class="pagination-con" v-if="ids.length > 0" style="justify-content: right">
+                <el-pagination
+                    size="small"
+                    @current-change="pageChange"
+                    :current-page="page"
+                    :page-size="size"
+                    layout="slot ,prev, pager, next"
+                    :total="ids.length"
+                >
+                    <template #default> 第{{ (page - 1) * size + 1 }}-{{ page * size }} 条 / 总共 {{ ids.length }} 条 </template>
                 </el-pagination>
             </div>
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { ref, toRefs, onMounted, watch } from "vue"
-import request from '@/utils/request'
-import { DialogForm } from '@/components/dialog'
-import { imageFormat } from '@/utils/format'
+import { ref, toRefs, onMounted, watch } from "vue";
+import request from "@/utils/request";
+import { DialogForm } from "@/components/dialog";
+import { imageFormat } from "@/utils/format";
 // 传值
 const props = defineProps({
     // 单选还是多选
@@ -49,34 +63,38 @@ const props = defineProps({
         type: Boolean,
         default: true
     }
-})
-const ids = defineModel<number[]>('ids', { type: Array, default:[]})
+});
+const ids = defineModel<number[]>("ids", { type: Array, default: [] });
 onMounted(async () => {
     if (ids.value) {
-        loadList()
+        loadList();
     }
 });
 interface productForm {
-    product_sn?: string,
-    pic_thumb: string,
-    product_name?: string,
+    product_sn?: string;
+    pic_thumb: string;
+    product_name?: string;
     product_id?: number;
 }
 // 商品列表
 const productList = ref<productForm[]>([]);
 const total = ref(0);
-const size = ref(10)
-const page = ref(1)
-watch(() => ids, (newIds) => {
-    console.log(newIds.value)
-    loadList();
-}, { deep: true });
+const size = ref(10);
+const page = ref(1);
+watch(
+    () => ids,
+    (newIds) => {
+        console.log(newIds.value);
+        loadList();
+    },
+    { deep: true }
+);
 // 给父组件传值
 function loadList() {
     if (ids.value.length > 0) {
         request({
-            url: 'product/list/',
-            method: 'get',
+            url: "product/product/list",
+            method: "get",
             params: {
                 ids: ids.value,
                 size: size.value,
@@ -84,40 +102,39 @@ function loadList() {
             }
         }).then((result: any) => {
             productList.value = result.filter_result;
-            total.value = result.total
-        })
+            total.value = result.total;
+        });
     } else {
         productList.value = [];
-        total.value = 0
+        total.value = 0;
     }
-
 }
-const pageChange = (curPage:number, pageSize:any) => {
-    page.value = curPage
-    loadList()
-}
-const onOk = (e:any) => {
+const pageChange = (curPage: number, pageSize: any) => {
+    page.value = curPage;
+    loadList();
+};
+const onOk = (e: any) => {
     let _list = [];
     if (props.isMultiple == false) {
         ids.value = [];
     }
     for (let index in e) {
-        ids.value.push(e[index])
+        ids.value.push(e[index]);
     }
-    total.value = ids.value.length
+    total.value = ids.value.length;
     // emit('update:ids', ids)
     loadList();
-}
+};
 // 清空
 const clear = () => {
-    productList.value = []
+    productList.value = [];
     ids.value = [];
-}
+};
 // 删除
-const del = (key:number) => {
-    ids.value.splice(<any>key, 1)
-    productList.value.splice(<any>key, 1)
-}
+const del = (key: number) => {
+    ids.value.splice(<any>key, 1);
+    productList.value.splice(<any>key, 1);
+};
 </script>
 
 <style lang="less" scoped>
@@ -168,7 +185,7 @@ const del = (key:number) => {
     margin-bottom: 20px;
     max-height: 550px;
     overflow-y: auto;
-    min-width: 400px
+    min-width: 400px;
 }
 
 .lyecs-product-select-group .product-selected-list-tr {
@@ -191,7 +208,6 @@ const del = (key:number) => {
 .lyecs-product-select-group .product-selected-list-tr .col {
     padding: 10px;
 }
-
 
 .lyecs-product-select-group .product-selected-list-tr .col1 {
     width: 100px;

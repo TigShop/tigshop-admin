@@ -2,7 +2,7 @@
     <div class="page-container">
         <div class="login-page-left">
             <a class="top-bar-btn" target="_blank" href="http://www.lyecs.com" title="起始页" style="padding: 0 3px">
-                <img style="margin: 10px" height="40" src="~@/style/images/logo_blue.png" />
+                <img style="margin: 10px" height="40" src="~@/style/images/logo2.png" />
             </a>
         </div>
         <div class="login-page-right">
@@ -27,7 +27,8 @@
                                         class="login-input"
                                         size="large"
                                         v-model="formState.password"
-                                        placeholder="请输入密码" />
+                                        placeholder="请输入密码"
+                                    />
                                 </el-form-item>
                                 <el-form-item>
                                     <a-button
@@ -36,7 +37,8 @@
                                         class="login-submit-btn"
                                         :disabled="disabled"
                                         type="primary"
-                                        @click="formSubmit(passwordFormRef)">
+                                        @click="formSubmit(passwordFormRef)"
+                                    >
                                         登 陆
                                     </a-button>
                                 </el-form-item>
@@ -49,7 +51,8 @@
                                 mode="pop"
                                 captchaType="blockPuzzle"
                                 :imgSize="{ width: '310px', height: '155px' }"
-                                @okCallback="okCallback"></Verify>
+                                @okCallback="okCallback"
+                            ></Verify>
                         </el-tab-pane>
                         <el-tab-pane name="mobile" label="手机登录">
                             <el-form ref="mobileFormRef" :model="formState">
@@ -63,7 +66,8 @@
                                         v-model:mobile="formState.mobile"
                                         v-model:mobileCode="formState.mobile_code"
                                         :requestApi="sendMobileCode"
-                                        @mobileErrorCallback="mobileErrorCallback"></MobileCode>
+                                        @mobileErrorCallback="mobileErrorCallback"
+                                    ></MobileCode>
                                 </el-form-item>
                                 <el-form-item>
                                     <a-button
@@ -72,7 +76,8 @@
                                         class="login-submit-btn"
                                         :disabled="disabled"
                                         type="primary"
-                                        @click="formSubmit(mobileFormRef)">
+                                        @click="formSubmit(mobileFormRef)"
+                                    >
                                         登 陆
                                     </a-button>
                                 </el-form-item>
@@ -126,7 +131,7 @@ let formState = ref<any>({
     username: "admin",
     password: "admin123",
     remember: false,
-    verify_token: null,
+    verify_token: null
 }); //表单数据
 const captchaUid = ref("");
 const captchaRef = ref();
@@ -138,7 +143,7 @@ const formSubmit = async (e: FormInstance) => {
         const result = await adminSignin({
             login_type: loginType.value,
             captcha_uid: captchaUid.value,
-            ...formState.value,
+            ...formState.value
         });
         const userInfo = useUserStore() as any;
         const config = useConfigStore();
@@ -153,7 +158,7 @@ const formSubmit = async (e: FormInstance) => {
             message: "登录成功",
             placement: "top",
             duration: 1.5,
-            description: "您好，欢迎回来",
+            description: "您好，欢迎回来"
         });
         passwordErrorMessage.value = "";
         mobileErrorMessage.value = "";
@@ -164,7 +169,7 @@ const formSubmit = async (e: FormInstance) => {
         } else if (error.errcode > 0) {
             notification["error"]({
                 message: "错误",
-                description: error.message,
+                description: error.message
             });
             if (loginType.value == "password") {
                 passwordErrorMessage.value = error.message;
@@ -419,5 +424,41 @@ const validateMobile = (rule: any, value: any, callback: any) => {
     color: #666;
     font-weight: normal;
     letter-spacing: 0;
+}
+
+@media only screen and (max-width: 767px) {
+    .page-container {
+        flex-wrap: wrap;
+        display: block;
+        .login-page-left {
+            height: 80px;
+            background: #fff;
+            padding-top: 20px;
+            text-align: center;
+            img {
+                height: 50px;
+            }
+        }
+    }
+    .login-title {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 20px 0;
+        .login-title-welcome {
+            font-size: 26px;
+        }
+    }
+    .login-tabs-warp {
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: none;
+        padding: 20px;
+    }
+    .login-tabs :deep(.el-tabs__nav) {
+        margin: 0;
+    }
+    .login-tabs .el-form {
+        margin: 0;
+    }
 }
 </style>

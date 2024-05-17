@@ -36,7 +36,7 @@
                             </el-table-column>
                             <el-table-column :width="100" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.invoice_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.invoice_id }" isDrawer
                                                 path="finance/userInvoice/Info"
                                                 title="编辑增票资质申请" width="600px"
                                                 @okCallback="loadFilter">

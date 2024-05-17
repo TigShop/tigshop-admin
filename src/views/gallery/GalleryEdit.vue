@@ -20,11 +20,10 @@
 </template>
 <script lang="ts" setup>
 
-import { ref, reactive, toRefs } from "vue"
-import request from '../../utils/request'
-import { useRouter } from 'vue-router'
-import { avatarProps } from "ant-design-vue/es/avatar";
+import { ref, reactive, toRefs, onMounted } from "vue"
 import { message } from "ant-design-vue";
+import {getGalleryInfo,updateGalleryInfo} from "@/api/setting/gallery";
+import type {GalleryDetail} from "@/types/setting/gallery.d";
 
 //获取来自父组件的参数 
 const props = defineProps({
@@ -44,52 +43,46 @@ const props = defineProps({
 })
 const { parentId, id, act } = toRefs(props);
 // 判断是处理更新还是添加
-const operation = act.value == 'add' ? 'insert' : 'update';
+const operation = act.value == 'add' ? 'create' : 'update';
 
 // 表单参数初使化
 const formRef = ref();  //表单Ref
-let formState = reactive<any>({});  //表单数据
-// 获取详情数据
-request({
-    url: 'setting/gallery/' + act.value + '/',
-    method: 'get',
-    params: {
-        id: id.value
+let formState = reactive<GalleryDetail>({
+    gallery_sort: 50
+});  //表单数据
+onMounted(() => {
+    if (act.value === "detail") {
+        // 获取详情数据
+        fetchGalleryInfo()
     }
-}).then((result: any) => {
-    // 合并前端的初使参数和获取到的参数
-    formState = Object.assign(
-        formState,
-        result.item
-    )
 });
+const fetchGalleryInfo = async () => {
+    try {
+        const result = await getGalleryInfo(act.value, { id: id.value });
+        console.log(result)
+        Object.assign(formState, result.item);
+    } catch (error: any) {
+        message.error(error.message);
+    }
+};
 console.log(parentId.value)
 // 父组件回调
 const emit = defineEmits(["submitCallback", "okType"])
 
-// 提交表单
-const formSubmit = (values: any) => {
-    //values返回的是前端表单内有name的项
-    formRef.value.validate().then(() => {
-        request({
-            url: 'setting/gallery/' + operation + '/',
-            method: 'post',
-            data: {
+// 表单通过验证后提交
+const formSubmit = async (values: any) => {
+    try {
+        await formRef.value.validate();
+        const result = await updateGalleryInfo(operation, {
                 id: id.value,
                 parent_id: parentId.value,
                 ...values
-            }
-        }).then((result: any) => {
-            if (result.errcode > 0) {
-                emit("submitCallback", result);
-                message.error(result.message)
-            } else {
-                // 如果是弹窗，回调给弹窗父组件，执行关闭弹窗等操作
-                message.success(result.message)
-                emit("submitCallback", result);
-            }
-        })
-    });
+            });
+        emit("submitCallback", result);
+        message.success(result.message);
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 
 // 处理

@@ -81,7 +81,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.logistics_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.logistics_id }" isDrawer
                                                 path="setting/logisticsCompany/Info"
                                                 title="编辑配送方式" width="600px"
                                                 @okCallback="loadFilter">

@@ -57,7 +57,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.shipping_tpl_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.shipping_tpl_id }" isDrawer
                                                 path="setting/shippingTpl/Info"
                                                 title="编辑配送类型" width="900px"
                                                 @okCallback="loadFilter">
@@ -113,7 +113,7 @@ import {batchSubmit, delShippingTpl, getShippingTplList, updateShippingTplField}
 
 const config:any = useConfigStore();
 // 基本参数定义
-const filterState = ref(<ShippingTplFilterState[]>[]);
+const filterState = ref<ShippingTplFilterState[]>([]);
 const loading = ref<boolean>(true);
 const total = ref<number>(0);
 const selectedIds = ref<number[]>([]);

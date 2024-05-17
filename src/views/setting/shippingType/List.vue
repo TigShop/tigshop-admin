@@ -71,7 +71,7 @@
                             </el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.shipping_type_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.shipping_type_id }" isDrawer
                                                 path="setting/shippingType/Info"
                                                 title="编辑配送类型" width="600px"
                                                 @okCallback="loadFilter">
@@ -180,7 +180,7 @@ const onBatchSubmit = async (action: string) => {
 };
 // 多选操作
 const onSelectChange = (e: ShippingTypeFilterState[]) => {
-    selectedIds.value = e.map((item:any) => item.logistics_id);
+    selectedIds.value = e.map((item:any) => item.shipping_type_id);
 };
 
 
