@@ -60,6 +60,7 @@
                                     :headers="requestUrl.headers"
                                     @change="handleChange"
                                     :showUploadList="false"
+                                    :before-upload="beforeUpload"
                                     :multiple="true">
                                     <el-button type="primary">上传图片</el-button>
                                 </Upload>
@@ -227,6 +228,13 @@ const picList = computed<any>(() => {
     return uploadPicList.value.concat(galleryPicList.value);
 });
 
+const beforeUpload = (file: FileItem) => {
+    const isLt2M = file.size / 1024 / 1024 < 2;
+    if (!isLt2M) {
+    message.error('只能上传2M以内的图片');
+    }
+    return isLt2M;
+};
 const handleChange = (info: UploadChangeParam) => {
     if (info.file.status == "uploading") {
     }
@@ -243,12 +251,12 @@ const handleChange = (info: UploadChangeParam) => {
                     info.fileList[index] = Object.assign(info.fileList[index], info.fileList[index].response.data);
                 }
             }
+            uploadPicList.value = info.fileList;
             message.success("图片上传成功！");
         }
     } else if (info.file.status === "error") {
         message.error(`${info.file.name} 图片上传失败！`);
     }
-    uploadPicList.value = info.fileList;
 };
 
 // 加载目录和全部相册

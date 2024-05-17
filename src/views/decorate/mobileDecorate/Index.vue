@@ -47,7 +47,7 @@
                                             <PopForm
                                                 label="页面名称"
                                                 type="textarea"
-                                                :requestApi="updateExampleFiled"
+                                                :requestApi="updateDecorateFiled"
                                                 v-model:org-value="row.decorate_title"
                                                 :params="{ id: row.decorate_id, field: 'decorate_title' }"
                                                 :max="50">
@@ -66,7 +66,7 @@
                                 <template #default="{ row }">
                                     <router-link :to="{ path: '/decorate/index', query: { id: 1 } }" target="_blank" class="btn-link">编辑</router-link>
                                     <el-divider direction="vertical" />
-                                    <DeleteRecord @afterDelete="loadFilter" :requestApi="delExample" :params="{ id: row.decorate_id }">删除</DeleteRecord>
+                                    <DeleteRecord @afterDelete="loadFilter" :requestApi="delDecorate" :params="{ id: row.decorate_id }">删除</DeleteRecord>
                                 </template>
                             </el-table-column>
                             <template #empty>
@@ -108,7 +108,7 @@ import { Image } from "@/components/image";
 import { message } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
 import { FilterState, FilterParams } from "@/types/decorate/mobileDecorate.d";
-import { getExampleList, batchSubmit, updateExampleFiled, delExample } from "@/api/decorate/mobileDecorate";
+import { getDecorateList, batchSubmit, updateDecorateFiled, delDecorate } from "@/api/decorate/mobileDecorate";
 const config: any = useConfigStore();
 // 基本参数定义
 const filterState = ref<FilterState[]>();
@@ -127,7 +127,7 @@ const filterParams = reactive<FilterParams>({
 const loadFilter = async () => {
     loading.value = true;
     try {
-        const result = await getExampleList({ ...filterParams });
+        const result = await getDecorateList({ ...filterParams });
         filterState.value = result.filter_result;
         total.value = result.total;
     } catch (error: any) {
