@@ -24,18 +24,71 @@
                             <div class="example">
                                 <div class="card info">
                                     <div class="info-item1">
-                                        <p :style="{ color: formState['--price'] }" class="text">¥299-599</p>
-                                        <p :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }" class="bg-card">会员价</p>
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
                                     </div>
                                     <div class="info-item2">
+                                        <p :style="{ color: formState['--price'] }" class="text">由Tigshop配送并提供售后服务</p>
+                                    </div>
+                                    <div class="info-item3">
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">9折</div>
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">满100-10</div>
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">满300-40</div>
+                                    </div>
+                                    <div class="info-item4">
+                                        <p :style="{ color: formState['--price'] }" class="text">商品介绍</p>
+                                    </div>
+                                    <div class="info-item5">
+                                        <p :style="{ color: formState['--main-text'], background: formState['--main-bg'] }" class="text">3</p>
+                                    </div>
+                                    <div class="info-item6">
                                         <div>
                                             <div :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }">加入购物车</div>
                                             <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">立即购买</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card buy"></div>
-                                <div class="card check"></div>
+                                <div class="card buy">
+                                    <div class="buy-item1">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
+                                    </div>
+                                    <div class="buy-item2">
+                                        <div :style="{ color: formState['--general'],borderColor: formState['--main-bg'] }" class="cu-card">金色</div>
+                                    </div>
+                                    <div class="buy-item3">
+                                        <div :style="{ color: formState['--general'],borderColor: formState['--main-bg'] }" class="cu-card">XS</div>
+                                    </div>
+                                    <div class="buy-item4">
+                                        <p :style="{ color: '#39bf3e' }" class="text">充足</p>
+                                    </div>
+                                    <div class="buy-item5">
+                                        <div>
+                                            <div :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }">加入购物车</div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">立即购买</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card check">
+                                    <div class="check-item1">
+                                        <p :style="{ color: '#fff', background: formState['--main-bg'] }" class="text">自营</p>
+                                    </div>
+                                    <div class="check-item2">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
+                                    </div>
+                                    <div class="check-item3">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ points }}</p>
+                                    </div>
+                                    <div class="check-item4">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ balance }}</p>
+                                    </div>
+                                    <div class="check-item5">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount_ou) }}</p>
+                                    </div>
+                                    <div class="check-item6">
+                                        <div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">提交</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -46,14 +99,18 @@
 </template>
 <script lang="ts" setup>
 import "@/style/css/list.less";
-import { onMounted, ref } from "vue";
-import { message } from "ant-design-vue";
-import type { ColorList, ThemeStyleFormState } from "@/types/decorate/themeStyle.d";
-import { getConfig, updateConfig } from "@/api/setting/config";
+import {onMounted, ref} from "vue";
+import {message} from "ant-design-vue";
+import type {ColorList, ThemeStyleFormState} from "@/types/decorate/themeStyle.d";
+import {getConfig, updateConfig} from "@/api/setting/config";
+import {priceFormat} from "@/utils/format";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 const confirmLoading = ref(false);
-
+const amount = ref(395)
+const points = ref(6666)
+const balance = ref(29999.00)
+const amount_ou = ref(231.10)
 const loading = ref<boolean>(true);
 const formState = ref<ThemeStyleFormState>({
     theme_id: 0
@@ -358,7 +415,7 @@ const onSubmit = async () => {
         emit("update:confirmLoading", true);
         console.log(formState.value);
         delete formState.value.check;
-        const result = await updateConfig({ code: "theme_style", data: { ...formState.value } });
+        const result = await updateConfig({code: "theme_style", data: {...formState.value}});
         emit("submitCallback", result);
         message.success(result.message);
     } catch (error: any) {
@@ -372,7 +429,7 @@ const onFormSubmit = () => {
     onSubmit();
 };
 
-defineExpose({ onFormSubmit });
+defineExpose({onFormSubmit});
 </script>
 <style lang="less" scoped>
 .theme-style-info {
@@ -423,6 +480,7 @@ defineExpose({ onFormSubmit });
             display: flex;
             flex-direction: row;
             gap: 10px;
+            flex-wrap: wrap;
 
             .bg-card {
                 font-size: 8px;
@@ -433,30 +491,87 @@ defineExpose({ onFormSubmit });
             }
 
             .card {
-                width: 230px;
-                height: 410px;
+                width: 225px;
+                height: 460px;
                 border: 0.1px solid #e0e0e0;
                 position: relative; /* 设置父容器为相对定位 */
             }
 
             .info {
-                background-image: url("@/style/images/decorate/themeStyle/temp1.png");
+                background-image: url("@/style/images/decorate/themeStyle/temp1.jpg");
                 background-position: center center;
                 background-size: cover;
 
                 .info-item1 {
                     position: absolute;
-                    left: 10px;
-                    top: 300px;
+                    left: 9px;
+                    top: 245px;
                     display: flex;
                     flex-direction: row;
-                    font-size: 14px;
-                    font-weight: 500;
-                    gap: 3px;
                     align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
                 }
 
                 .info-item2 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 40px;
+                    top: 350px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        font-size: 6px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item3 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 32px;
+                    top: 385px;
+                    display: flex;
+                    overflow: hidden;
+                    gap: 4px;
+
+                    .cu-card {
+                        padding: 2px 6px;
+                        font-size: 6px;
+                    }
+                }
+
+                .info-item4 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 40px;
+                    top: 418px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        font-size: 7.5px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item5 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 54px;
+                    top: 433px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        padding: 0 1px;
+                        border-radius: 50%;
+                        font-size: 7px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item6 {
                     position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
                     bottom: 4px;
                     right: 4px;
@@ -468,7 +583,7 @@ defineExpose({ onFormSubmit });
                         display: flex;
 
                         & > div {
-                            padding: 8px 12px;
+                            padding: 6px 20px;
                             font-size: 8px;
                         }
                     }
@@ -476,13 +591,184 @@ defineExpose({ onFormSubmit });
             }
 
             .buy {
-                background: url("@/style/images/decorate/themeStyle/temp2.png") center center;
+                background: url("@/style/images/decorate/themeStyle/temp2.jpg") center center;
                 background-size: cover;
+
+                .buy-item1 {
+                    position: absolute;
+                    left: 66px;
+                    top: 176px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
+                }
+
+                .buy-item2 {
+                    position: absolute;
+                    left: 76px;
+                    top: 267px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    & > div {
+                        border: 0.5px solid;
+                        padding: 3.5px 6px;
+                        font-size: 7.7px;
+                        border-radius: 2px;
+                        font-weight: 500;
+                        background-color: #f7f8fa;
+                    }
+                }
+
+                .buy-item3 {
+                    position: absolute;
+                    left: 9px;
+                    top: 360.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    & > div {
+                        border: 0.5px solid;
+                        padding: 3.5px 6px;
+                        font-size: 7.7px;
+                        border-radius: 2px;
+                        font-weight: 500;
+                        background-color: #f7f8fa;
+                    }
+                }
+
+                .buy-item4 {
+                    position: absolute;
+                    right: 5px;
+                    top: 398px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+
+                    .text {
+                        font-size: 7px;
+                        font-weight: bold;
+                    }
+                }
+
+                .buy-item5 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    bottom: 4px;
+                    right: 2px;
+                    display: flex;
+                    border-radius: 18px;
+                    overflow: hidden;
+
+                    & > div {
+                        display: flex;
+
+                        & > div {
+                            padding: 6px 37px;
+                            font-size: 8px;
+                        }
+                    }
+                }
             }
 
             .check {
-                background: url("@/style/images/decorate/themeStyle/temp3.png") center center;
+
+                background: url("@/style/images/decorate/themeStyle/temp3.jpg") center center;
                 background-size: cover;
+
+                .check-item1 {
+                    position: absolute;
+                    left: 5px;
+                    top: 102px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+
+                    .text {
+                        padding: 1px 2px;
+                        border-radius: 2px;
+                        font-size: 7px;
+                    }
+                }
+
+                .check-item2 {
+                    position: absolute;
+                    left: 58px;
+                    top: 155.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item3 {
+                    position: absolute;
+                    left: 74px;
+                    top: 254.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item4 {
+                    position: absolute;
+                    left: 74px;
+                    top: 277.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item5 {
+                    position: absolute;
+                    left: 6px;
+                    bottom: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
+                }
+
+                .check-item6 {
+                    position: absolute;
+                    right: 8px;
+                    bottom: 3px;
+                    display: flex;
+                    border-radius: 18px;
+                    overflow: hidden;
+
+                    & > div {
+                        display: flex;
+
+                        & > div {
+                            padding: 6px 20px;
+                            font-size: 8px;
+                        }
+                    }
+                }
             }
         }
     }

@@ -9,22 +9,25 @@
         placeholder="选择分类"
         @change="onChange"
         @clear="onClear"
-        @visible-change="visibleChange" />
+        @visible-change="visibleChange"
+    />
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, defineModel } from "vue";
 import { ElCascader } from "element-plus";
 import { message } from "ant-design-vue";
 import { getAllCategoryList } from "@/api/product/category";
+import { useCategoryStore } from "@/store/category";
 import { CategoryFilterState } from "@/types/product/category";
 // 传值
 const props = defineProps({
     multiple: { type: Boolean, default: false },
-    categoryList: {type: Array as propType<CategoryFilterState[]>, default: () => []},
+    categoryList: { type: Array as propType<CategoryFilterState[]>, default: () => [] }
 });
 const categoryId = defineModel<any>("category_id");
 const categoryName = defineModel<any>("categoryName");
 const cascaderProps = { label: "category_name", value: "category_id", children: "children", multiple: props.multiple, checkStrictly: true };
+const categoryStore = useCategoryStore();
 //选项卡
 const options = ref<CategoryFilterState[]>([]);
 const loading = ref(false);
@@ -35,18 +38,23 @@ const open = ref(false);
 // 给父组件传值
 // 加载分类
 onMounted(() => {
-    if(props.categoryList.length > 1){
-        options.value = props.categoryList
-    }else{
+    if (props.categoryList.length > 1) {
+        options.value = props.categoryList;
+    } else {
         loadCategory();
     }
 });
 const loadCategory = async () => {
     if (loaded.value === true) return;
     loading.value = true;
+    if (categoryStore.categoryTree !== null) {
+        options.value = categoryStore.categoryTree;
+        return;
+    }
     try {
         const result = await getAllCategoryList();
         options.value = result.filter_result;
+        categoryStore.categoryTree = result.filter_result;
     } catch (error: any) {
         message.error(error.message);
     } finally {
