@@ -28,7 +28,7 @@
                 </div>
                 <div class="table-container">
                     <a-spin :spinning="loading">
-                        <el-table :data="filterState" :expand-row-keys="articleCategoryIds" :indent="30" :load="loadData" :total="total" :tree-props="{ children: 'children', hasChildren: 'has_children' }" lazy
+                        <el-table @sort-change="onSortChange" :data="filterState" :expand-row-keys="articleCategoryIds" :indent="30" :load="loadData" :total="total" :tree-props="{ children: 'children', hasChildren: 'has_children' }" lazy
                                   row-key="article_category_id" @selection-change="onSelectChange" @expand-change="handleExpandChange" ref="tableRef">
                             <el-table-column type="selection" width="32"/>
                             <el-table-column :width="200" label="文章分类名称">
@@ -52,7 +52,7 @@
                                     </PopForm>
                                 </template>
                             </el-table-column>
-                            <el-table-column key="sort_order" :sorter="true" label="排序">
+                            <el-table-column key="sort_order" sortable="custom" label="排序">
                                 <template #default="{ row }">
                                     <PopForm v-model:org-value="row.sort_order" :params="{ id: row.article_category_id, field: 'sort_order' }" :requestApi="updateArticleCategoryFiled" label="排序"
                                              type="input">
@@ -62,7 +62,7 @@
                             </el-table-column>
                             <el-table-column :width="220" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.article_category_id, parentId: row.parent_id }" :data="{ parentId: row.parent_id }" isDrawer path="content/articleCategory/Info" title="编辑分类" width="600px"
+                                    <DialogForm :params="{ act: 'detail', id: row.article_category_id, parentId: row.parent_id }" :data="{ parentId: row.parent_id }" isDrawer path="content/articleCategory/Info" title="编辑分类" width="600px"
                                                 @okCallback="updateChildFilter">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
@@ -302,6 +302,12 @@ const onBatchSubmit = async (action: string) => {
     } catch (error: any) {
         message.error(error.message);
     }
+};
+// 修改排序
+const onSortChange = ({prop, order}: { prop: string; order?: string }) => {
+    filterParams.sort_field = prop;
+    filterParams.sort_order = order == 'ascending' ? 'asc' : order == 'descending' ? 'desc' : '';
+    loadFilter();
 };
 
 const onSelectChange = (e:ArticleCategoryFilterState[]) => {

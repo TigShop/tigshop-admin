@@ -70,36 +70,39 @@ import { useAppStore } from "@/store/app";
 import { CategoryFormState } from "@/types/product/category";
 import { getCategory, updateCategory } from "@/api/product/category";
 import { AnyObject } from "ant-design-vue/es/_util/type";
+import { useCategoryStore } from "@/store/category";
 
 const appStore = useAppStore();
 // 父组件回调
 const emit = defineEmits([
     "submitCallback", //确认后回调
     "update:confirmLoading", //确认按钮的loading状态
-    "close", //关闭弹窗
+    "close" //关闭弹窗
 ]);
 //获取来自父组件的参数
 const props = defineProps({
     id: {
         type: Number,
-        default: 0,
+        default: 0
     },
     act: {
         type: String,
-        default: "",
+        default: ""
     },
     isDialog: Boolean,
-    parentId: Number,
+    parentId: Number
 });
 
 const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
-const formState = ref<CategoryFormState>({});
-
+const formState = ref<CategoryFormState>({
+    is_show: 1,
+    sort_order: 50
+});
 const fetchCategory = async () => {
     try {
         const result = await getCategory(action.value, { id: id.value });
@@ -118,9 +121,13 @@ const fetchCategory = async () => {
 };
 
 onMounted(() => {
-    // 获取详情数据
-    fetchCategory();
-    if (operation === "insert") {
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchCategory();
+    } else {
+        loading.value = false;
+    }
+    if (operation === "create") {
         formState.value.parent_id = props.parentId;
         console.log(formState.value.parent_id);
     }
@@ -136,6 +143,8 @@ const onSubmit = async () => {
         const result = await updateCategory(operation, { id: id.value, ...formState.value });
         emit("submitCallback", result);
         message.success(result.message);
+        const categoryStore = useCategoryStore();
+        categoryStore.clearCategory();
     } catch (error: any) {
         message.error(error.message);
     } finally {

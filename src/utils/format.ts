@@ -7,9 +7,9 @@ export function imageFormat(path: string | undefined) {
         return "";
     }
     if (Number(config.get("storage_type")) > 0) {
-        return path.includes("http") !== false ? path : config.get("storage_url") + path;
+        return path.includes("http") ? path : config.get("storage_url") + path;
     } else {
-        return path.includes("http") !== false ? path : "" + path;
+        return path.includes("http") ? path : "" + path;
     }
 }
 // 格式化金额
@@ -26,9 +26,23 @@ export function priceFormat(price: number | undefined, currencyFormat = true) {
 }
 
 // 链接格式化
-export function urlFormat(params: string | { path: string; [key: string]: any }): string {
+export function urlFormat(params: string | { path: string; [key: string]: any; platform?: string }): string {
     const config = useConfigStore();
     const domain = config.get("pc_domain") ? config.get("pc_domain") : config.get("h5_domain");
+    if (typeof params === "string") {
+        return domain + params;
+    } else {
+        switch (params.path) {
+            case "product":
+                return domain + "/item/?id=" + params.id + "";
+            default:
+                return domain + params.path;
+        }
+    }
+}
+export function urlWapFormat(params: string | { path: string; [key: string]: any }): string {
+    const config = useConfigStore();
+    const domain = config.get("h5_domain") ? config.get("h5_domain") : "";
     if (typeof params === "string") {
         return domain + params;
     } else {

@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import requestExport from "@/utils/export";
 import { statisticsUserFilterParams, statisticsUserFilterState } from "@/types/panel/statisticsUser.d";
 
 // 用户统计
@@ -12,8 +11,10 @@ export const getUserStatisticsPanel = (params: statisticsUserFilterParams) => {
 };
 
 export const exportUserStatisticsPanel = (params: statisticsUserFilterParams) => {
-    return requestExport({
+    return request({
         url: "panel/statistics_user/user_statistics_panel",
+        method: "get",
+        responseType: 'arraybuffer',
         params
     });
 };

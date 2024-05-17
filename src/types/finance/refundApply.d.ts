@@ -42,9 +42,22 @@ export interface RefundApplyFormState {
     refund_number?: number;
     price?: string;
     subtotal?: string;
-    refund_amount?: string;
+    refund_amount: number;
     refund_status?: number;
     refund_note?: string;
+    aftersale_id?: number;
+    aftersales_sn?: string;
+    refund_balance: number;
+    balance?: number;
+    effective_balance: number;
+    online_balance: number;
+    effective_online_balance: number;
+    online_paid_amount?: number;
+    offline_balance: number;
+    offline_paid_amount?: number;
+    paid_amount: number;
+    is_offline?: number;
+    items?: any;
 }
 
 

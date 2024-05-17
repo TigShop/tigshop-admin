@@ -56,7 +56,7 @@ export interface SeckillProductState {
     sku_stock: number
     sku_tsn: string
     sku_price: string
-    seconds_seckill: number;
+    seconds_seckill: boolean;
     seckill_price: string;
     seckill_stock: number;
 }

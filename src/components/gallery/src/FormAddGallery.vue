@@ -1,31 +1,36 @@
 <template>
-    <div style="width:100%" class="gallery-pic">
+    <div class="gallery-pic">
         <div :class="'gallery-pic-select ' + (photo ? 'have_image' : '')" v-if="!isMultiple">
             <div class="item-img add-photo-btn">
                 <Image v-if="photo" class="gallery-img" :src="imageFormat(photo)" />
-                <DialogForm type="gallery" class="item-bg" @okCallback="onEdit"
-                    :params="{ isMultiple: props.isMultiple }" v-if="!photo">
-                    <div class="flex" style="flex-direction: column;line-height: 25px;"><i
-                            class="iconfont icon-tianjiatupian"></i><span>添加图片</span></div>
+                <DialogForm type="gallery" class="item-bg" @okCallback="onEdit" :params="{ isMultiple: props.isMultiple }" v-if="!photo">
+                    <div class="flex" style="flex-direction: column; line-height: 25px"><i class="iconfont icon-tianjiatupian"></i><span>添加图片</span></div>
                 </DialogForm>
             </div>
             <div class="item-action" v-if="photo">
-                <DialogForm type="gallery" class="item item-edit" @okCallback="onEdit"
-                    :params="{ isMultiple: props.isMultiple }"><span class=" iconfont icon-bianji1"></span>
+                <DialogForm type="gallery" class="item item-edit" @okCallback="onEdit" :params="{ isMultiple: props.isMultiple }"
+                    ><span class="iconfont icon-bianji1"></span>
                 </DialogForm>
                 <span @click="removeGallery" class="item item-remove iconfont icon-shanchu"></span>
             </div>
         </div>
         <div class="gallery-list-warp" v-if="isMultiple">
             <div>
-                <draggable class="gallery-list-ul" item-key="pic_id" :list="<any>photos" ghost-class="ghost"
-                    chosen-class="chosenClass" animation="300" @start="" @end="">
+                <draggable
+                    class="gallery-list-ul"
+                    item-key="pic_id"
+                    :list="<any>photos"
+                    ghost-class="ghost"
+                    chosen-class="chosenClass"
+                    animation="300"
+                    @start=""
+                    @end=""
+                >
                     <template #item="{ element, index }">
                         <div class="item" data-id="img.img_id">
                             <div class="img">
                                 <a class="lyecs-dialogImage">
-                                    <Image class="gallery-img" :big="element.pic_url"
-                                        :src="imageFormat(element.pic_thumb)" />
+                                    <Image class="gallery-img" :big="element.pic_url" :src="imageFormat(element.pic_thumb)" />
                                 </a>
                                 <i @click="removePic(index)" class="btn-del iconfont icon-cha"></i>
                             </div>
@@ -33,8 +38,7 @@
                     </template>
 
                     <template #footer>
-                        <DialogForm type="gallery" class="" @okCallback="onEdit"
-                            :params="{ isMultiple: props.isMultiple }">
+                        <DialogForm type="gallery" class="" @okCallback="onEdit" :params="{ isMultiple: props.isMultiple }">
                             <div class="item gallery-add-item add-gallery-photo-btn" draggable="false">
                                 <i class="iconfont icon-tianjiatupian"></i>
                             </div>
@@ -42,70 +46,71 @@
                     </template>
                 </draggable>
             </div>
-
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, toRefs } from "vue"
-import type { Ref } from "vue"
-import { DialogForm } from '@/components/dialog'
+import { reactive, ref, toRefs } from "vue";
+import type { Ref } from "vue";
+import { DialogForm } from "@/components/dialog";
 import draggable from "vuedraggable";
-import { Image } from '@/components/image';
-import { imageFormat } from '@/utils/format';
-const dom: Ref<HTMLDivElement> = ref(null) as any
+import { Image } from "@/components/image";
+import { imageFormat } from "@/utils/format";
+const dom: Ref<HTMLDivElement> = ref(null) as any;
 
 const props = defineProps({
     photo: {
         type: String,
-        default: ''
+        default: ""
     },
     photos: {
         type: Array,
-        default: []  // {pic_id,pic_thumb,pic_url,pic_name}
+        default: [] // {pic_id,pic_thumb,pic_url,pic_name}
     },
     isMultiple: {
         type: Boolean,
         default: false
     }
-})
+});
 // 动态解析props
-const { photo, photos, isMultiple } = toRefs(props)
+const { photo, photos, isMultiple } = toRefs(props);
 
-const emit = defineEmits(['update:photo', 'update:photos'])
+const emit = defineEmits(["update:photo", "update:photos"]);
 const onEdit = (result: any) => {
     if (isMultiple.value == true) {
         let _photos = photos.value || [];
-        emit('update:photos', _photos.concat(result))
+        emit("update:photos", _photos.concat(result));
     } else {
-        emit('update:photo', result[0].pic_url)
+        emit("update:photo", result[0].pic_url);
     }
-}
+};
 
 const removePic = (index: number) => {
     let _photos = photos.value;
-    _photos.splice(<any>index, 1)
-    emit('update:photos', _photos)
-}
+    _photos.splice(<any>index, 1);
+    emit("update:photos", _photos);
+};
 const removeGallery = () => {
-    emit('update:photo', '')
-}
+    emit("update:photo", "");
+};
 // 相册预览功能
 const previewVisible = ref(false);
-const previewImage = ref('');
+const previewImage = ref("");
 const handleCancel = () => {
-    previewImage.value = ''
-}
+    previewImage.value = "";
+};
 const previewPhoto = (v: any) => {
     previewVisible.value = true;
     previewImage.value = v;
-}
-
+};
 </script>
 
 <style lang="less" scoped>
 // 相册选择
+.gallery-pic {
+    width: 100%;
+}
 .gallery-pic-select {
     margin-bottom: 10px;
     position: relative;
@@ -113,7 +118,7 @@ const previewPhoto = (v: any) => {
     height: 80px;
     border: 1px dashed #ddd;
     vertical-align: middle;
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
 .gallery-pic-select.have_image {
@@ -122,7 +127,7 @@ const previewPhoto = (v: any) => {
 
 .gallery-pic-select:hover {
     border-style: dashed;
-    border-color: #155bd4
+    border-color: #155bd4;
 }
 
 .gallery-pic-select .ant-image-img {
@@ -192,10 +197,10 @@ const previewPhoto = (v: any) => {
     align-content: flex-end;
     width: 100%;
     opacity: 0;
-    transition: all .3s;
+    transition: all 0.3s;
     visibility: hidden;
     display: flex;
-    background: rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, 0.6);
 }
 .gallery-pic-select .item-action :deep(.item) {
     display: inline-flex;
@@ -206,7 +211,7 @@ const previewPhoto = (v: any) => {
     cursor: pointer;
 
     :first-child {
-        margin-left: auto
+        margin-left: auto;
     }
 
     :hover {
@@ -220,7 +225,6 @@ const previewPhoto = (v: any) => {
     .item-remove {
         font-size: 14px;
     }
-
 }
 
 .gallery-pic-select.have_image:hover :deep(.item-action) {
@@ -232,11 +236,13 @@ const previewPhoto = (v: any) => {
 .gallery-pic-select .item-bg span {
     display: block;
     font-size: 12px;
+    color: #999;
 }
 
 .gallery-pic-select .item-bg i {
     font-size: 20px;
     text-align: center;
+    color: #999;
 }
 
 .gallery-pic-select .remove-photo-btn {
@@ -245,14 +251,13 @@ const previewPhoto = (v: any) => {
 
 .gallery-pic-select a.add-photo-btn:hover {
     background: #fff;
-    border-color: #1890ff;
-    color: #1890ff;
+    border-color: var(--tig-primary);
+    color: var(--tig-primary);
 }
 
 .gallery-pic-select a i {
     margin-right: 5px;
 }
-
 
 /*商品相册*/
 .gallery-list-warp {
@@ -311,14 +316,14 @@ const previewPhoto = (v: any) => {
 }
 
 .gallery-list-warp .item.add_photo a {
-    background: url('../images/bg-addImage.png') no-repeat center center;
+    background: url("../images/bg-addImage.png") no-repeat center center;
     width: 100%;
     height: 100%;
     display: block;
 }
 
 .gallery-list-warp .item.add_photo a:hover {
-    background-color: #f2f2f2
+    background-color: #f2f2f2;
 }
 
 .gallery-list-warp .item .img {
@@ -341,7 +346,7 @@ const previewPhoto = (v: any) => {
 .gallery-list-warp .item .desc {
     line-height: 25px;
     text-align: center;
-    height: 25px
+    height: 25px;
 }
 
 .gallery-list-warp .item .desc input {

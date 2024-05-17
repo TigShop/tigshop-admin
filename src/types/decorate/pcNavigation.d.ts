@@ -34,8 +34,8 @@ export interface PcNavigationFormState {
     title?: string;
     icon?: string;
     link?: LinkType;
-    is_show?: boolean;
-    is_blank?: boolean;
+    is_show?: number;
+    is_blank?: number;
     sort_order?: number;
     type: number;
     type_name?: string;

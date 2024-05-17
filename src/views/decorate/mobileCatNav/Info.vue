@@ -17,10 +17,10 @@
                         <SelectCategory v-model:category_id="formState.child_cat_ids" :multiple="true"></SelectCategory>
                     </el-form-item>
                     <el-form-item label="推荐品牌" prop="brand_ids">
-                        <div v-for="(item,key) in formState.brand_ids" style="width: 100%;margin-bottom: 10px;">
-                            <SelectBrand v-model="formState.brand_ids[key]" style="width:200px"></SelectBrand>
-                        </div>
-                        <el-button type="primary" style="margin-top: 10px;" @click="formState.brand_ids.push('')">增加</el-button>
+                        <!-- <div v-for="(item,key) in formState.brand_ids" style="width: 100%;margin-bottom: 10px;"> -->
+                            <SelectBrand v-model.brand_ids="formState.brand_ids" style="width:200px" multiple></SelectBrand>
+                        <!-- </div> -->
+                        <!-- <el-button type="primary" style="margin-top: 10px;" @click="formState.brand_ids.push('')">增加</el-button> -->
                     </el-form-item>
                     <el-form-item label="排序" prop="sort_order">
                         <el-input v-model="formState.sort_order" />
@@ -75,10 +75,12 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<MobileCatNavFormState>({
-    brand_ids:[]
+    brand_ids:[],
+    is_show: 1,
+    sort_order: 50
 });
 const fetchPcNavigation = async () => {
     try {
@@ -95,8 +97,12 @@ const fetchPcNavigation = async () => {
     }
 };
 onMounted(() => {
-    // 获取详情数据
-    fetchPcNavigation()
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchPcNavigation();
+    } else {
+        loading.value = false;
+    }
 });
 // 表单通过验证后提交
 const onSubmit = async () => {

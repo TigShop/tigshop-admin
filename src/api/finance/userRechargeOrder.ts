@@ -1,10 +1,10 @@
-import request from '@/utils/request';
-import type {UserRechargeOrderFilterParams, UserRechargeOrderFilterResult, UserRechargeOrderFormResult} from '@/types/finance/userRechargeOrder.d'
+import request from "@/utils/request";
+import type {UserRechargeOrderFilterParams, UserRechargeOrderFilterResult, UserRechargeOrderFormResult} from "@/types/finance/userRechargeOrder.d"
 // 获取商品分类列表
 export const getUserRechargeOrderList = (params: UserRechargeOrderFilterParams) => {
     return request<UserRechargeOrderFilterResult>({
-        url: 'finance/user_recharge_order/index/',
-        method: 'get',
+        url: "finance/user_recharge_order/list",
+        method: "get",
         params,
     });
 }
@@ -12,24 +12,24 @@ export const getUserRechargeOrderList = (params: UserRechargeOrderFilterParams) 
 // 删除
 export const delUserRechargeOrder= (data: object) => {
     return request({
-        url: 'finance/user_recharge_order/del/',
-        method: 'post',
+        url: "finance/user_recharge_order/del",
+        method: "post",
         data,
     });
 }
 
 export const recallUserRechargeOrder= (data: object) => {
     return request({
-        url: 'finance/user_recharge_order/recall/',
-        method: 'post',
+        url: "finance/user_recharge_order/recall",
+        method: "post",
         data,
     });
 }
 //获取分类详情
 export const getUserRechargeOrder  = (action: string, params: object) => {
     return request<UserRechargeOrderFormResult>({
-        url: 'finance/user_recharge_order/' + action + '/',
-        method: 'get',
+        url: "finance/user_recharge_order/" + action,
+        method: "get",
         params
     });
 }
@@ -37,8 +37,8 @@ export const getUserRechargeOrder  = (action: string, params: object) => {
 // 更新分类
 export const updateUserRechargeOrder = (operation: string, data: object) => {
     return request({
-        url: 'finance/user_recharge_order/' + operation + '/',
-        method: 'post',
+        url: "finance/user_recharge_order/" + operation,
+        method: "post",
         data
     });
 }
@@ -46,8 +46,8 @@ export const updateUserRechargeOrder = (operation: string, data: object) => {
 // 批量操作
 export const batchSubmit = (type: string, params: object) => {
     return request({
-        url: 'finance/user_recharge_order/batch/?type=' + type,
-        method: 'post',
+        url: "finance/user_recharge_order/batch?type=" + type,
+        method: "post",
         params,
     });
 }

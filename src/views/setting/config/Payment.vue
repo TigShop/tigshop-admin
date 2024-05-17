@@ -17,13 +17,13 @@
                             </el-radio-group>
                             <div class="extra">订单结算页面是否支持余额支付功能，不支持则不显示</div>
                         </el-form-item>
-                        <el-form-item label="货到付款" prop="use_cod">
+                        <!-- <el-form-item label="货到付款" prop="use_cod">
                             <el-radio-group v-model="formState.use_cod" class="itemWidth">
                                 <el-radio :value="1">支持</el-radio>
                                 <el-radio :value="0">不支持</el-radio>
                             </el-radio-group>
                             <div class="extra">订单结算页面支付方式是否支持货到付款功能，不支持则不显示</div>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="积分抵扣" prop="use_points">
                             <el-radio-group v-model="formState.use_points" class="itemWidth">
                                 <el-radio :value="1">支持</el-radio>
@@ -78,10 +78,11 @@
                                       @change="handleChange"
                                       :showUploadList="false"
                                       :multiple="true">
-                                      <el-button>点击上传</el-button>
+                                      <el-button>{{formState.wechat_pay_certificate ? '重新上传' : '点击上传'}}</el-button>
+                                      <span class="ml10">apiclient_cert.pem</span>
                                   </Upload>
                               </div>
-                              <div class="extra">调用微信商户接口时需要用到的API证书，具体操作请参考教程</div>
+                              <div class="extra">调用微信商户接口时需要用到的API证书，文件名称一般为apiclient_cert.pem，具体操作请参考教程</div>
                           </el-form-item>
                           <el-form-item label="商户API证书密钥" prop="wechat_pay_private_key">
                             <div style="width: 100%">
@@ -92,13 +93,19 @@
                                   @change="handleChange"
                                   :showUploadList="false"
                                   :multiple="true">
-                                <el-button>点击上传</el-button>
+                                <el-button>{{formState.wechat_pay_private_key ? '重新上传' : '点击上传'}}</el-button>
+                                <span class="ml10">apiclient_key.pem</span>
                               </Upload>
                             </div>
-                            <div class="extra">调用微信商户接口时需要用到的API证书密钥，具体操作请参考教程</div>
+                            <div class="extra">调用微信商户接口时需要用到的API证书密钥，文件名称一般为apiclient_key.pem，具体操作请参考教程</div>
                           </el-form-item>
                           <el-form-item label="平台证书" prop="">
-                            <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="onSubmit">生成证书</el-button>
+                            <div  style="width: 100%">
+                              <el-button :loading="confirmLoading" class="form-submit-btn" type="success" @click="getPlatformCertificate">
+                                {{formState.wechat_pay_platform_certificate ? '更新证书' : '生成证书'}}
+                              </el-button>
+                            </div>
+                            <div class="extra">调用微信商户接口时需要用到的平台证书,上传API证书后需要更新平台证书，具体操作请参考教程</div>
                           </el-form-item>
                         </div>
                     </div>
@@ -119,7 +126,26 @@
                       <el-form-item label="支付宝公钥" prop="alipay_rsa_public_key">
                         <el-input type="textarea" v-model="formState.alipay_rsa_public_key" :rows="5" />
                       </el-form-item>
+                    </div>
 
+                    <div v-show="activeKey === 'offline'" class="content">
+                      <el-form-item label="是否开启" prop="use_offline">
+                        <el-radio-group v-model="formState.use_offline" class="itemWidth">
+                          <el-radio :value="1">开启</el-radio>
+                          <el-radio :value="0">关闭</el-radio>
+                        </el-radio-group>
+                        <div class="extra">是否开启线下支付，如关闭则不显示线下支付选项</div>
+                      </el-form-item>
+                      <el-form-item label="汇款说明">
+                        <el-tabs type="border-card" v-model="activeName">
+                            <el-tab-pane label="银行汇款" :name="1">
+                                <Editor v-model:html="formState.offline_pay_bank" :border="false"></Editor>
+                            </el-tab-pane>
+                            <el-tab-pane label="企业汇款" :name="2">
+                                <Editor v-model:html="formState.offline_pay_company" :border="false"></Editor>
+                            </el-tab-pane>
+                        </el-tabs>
+                      </el-form-item>
                     </div>
                 </el-form>
                 <div style="height: 20px"></div>
@@ -136,18 +162,20 @@
 <script lang="ts" setup>
 import "@/style/css/list.less";
 import { onMounted, ref, shallowRef } from "vue";
+import {Editor} from "@/components/editor/index"
 import { FormAddGallery } from "@/components/gallery";
 import { InputTag } from "@/components/form";
 import { SelectRegion } from "@/components/select";
 import { message, Upload } from "ant-design-vue";
 import type { PaymentFormState, Regions } from "@/types/setting/config";
 import request, { requestUrl } from "@/utils/request";
-import { getConfig, saveConfig } from "@/api/setting/config";
+import { getConfig, saveConfig, createPlatformCertificate } from "@/api/setting/config";
 import { Tickets } from "@element-plus/icons-vue";
 
 const formRef = shallowRef();
 // 基本参数定义
 const activeKey = ref<string>("base");
+const activeName = ref<number>(1)
 const confirmLoading = ref<boolean>(false);
 const formState = ref<PaymentFormState>({
     use_wechat: 1,
@@ -166,6 +194,17 @@ onMounted(async () => {
     loadFilter();
 });
 const loading = ref<boolean>(true);
+const getPlatformCertificate = async () => {
+    try {
+        const result = await createPlatformCertificate();
+        message.success(result.message);
+        loadFilter();
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+}
 const loadFilter = async () => {
     try {
         const result = await getConfig({
@@ -182,7 +221,6 @@ const loadFilter = async () => {
 // 表单通过验证后提交
 const onSubmit = async () => {
     confirmLoading.value = true;
-
     try {
         const result = await saveConfig({
             code: "payment",
@@ -211,12 +249,12 @@ const handleChange = (info: any) => {
                     info.fileList[index] = Object.assign(info.fileList[index], info.fileList[index].response.data);
                 }
             }
-            message.success("图片上传成功！");
+            message.success("文件上传成功！");
+            loadFilter();
         }
     } else if (info.file.status === "error") {
-        message.error(`${info.file.name} 图片上传失败！`);
+        message.error(`${info.file.name} 文件上传失败！`);
     }
-    // uploadPicList.value = info.fileList
 };
 </script>
 <style lang="less" scoped>
@@ -234,6 +272,9 @@ const handleChange = (info: any) => {
         color: #999;
         font-weight: normal;
         font-size: 12px;
+    }
+    :deep(.el-tabs--border-card > .el-tabs__content){
+        padding: 0;
     }
 }
 

@@ -15,7 +15,7 @@
                         <el-button plain @click="handleSearch">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="mr-10">
-                        <el-button plain @click="handleExport">导出EXCEL</el-button>
+                        <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -95,7 +95,10 @@
                             环比：
                             <span>{{ filterState?.recharge_user_growth_rate }}% </span>
                             <i
-                                v-if="(filterState.recharge_user_growth_rate as string).toString() !== '--' && (filterState.recharge_user_growth_rate as number) > 0"
+                                v-if="
+                                    (filterState.recharge_user_growth_rate as string).toString() !== '--' &&
+                                    (filterState.recharge_user_growth_rate as number) > 0
+                                "
                                 class="admin-iconfont red f12 up"
                                 >&#xe61a;</i
                             >
@@ -116,6 +119,7 @@ import { formattedDate } from "@/utils/time";
 import { getUserStatisticsPanel, exportUserStatisticsPanel } from "@/api/panel/statisticsUser";
 import { statisticsUserFilterParams, FilterResult } from "@/types/panel/statisticsUser.d";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 
 const loading = ref(false);
 const filterParams = reactive<statisticsUserFilterParams>({
@@ -154,11 +158,16 @@ const handleSearch = () => {
     getData();
 };
 
-const handleExport = () => {
-    exportUserStatisticsPanel({
-        ...filterParams,
-        is_export: "1"
-    });
+const Exportloading = ref<boolean>(false);
+const handleExport = async () => {
+    Exportloading.value = true;
+    try {
+        const result = await exportUserStatisticsPanel({ ...filterParams, is_export: "1" });
+        Exportloading.value = false;
+        requestExport(result, "用户统计导出");
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 
 onMounted(() => {
@@ -193,7 +202,7 @@ onMounted(() => {
 
         .main-panel-item-value {
             font-size: 24px;
-            color: #555;
+            color: #333;
             display: block;
             font-weight: bold;
             padding: 10px 0;

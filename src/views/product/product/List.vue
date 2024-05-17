@@ -152,17 +152,17 @@
                                     </div>
                                 </template>
                             </el-table-column>
-                            <el-table-column v-if="activeKey != 7" :width="200" label="商品状态">
+                            <el-table-column v-if="activeKey != 7" :width="100" label="是否上架">
                                 <template #default="{ row }">
                                     <div class="status-switch">
                                         <div v-if="row.check_status == 1">
-                                            <span class="span-tit">上架：</span>
+                                            <!-- <span class="span-tit">上架：</span> -->
                                             <Switch
                                                 v-model:checked="row.product_status"
                                                 :params="{ id: row.product_id, field: 'product_status' }"
                                                 :requestApi="updateProductFiled" />
                                         </div>
-                                        <div>
+                                        <!-- <div>
                                             <span class="span-tit">精品：</span>
                                             <Switch
                                                 v-model:checked="row.is_best"
@@ -182,7 +182,7 @@
                                                 v-model:checked="row.is_hot"
                                                 :params="{ id: row.product_id, field: 'is_hot' }"
                                                 :requestApi="updateProductFiled" />
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </template>
                             </el-table-column>
@@ -228,7 +228,7 @@
                                     <el-space :size="0">
                                         <DialogForm
                                             v-if="activeKey != 7"
-                                            :params="{ act: 'edit', id: row.product_id }"
+                                            :params="{ act: 'detail', id: row.product_id }"
                                             dialogClass="noPadding"
                                             isDrawer
                                             path="product/product/Info"
@@ -243,19 +243,26 @@
                                         >
                                         <el-divider v-if="activeKey != 7" direction="vertical" />
                                         <DeleteRecord
+                                        v-if="activeKey === 7"
+                                            :params="{ id: row.product_id, field: 'is_delete' }"
+                                            :requestApi="updateProductFiled"
+                                            @afterDelete="loadFilter">
+                                            还原
+                                        </DeleteRecord>
+                                        <!-- <DeleteRecord
                                             v-if="activeKey === 7"
                                             :params="{ id: row.product_id, is_delete: 0 }"
                                             :requestApi="delProduct"
                                             @afterDelete="loadFilter">
                                             删除
                                         </DeleteRecord>
-                                        <el-divider v-if="activeKey === 7" direction="vertical" />
+                                        <el-divider v-if="activeKey === 7" direction="vertical" /> -->
 
-                                        <el-dropdown trigger="click">
+                                        <el-dropdown trigger="click" v-if="activeKey != 7">
                                             <span class="iconfont-admin icon-gengduo btn-link"></span>
                                             <template #dropdown>
                                                 <el-dropdown-menu>
-                                                    <el-dropdown-item v-if="activeKey != 7">
+                                                    <el-dropdown-item>
                                                         <DeleteRecord
                                                             :params="{ id: row.product_id, is_delete: 1 }"
                                                             :requestApi="recycleProduct"
@@ -263,14 +270,26 @@
                                                             移入回收站
                                                         </DeleteRecord>
                                                     </el-dropdown-item>
-                                                    <el-dropdown-item v-if="activeKey === 7">
+                                                    <el-dropdown-item>
+                                                        <DialogForm
+                                                            :params="{ act: 'copy', id: row.product_id }"
+                                                            dialogClass="noPadding"
+                                                            isDrawer
+                                                            path="product/product/Info"
+                                                            title="复制商品"
+                                                            width="800px"
+                                                            @okCallback="loadFilter">
+                                                            <a class="btn-link">复制</a>
+                                                        </DialogForm>
+                                                    </el-dropdown-item>
+                                                    <!-- <el-dropdown-item v-if="activeKey === 7">
                                                         <DeleteRecord
                                                             :params="{ id: row.product_id, field: 'is_delete' }"
                                                             :requestApi="updateProductFiled"
                                                             @afterDelete="loadFilter">
                                                             还原
                                                         </DeleteRecord>
-                                                    </el-dropdown-item>
+                                                    </el-dropdown-item> -->
                                                 </el-dropdown-menu>
                                             </template>
                                         </el-dropdown>
@@ -288,7 +307,7 @@
                         <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
                     </div>
                 </div>
-                <div v-if="selectedIds.length > 0" class="selected-action-warp">
+                <div v-if="selectedIds.length > 0 && activeKey != 7" class="selected-action-warp">
                     <div class="selected-action">
                         <el-space>
                             <span
@@ -296,7 +315,7 @@
                             >
                             <el-popconfirm title="您确认要批量删除所选数据吗？" @confirm="onBatchSubmit('del')">
                                 <template #reference>
-                                    <el-button>批量删除</el-button>
+<!--                                    <el-button>批量删除</el-button>-->
                                 </template>
                             </el-popconfirm>
                         </el-space>

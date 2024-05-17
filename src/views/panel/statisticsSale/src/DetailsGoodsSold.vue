@@ -12,7 +12,7 @@
                     <el-button plain @click="handleSearch">搜索</el-button>
                 </el-form-item>
                 <el-form-item class="mr-10">
-                    <el-button plain @click="handleExport">导出EXCEL</el-button>
+                    <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                 </el-form-item>
             </div>
         </el-form>
@@ -52,7 +52,7 @@
                     </el-table-column>
                     <el-table-column prop="add_time" width="200" sortable="custom" label="下单时间">
                         <template #default="{ row }">
-                            {{ row.order.add_time }}
+                            {{ row.order?.add_time }}
                         </template>
                     </el-table-column>
                     <template #empty>
@@ -80,6 +80,7 @@ import { formattedDate } from "@/utils/time";
 import { message } from "ant-design-vue";
 import type { SaleDetaillistFilterParams, SaleDetaillistFilterResult } from "@/types/panel/statisticsSale";
 import { getSaleDetaillist, exportSaleDetaillis } from "@/api/panel/statisticsSale";
+import requestExport from "@/utils/export";
 const config = useConfigStore();
 
 const loading = ref<boolean>(false);
@@ -113,8 +114,17 @@ const handleSearch = () => {
     getData();
 };
 
-const handleExport = () => {
-    exportSaleDetaillis({ ...filterParams, is_export: "1" });
+
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await exportSaleDetaillis({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'销售明细导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
 };
 
 onMounted(() => {

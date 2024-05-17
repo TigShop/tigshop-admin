@@ -38,7 +38,7 @@ export interface CommentFormState {
     username?: string;
     avatar?: string;
     comment_rank?: number;
-    comment_tag?: string;
+    comment_tag: string[];
     content?: string;
     add_time?: string;
     show_pics?: Array<string>;

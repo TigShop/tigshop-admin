@@ -7,15 +7,21 @@
                         <div class="list-table-tool-row">
                             <div class="list-table-tool-col">
                                 <el-space>
-                                    <el-select v-model="filterParams.order_status" clearable>
-                                        <el-option v-for="item in orderStatusList" :label="item.label" :value="item.value"></el-option>
-                                        <el-option label="已删除" :value="-2"></el-option>
-                                    </el-select>
-                                    <el-input v-model="filterParams.keyword" class="width240" name="keyword" placeholder="订单号/收货人姓名/订单ID">
+                                    <el-input v-model="filterParams.keyword" style="width: 280px" name="keyword" placeholder="订单号/收货人姓名/订单ID">
                                         <template #append>
                                             <el-button @click="onSearchSubmit"><span class="iconfont icon-chakan1"></span></el-button>
                                         </template>
                                     </el-input>
+                                    <div class="tabs flex">
+                                        <div
+                                            class="item"
+                                            v-for="item in orderStatusList"
+                                            :class="filterParams.order_status == item.value ? 'active' : ''"
+                                            @click="onTabChange(item.value)"
+                                        >
+                                            {{ item.label }}
+                                        </div>
+                                    </div>
                                     <a :class="'advanced-search-btn ml18 ' + (advancedSearch ? 'active' : '')" @click="advancedSearch = !advancedSearch"
                                         >高级搜索<i class="iconfont icon-xia"></i
                                     ></a>
@@ -94,9 +100,8 @@
                                                 v-model:start-date="filterParams.add_start_time"
                                                 :clearable="false"
                                                 type="date"
-                                                value-format="YYYY-MM-DD"></SelectTimeInterval>
-                                            <!-- <el-date-picker v-model="filterParams.add_time" class="width240" end-placeholder="结束时间" range-separator="-" start-placeholder="起始时间"
-                                                            type="daterange"/> -->
+                                                value-format="YYYY-MM-DD"
+                                            ></SelectTimeInterval>
                                         </div>
                                     </div>
                                 </div>
@@ -117,13 +122,15 @@
                                             v-model="selectAll"
                                             :indeterminate="isIndeterminate"
                                             class="check-box mr10"
-                                            @change="onSelectChangeAll"></el-checkbox>
+                                            @change="onSelectChangeAll"
+                                        ></el-checkbox>
                                         <SortButton
                                             v-model:sortField="filterParams.sort_field"
                                             v-model:sortOrder="filterParams.sort_order"
                                             sortName="order_id"
                                             text="订单信息(下单时间排序)"
-                                            @loadData="onSearchSubmit()"></SortButton>
+                                            @loadData="onSearchSubmit()"
+                                        ></SortButton>
                                     </th>
                                     <th>
                                         <SortButton
@@ -131,7 +138,8 @@
                                             v-model:sortOrder="filterParams.sort_order"
                                             sortName="total_amount"
                                             text="订单金额"
-                                            @loadData="onSearchSubmit()"></SortButton>
+                                            @loadData="onSearchSubmit()"
+                                        ></SortButton>
                                     </th>
                                     <th>收货人信息</th>
                                     <th>物流/支付信息</th>
@@ -155,14 +163,15 @@
                                             v-if="item.parent_order_id > 0"
                                             :content="'该订单已拆分，点击可查看父订单' + ''"
                                             effect="light"
-                                            placement="top">
+                                            placement="top"
+                                        >
                                             <Tag text="子订单"></Tag>
                                         </el-tooltip>
                                         <el-tooltip v-if="item.store_id > 0" :content="'订单来自店铺：' + item.store_title" effect="light" placement="top">
                                             <Tag :transparent="false" text="店铺"></Tag>
                                         </el-tooltip>
                                         <el-tooltip v-if="item.order_source" :content="'订单来自' + item.order_source + '下单'" effect="light" placement="top">
-                                            <Tag :text="item.order_source" :transparent="true"></Tag>
+                                            <Tag :text="item.order_source" :transparent="true" style="text-transform: uppercase"></Tag>
                                         </el-tooltip>
                                         <!--<el-tag class="ml10" disable-transitions effect="plain" size="small">-->
                                         <!--团购订单-->
@@ -171,23 +180,25 @@
                                     </th>
                                     <th class="textR">
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id }"
+                                            :params="{ act: 'detail', id: item.order_id }"
                                             :showClose="false"
                                             :showOnOk="false"
                                             :title="'订单详情 ' + item.order_sn"
                                             isDrawer
                                             path="order/order/Info"
                                             width="880px"
-                                            @callback="loadFilter">
+                                            @callback="loadFilter"
+                                        >
                                             <el-button bg class="buttonColor mr10" size="small" text type="primary"> 查看详情 </el-button>
                                         </DialogForm>
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                            :params="{ act: 'detail', id: item.order_id, valueName: 'admin_note' }"
                                             isDrawer
                                             path="order/order/src/EditRemark"
                                             title="编辑备注"
                                             width="600px"
-                                            @okCallback="loadFilter">
+                                            @okCallback="loadFilter"
+                                        >
                                             <el-button bg class="buttonColor" size="small" text type="primary"> 备注 </el-button>
                                         </DialogForm>
                                     </th>
@@ -202,7 +213,8 @@
                                                 :product_id="product.product_id"
                                                 :product_name="product.product_name"
                                                 :product_type="product.product_type"
-                                                :url="product.url"></ProductCard>
+                                                :url="product.url"
+                                            ></ProductCard>
                                             <div class="displayColumn textR whiteSN widthAuto">
                                                 <div>{{ priceFormat(product.price) }}</div>
                                                 <div>× {{ product.quantity }}</div>
@@ -228,6 +240,22 @@
                                                     <p>佣金：<span class="gray">未结算</span></p>
                                                 </div>
                                             </div>
+                                            <div>
+                                                <DialogForm
+                                                    v-if="item.status === 6 || item.status === 7"
+                                                    :params="{ act: 'detail', id: item.aftersale_id }"
+                                                    isDrawer
+                                                    path="order/aftersales/Info"
+                                                    :title="'售后详情 ' + item.aftersales_sn"
+                                                    width="800px"
+                                                    @okCallback="loadFilter"
+                                                    :showClose="false"
+                                                    :showOnOk="false"
+                                                >
+                                                    <el-button bg class="buttonColor" size="small" text type="primary"> 售后详情 </el-button>
+                                                </DialogForm>
+                                                <!-- <el-button size="small" text type="primary"> 售后详情 </el-button> -->
+                                            </div>
                                         </div>
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.items.length">
@@ -235,13 +263,14 @@
                                             <div class="gray">
                                                 会员名：
                                                 <DialogForm
-                                                    :params="{ act: 'edit', id: item.user_id }"
+                                                    :params="{ act: 'detail', id: item.user_id }"
                                                     isDrawer
                                                     path="order/order/src/Users"
                                                     title="用户信息"
                                                     width="600px"
                                                     @okCallback="loadFilter"
-                                                    :showOnOk="false">
+                                                    :showOnOk="false"
+                                                >
                                                     <a>{{ item.username }}</a>
                                                 </DialogForm>
                                             </div>
@@ -271,30 +300,61 @@
                                                 orange: item.order_status === 0,
                                                 black: item.order_status === 1 || item.order_status === 2 || item.order_status === 4,
                                                 gray: item.order_status === 3,
-                                                green: item.order_status === 5,
-                                            }">
+                                                green: item.order_status === 5
+                                            }"
+                                        >
                                             {{ item.order_status_name }}
                                         </span>
                                     </td>
                                     <td v-if="index == 0" :rowspan="item.items.length">
                                         <div class="buttonStyle">
-                                            <el-button v-if="item.available_actions.del_order" bg size="small" text type="primary"> 删除 </el-button>
-                                            <el-button v-if="item.available_actions.cancel_order" bg size="small" text type="primary"> 取消订单 </el-button>
-                                            <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button>
+                                            <DialogForm
+                                                v-if="item.available_actions.cancel_order"
+                                                :params="{ act: 'cancel_order', id: item.order_id }"
+                                                isDrawer
+                                                path="order/order/src/Operation"
+                                                title="取消订单"
+                                                width="600px"
+                                                @okCallback="loadFilter"
+                                            >
+                                                <el-button bg class="buttonColor" size="small" text type="primary"> 取消订单 </el-button>
+                                            </DialogForm>
+                                            <el-button
+                                                v-if="item.available_actions.del_order"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="primary"
+                                                @click="onDelClick(item.order_id)"
+                                            >
+                                                删除订单
+                                            </el-button>
+                                            <!-- <el-button v-if="item.is_del === 1" bg size="small" text type="primary"> 还原 </el-button> -->
                                             <!--<el-button bg size="small" text type="primary">-->
                                             <!--处理退款-->
                                             <!--</el-button>-->
 
                                             <DialogForm
-                                                :params="{ act: 'info', id: item.order_id }"
+                                                :params="{ act: 'detail', id: item.order_id }"
                                                 :title="'订单发货 ' + item.order_sn"
                                                 isDrawer
                                                 path="order/order/src/ToShip"
                                                 width="900px"
-                                                @okCallback="loadFilter">
-                                                <el-button v-if="item.available_actions.deliver" bg size="small" text type="danger"> 去发货 </el-button>
+                                                @okCallback="loadFilter"
+                                                v-if="item.available_actions.deliver"
+                                            >
+                                                <el-button bg size="small" text type="danger"> 去发货 </el-button>
                                             </DialogForm>
-                                            <el-button v-if="item.available_actions.confirm_receipt" bg size="small" text type="danger"> 确认收货 </el-button>
+                                            <el-button
+                                                v-if="item.available_actions.confirm_receipt"
+                                                bg
+                                                size="small"
+                                                text
+                                                type="danger"
+                                                @click="onReceiptClick(item.order_id)"
+                                            >
+                                                确认收货
+                                            </el-button>
                                         </div>
                                     </td>
                                 </tr>
@@ -302,12 +362,13 @@
                                     <td colspan="6">
                                         <span class="orange">商家备注：</span>{{ item.admin_note }}
                                         <DialogForm
-                                            :params="{ act: 'info', id: item.order_id, valueName: 'admin_note' }"
+                                            :params="{ act: 'detail', id: item.order_id, valueName: 'admin_note' }"
                                             isDrawer
                                             path="order/order/src/EditRemark"
                                             title="编辑备注"
                                             width="600px"
-                                            @okCallback="loadFilter">
+                                            @okCallback="loadFilter"
+                                        >
                                             <el-button bg class="buttonColor" size="small" text type="primary"> 修改 </el-button>
                                         </DialogForm>
                                     </td>
@@ -319,9 +380,10 @@
                             <div v-if="!loading" class="empty-bg">暂无数据</div>
                         </div>
                     </a-spin>
-                    <div v-if="total > 0" class="pagination-con">
-                        <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
-                    </div>
+                </div>
+
+                <div v-if="total > 0" class="pagination-con">
+                    <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
                 </div>
                 <div v-if="selectedIds.length > 0" class="selected-action-warp">
                     <div class="selected-action">
@@ -341,10 +403,10 @@
 import "@/style/css/list.less";
 import { computed, onMounted, reactive, ref } from "vue";
 import { Pagination, ProductCard } from "@/components/list";
-import { message } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
 import { OrderFilterParams, OrderFilterState } from "@/types/order/order.d";
-import { batchSubmit, getOrderList } from "@/api/order/order";
+import { batchSubmit, getOrderList, operationOrder } from "@/api/order/order";
 import { SelectStore, SelectLogisticsCompany } from "@/components/select";
 import { DialogForm } from "@/components/dialog";
 import SortButton from "../../../components/list/src/SortButton.vue";
@@ -357,13 +419,14 @@ import { SelectTimeInterval } from "@/components/select";
 const config: any = useConfigStore();
 // 基本参数定义
 const orderStatusList = reactive([
-    // {value: -1, label: '请选择'},
-    { value: 0, label: "待付款" },
+    { value: -1, label: "全部" },
+    { value: 0, label: "待支付" },
     { value: 1, label: "待发货" },
     { value: 2, label: "已发货" },
     { value: 3, label: "已取消" },
     { value: 4, label: "无效" },
     { value: 5, label: "已完成" },
+    { value: -2, label: "已删除" }
 ]);
 
 const shippingStatusList = reactive([
@@ -372,7 +435,7 @@ const shippingStatusList = reactive([
     { value: 1, label: "已发货" },
     { value: 2, label: "已收货" },
     { value: 3, label: "配送中" },
-    { value: 4, label: "配送失败" },
+    { value: 4, label: "配送失败" }
 ]);
 
 const payStatusList = reactive([
@@ -381,8 +444,13 @@ const payStatusList = reactive([
     { value: 1, label: "支付中" },
     { value: 2, label: "已付款" },
     { value: 3, label: "退款中" },
-    { value: 4, label: "已退款" },
+    { value: 4, label: "已退款" }
 ]);
+
+const onTabChange = (value: number) => {
+    filterParams.order_status = value;
+    loadFilter();
+};
 
 const filterState = ref<OrderFilterState[]>([]);
 const loading = ref<boolean>(true);
@@ -397,7 +465,7 @@ const filterParams = reactive<OrderFilterParams>({
     sort_field: "order_id",
     sort_order: "desc",
     keyword: "",
-    // order_status: -1,
+    order_status: -1,
     // pay_status: -1,
     // shipping_status: -1,
     address: "",
@@ -405,7 +473,7 @@ const filterParams = reactive<OrderFilterParams>({
     mobile: "",
     add_time: [],
     add_end_time: "",
-    add_start_time: "",
+    add_start_time: ""
 });
 // dayjs(new Date()).subtract(7, 'day').format('YYYY-MM-DD'), dayjs(new Date()).format('YYYY-MM-DD')
 // 获取列表的查询结果
@@ -416,7 +484,7 @@ const loadFilter = async () => {
         const result = await getOrderList({ ...filterParams });
         const newArr = result.filter_result.map((item) => ({
             ...item, // 保留原始数据项的属性
-            checkBox: false, // 添加 check 属性并设置为 false
+            checkBox: false // 添加 check 属性并设置为 false
         }));
         filterState.value = newArr;
         total.value = result.total;
@@ -429,13 +497,13 @@ const loadFilter = async () => {
 const props = defineProps({
     id: {
         type: Number,
-        default: 0,
+        default: 0
     },
     act: {
         type: String,
-        default: "",
+        default: ""
     },
-    isDialog: Boolean,
+    isDialog: Boolean
 });
 const route = useRoute();
 const query = useRouter().currentRoute.value.query;
@@ -465,6 +533,39 @@ const onBatchSubmit = async (action: string) => {
     } catch (error: any) {
         message.error(error.message);
     }
+};
+const onDelClick = (id: any) => {
+    Modal.confirm({
+        title: "确认删除订单吗？",
+        content: "被删除的订单可以通过筛选查找并恢复",
+        onOk: async () => {
+            try {
+                const result = await operationOrder("del_order", { id: id });
+                message.success(result.message);
+                loadFilter();
+            } catch (error: any) {
+                message.error(error.message);
+            } finally {
+                loading.value = false;
+            }
+        }
+    });
+};
+const onReceiptClick = (id: any) => {
+    Modal.confirm({
+        title: "确认订单已收货吗？",
+        onOk: async () => {
+            try {
+                const result = await operationOrder("confirm_receipt", { id: id });
+                message.success(result.message);
+                loadFilter();
+            } catch (error: any) {
+                message.error(error.message);
+            } finally {
+                loading.value = false;
+            }
+        }
+    });
 };
 
 // 多选操作
@@ -659,6 +760,44 @@ const onSelectChange = (e: any) => {
 
     .gray {
         color: #999999;
+    }
+}
+.tabs {
+    .item {
+        width: 55px;
+        text-align: center;
+        height: 25px;
+        line-height: 25px;
+        color: #333;
+        margin: 0 5px;
+        font-size: 14px;
+        border-radius: 2px;
+        border: 1px solid #fff;
+        cursor: pointer;
+        &:hover {
+            color: var(--tig-primary);
+        }
+    }
+    .active {
+        color: var(--tig-primary);
+        background-color: rgba(61, 127, 255, 0.06);
+        border: 1px solid var(--tig-primary);
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .tabs {
+        flex-wrap: wrap;
+        gap: 10px !important;
+        .item {
+            margin: 0 !important;
+        }
+    }
+    .table-container {
+        overflow-x: auto;
+        .table-container-con {
+            min-width: 800px;
+        }
     }
 }
 </style>

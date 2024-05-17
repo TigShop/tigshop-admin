@@ -10,11 +10,19 @@
                                     v-model:modelValue="formState.product_type"
                                     :radioList="[
                                         { key: 1, title: '普通商品' },
-                                        { key: 2, title: '虚拟商品' },
-                                    ]"></RadioType>
+                                        { key: 2, title: '虚拟商品' }
+                                    ]"
+                                ></RadioType>
                             </el-form-item>
                             <el-form-item :rules="[{ required: true, message: '商品名称不能为空' }]" label="商品名称" prop="product_name">
                                 <el-input v-model="formState.product_name" description="请输入您的姓名" />
+                            </el-form-item>
+                            <el-form-item label="搜索关键词" prop="keywords">
+                                <div class="keywords">
+                                    <el-input v-model="formState.keywords" class="InputBox" />
+                                    <el-button type="primary" @click="onGetParticiple">更新关键词</el-button>
+                                </div>
+                                <div class="extra">用空格分隔，为空时会自动根据商品名称分词</div>
                             </el-form-item>
                             <el-form-item label="商品相册" prop="img_list">
                                 <FormAddGallery v-if="!loading" v-model:photos="formState.img_list" :isMultiple="true"> </FormAddGallery>
@@ -29,7 +37,8 @@
                                     v-if="!loading"
                                     v-model:category_id="formState.category_id"
                                     :multiple="false"
-                                    style="width: 100%"></SelectCategory>
+                                    style="width: 100%"
+                                ></SelectCategory>
                             </el-form-item>
                             <el-form-item extra="" label="商品描述" prop="product_brief">
                                 <el-input v-model="formState.product_brief" rows="2" type="textarea"></el-input>
@@ -54,20 +63,28 @@
                             </el-form-item>
                             <el-form-item label="供应商" prop="suppliers_id">
                                 <el-select v-model="formState.suppliers_id" placeholder="请选择" style="width: 100%">
+                                    <el-option label="请选择" :value="0"></el-option>
+                                    <el-option label="请选择" :value="0"></el-option>
                                     <el-option
                                         v-for="item in formState.suppliers_list"
                                         :key="item.suppliers_id"
                                         :label="item.suppliers_name"
-                                        :value="item.suppliers_id" />
+                                        :value="item.suppliers_id"
+                                    />
+                                        :value="item.suppliers_id"
+                                    />
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="运费模板" prop="shipping_tpl_id">
                                 <el-select v-model="formState.shipping_tpl_id" placeholder="请选择" style="width: 100%">
+                                    <el-option label="请选择" :value="0"></el-option>
+                                    <el-option label="请选择" :value="0"></el-option>
                                     <el-option
                                         v-for="item in formState.shipping_tpl_list"
                                         :key="item.shipping_tpl_id"
                                         :label="item.shipping_tpl_name"
-                                        :value="item.shipping_tpl_id" />
+                                        :value="item.shipping_tpl_id"
+                                    />
                                 </el-select>
                                 <div class="extra">不选择则时，该商品运费按默认运费模板计算。当前默认运费模板：默认模板</div>
                             </el-form-item>
@@ -77,10 +94,6 @@
                                     <el-radio :value="0">否</el-radio>
                                 </el-radio-group>
                                 <div class="extra">勾选“是”表示此商品不会产生运费花销，勾选“否”表示按照正常运费计算。</div>
-                            </el-form-item>
-                            <el-form-item label="最大秒杀库存" prop="seckill_max_num">
-                                <el-input v-model="formState.seckill_max_num"></el-input>
-                                <div class="extra">已售百分比=当前商品库存/秒杀最大库存数</div>
                             </el-form-item>
                             <el-form-item label="是否上架" prop="product_status">
                                 <el-radio-group style="width: 100%" v-model="formState.product_status">
@@ -130,7 +143,7 @@
                                 ></SelectTimeInterval>
                                 <div class="extra">需先钩选促销价</div>
                             </el-form-item>
-                            <el-form-item label="阶梯价格" prop="volume_list">
+                            <!-- <el-form-item label="阶梯价格" prop="volume_list">
                                 <DynamicList
                                     v-model:modelValue="formState.volume_list"
                                     :minWidth="340"
@@ -146,18 +159,18 @@
                                         </div>
                                     </template>
                                 </DynamicList>
-                            </el-form-item>
-                            <el-form-item label="会员价格" prop="rank">
-                                <div class="rank">
-                                    <el-space v-for="(rank, index) in formState.user_rank_list" :key="index">
-                                        <el-space class="mb10">
-                                            <div style="min-width: 100px; text-align: right">{{ rank.rank_name }}：</div>
-                                            <el-input v-model="rank.price" style="width: 100px"></el-input>
-                                        </el-space>
-                                    </el-space>
-                                </div>
-                                <div class="extra">会员价格为空时表示会员按正常价格购买，会员价格不与促销价、一口价、阶梯价等活动叠加</div>
-                            </el-form-item>
+                            </el-form-item> -->
+                            <!--                            <el-form-item label="会员价格" prop="rank">-->
+                            <!--                                <div class="rank">-->
+                            <!--                                    <el-space v-for="(rank, index) in formState.user_rank_list" :key="index">-->
+                            <!--                                        <el-space class="mb10">-->
+                            <!--                                            <div style="min-width: 100px; text-align: right">{{ rank.rank_name }}：</div>-->
+                            <!--                                            <el-input v-model="rank.price" style="width: 100px"></el-input>-->
+                            <!--                                        </el-space>-->
+                            <!--                                    </el-space>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="extra">会员价格为空时表示会员按正常价格购买，会员价格不与促销价、一口价、阶梯价等活动叠加</div>-->
+                            <!--                            </el-form-item>-->
                             <el-form-item label="消费积分" prop="give_integral">
                                 <el-input v-model="formState.give_integral" />
                                 <div class="extra">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
@@ -185,17 +198,18 @@
                                 v-model:attrChanged="formState.attr_changed"
                                 v-model:attrList="formState.attr_list"
                                 v-model:productList="formState.product_list"
-                                :attrTplList="attrTplList"></ProductAttr>
+                                :attrTplList="attrTplList"
+                            ></ProductAttr>
                         </el-tab-pane>
                         <el-tab-pane label="其他信息" lazy name="other">
                             <el-form-item label="显示销量" prop="virtual_sales">
                                 <el-input v-model="formState.virtual_sales" class="InputBox"></el-input>
                                 <div class="extra">显示销量会随下单而增加，但不是真实销售数据</div>
                             </el-form-item>
-                            <el-form-item label="商品标签" prop="comment_tag">
-                                <el-input v-model="formState.comment_tag" class="InputBox"></el-input>
-                                <div class="extra">如果有设置标签，商品列表页面会高亮显示该标签，如“热销”，尽量不要超过三个字</div>
-                            </el-form-item>
+                            <!--                            <el-form-item label="商品标签" prop="comment_tag">-->
+                            <!--                                <el-input v-model="formState.comment_tag" class="InputBox"></el-input>-->
+                            <!--                                <div class="extra">如果有设置标签，商品列表页面会高亮显示该标签，如“热销”，尽量不要超过三个字</div>-->
+                            <!--                            </el-form-item>-->
                             <el-form-item label="SEO标题" prop="seo_product_title">
                                 <el-input v-model="formState.seo_product_title" class="InputBox"></el-input>
                                 <div class="extra">如果不填，则该商品详情页的标题则为默认标题；如果该项不为空，则标题显示此项的内容。</div>
@@ -205,13 +219,10 @@
                                     <template #append>Kg</template>
                                 </el-input>
                             </el-form-item>
-                            <el-form-item label="库存警告" prop="warn_number">
-                                <el-input v-model="formState.warn_number" class="InputBox"></el-input>
-                            </el-form-item>
-                            <el-form-item label="SEO关键词" prop="formState.keywords">
-                                <el-input v-model="formState.keywords" class="InputBox" />
-                                <div class="extra">用空格分隔</div>
-                            </el-form-item>
+                            <!--                            <el-form-item label="库存警告" prop="warn_number">-->
+                            <!--                                <el-input v-model="formState.warn_number" class="InputBox"></el-input>-->
+                            <!--                            </el-form-item>-->
+
                             <el-form-item label="商品介绍" prop="product_info">
                                 <el-input v-model="formState.product_info" cols="40" rows="2" type="textarea"></el-input>
                                 <div class="extra">可不填</div>
@@ -220,10 +231,10 @@
                                 <el-input v-model="formState.remark" cols="40" rows="2" type="textarea"></el-input>
                                 <div class="extra">只有商家可见</div>
                             </el-form-item>
-                            <el-form-item label="温馨提示" prop="product_care">
-                                <el-input v-model="formState.product_care" class="InputBox" />
-                                <div class="extra">如果不填，则该商品详情页则没有温馨提示内容。</div>
-                            </el-form-item>
+                            <!--                            <el-form-item label="温馨提示" prop="product_care">-->
+                            <!--                                <el-input v-model="formState.product_care" class="InputBox" />-->
+                            <!--                                <div class="extra">如果不填，则该商品详情页则没有温馨提示内容。</div>-->
+                            <!--                            </el-form-item>-->
                             <el-form-item label="服务说明" prop="product_service_ids">
                                 <Checkbox v-model="item.check" v-for="(item, index) in formState.service_list" :key="index">
                                     <template #default>{{ item["product_service_name"] }}</template>
@@ -269,8 +280,8 @@ import { computed, onMounted, ref, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { FormAddGallery } from "@/components/gallery";
-import { ProductFormState, ServiceList } from "@/types/product/product.d";
-import { getProduct, updateProduct } from "@/api/product/product";
+import { ProductFormState, ServiceList, UserRankListType } from "@/types/product/product.d";
+import { getParticiple, getProduct, updateProduct, getProductConfig } from "@/api/product/product";
 import { Checkbox, RadioType } from "@/components/radio";
 import { SelectArticle, SelectBrand, SelectCategory, SelectGoods, SelectProduct } from "@/components/select";
 import { DynamicList } from "@/components/list";
@@ -286,36 +297,47 @@ const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 const props = defineProps({
     id: {
         type: Number,
-        default: 0,
+        default: 0
     },
     act: {
         type: String,
-        default: "",
+        default: ""
     },
-    isDialog: Boolean,
+    isDialog: Boolean
 });
 const activeKey = ref("base");
 const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<ProductFormState>({
+    product_type: 1,
+    product_stock: 1,
+    free_shipping: 0,
+    product_status: 1,
+    give_integral: -1,
+    rank_integral: -1,
+    integral: 0,
+    product_weight: 0,
     product_desc_arr: [],
     product_related: [],
-    service_list:[]
+    service_list: []
 });
-
 onMounted(() => {
-    // console.log(formState);
-    // 获取详情数据
-    fetchProduct();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchProduct();
+    } else {
+        loading.value = false;
+    }
+    fetchProductConfig();
 });
 // 属性模板
 const attrTplList = ref<Object[]>([]);
 // 会员等级
-const userRankList = ref<Object[]>([]);
+const userRankList = ref<UserRankListType[]>([]);
 
 const fetchProduct = async () => {
     try {
@@ -324,12 +346,22 @@ const fetchProduct = async () => {
             result.item.product_related = [];
         }
         Object.assign(formState.value, result.item, result);
+    } catch (error: any) {
+        message.error(error.message);
+        emit("close");
+    } finally {
+        loading.value = false;
+    }
+};
+const fetchProductConfig = async () => {
+    try {
+        const result = await getProductConfig();
         attrTplList.value = result.attr_tpl_list;
-        userRankList.value = result.user_rank_list;
+        // userRankList.value = result.item.user_rank_list;
         formState.value.service_list = result.service_list.map((item: ServiceList) => {
             return {
                 ...item,
-                check: formState.value.product_service_ids?.includes(item.product_service_id) ? 1 : 0,
+                check: result.item.product_service_ids?.includes(item.product_service_id) ? 1 : 0
             };
         });
     } catch (error: any) {
@@ -344,7 +376,7 @@ const onSubmit = async () => {
     await formRef.value.validate();
     try {
         emit("update:confirmLoading", true);
-        const selectedIds = formState.value.service_list.filter(item => item.check === 1).map(item => item.product_service_id);
+        const selectedIds = formState.value.service_list.filter((item) => item.check === 1).map((item) => item.product_service_id);
         formState.value.product_service_ids = selectedIds;
         const result = await updateProduct(operation, { ...formState.value });
         emit("submitCallback", result);
@@ -360,6 +392,17 @@ const onFormSubmit = () => {
     onSubmit();
 };
 
+const onGetParticiple = async () => {
+    try {
+        const result = await getParticiple({ product_name: formState.value.product_name });
+        formState.value.keywords = result.keywords;
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+};
+
 defineExpose({ onFormSubmit });
 </script>
 <style lang="less" scoped>
@@ -371,5 +414,11 @@ defineExpose({ onFormSubmit });
     width: 100%;
     flex-wrap: wrap; /* 允许项目换行 */
     justify-content: flex-start; /* 项目在主轴上的对齐方式 */
+}
+.keywords {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 8px;
 }
 </style>

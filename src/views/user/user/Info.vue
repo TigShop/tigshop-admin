@@ -3,7 +3,7 @@
         <div class="content_wrapper">
             <div class="lyecs-form-table">
                 <el-form v-if="!loading" ref="formRef" :model="formState" label-width="auto">
-                    <el-form-item v-if="operation==='insert'" :rules="[{ required: true, message: '会员名称不能为空!' }]" label="会员名称" prop="username">
+                    <el-form-item v-if="operation==='create'" :rules="[{ required: true, message: '会员名称不能为空!' }]" label="会员名称" prop="username">
                         <el-input v-model="formState.username"/>
                     </el-form-item>
                     <el-form-item label="手机号码" prop="mobile">
@@ -12,7 +12,7 @@
                     <el-form-item label="邮箱地址" prop="email">
                         <el-input v-model="formState.email"/>
                     </el-form-item>
-                    <template v-if="operation==='insert'">
+                    <template v-if="operation==='create'">
                         <el-form-item :rules="[{ required: true, message: '新密码不能为空!' }]" label="新密码" prop="password">
                             <el-input v-model="formState.password"/>
                         </el-form-item>
@@ -29,14 +29,15 @@
                         </el-form-item>
                     </template>
                     <el-form-item label="会员等级" prop="rank_id">
-                        <el-select style="width: 100%" v-model="formState.rank_id" >
+                        <SelectRankList v-model="formState.rank_id"></SelectRankList>
+                        <!-- <el-select v-model="formState.rank_id" style="width: 100%">
                             <el-option
-                              v-for="item in options"
-                              :key="item.rank_id"
-                              :label="item.rank_name"
-                              :value="item.rank_id"
+                                v-for="item in options"
+                                :key="item.rank_id"
+                                :label="item.rank_name"
+                                :value="item.rank_id"
                             />
-                        </el-select>
+                        </el-select> -->
                     </el-form-item>
                     <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4, span: 16 }">
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit">提交</el-button>
@@ -48,12 +49,13 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {onMounted, ref, shallowRef} from "vue"
+import {nextTick, onMounted, ref, shallowRef} from "vue"
+import {SelectRankList} from "@/components/select";
 import {useRouter} from 'vue-router'
 import {message} from "ant-design-vue";
 import {UserFormState} from '@/types/user/user.d';
 import {getUser, updateUser} from "@/api/user/user";
-import {SelectRankList} from "@/components/select";
+import {ElInput} from "element-plus";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 
@@ -72,26 +74,25 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
 const formState = ref<UserFormState>({
     balance: 0,
     frozen_balance: 0,
     avatar: "",
     password: "",
-    pwd_confirm: ""
+    pwd_confirm: "",
 });
-const options = ref()
+
 const fetchUser = async () => {
     try {
         loading.value = true;
         const result = await getUser(action.value, {id: id.value});
         Object.assign(
-          formState.value,
-          result.item
+            formState.value,
+            result.item
         )
-        options.value = result.rank_list
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
         emit('close');
     } finally {
@@ -101,8 +102,12 @@ const fetchUser = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchUser();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchUser();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交
@@ -113,7 +118,7 @@ const onSubmit = async () => {
         const result = await updateUser(operation, {id: id.value, ...formState.value});
         emit('submitCallback', result);
         message.success(result.message);
-    } catch (error:any) {
+    } catch (error: any) {
         message.error(error.message);
     } finally {
         emit('update:confirmLoading', false);
@@ -126,4 +131,7 @@ const onFormSubmit = () => {
 
 defineExpose({onFormSubmit});
 </script>
+<style lang="less" scoped>
+
+</style>
 

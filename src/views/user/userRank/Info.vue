@@ -70,9 +70,12 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<UserRankFormState>({});
+const formState = ref<UserRankFormState>({
+    show_price:0,
+    rank_type:2
+});
 const fetchUserRank = async () => {
     try {
         const result = await getUserRank(action.value, {id: id.value});
@@ -90,8 +93,12 @@ const fetchUserRank = async () => {
 
 
 onMounted(() => {
-    // 获取详情数据
-    fetchUserRank();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchUserRank();
+    } else {
+        loading.value = false;
+    }
 });
 
 // 表单通过验证后提交

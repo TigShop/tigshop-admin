@@ -41,3 +41,16 @@ export function getDays(day: any, type: string) {
     }
     return date;
 }
+// 获取assets静态资源
+export const getAssetsFile = (url: any) => {
+    return new URL(url, import.meta.url).href;
+};
+export function extractContent(str:string) {
+    const keyword:string = "../assets/avatar/";
+    const index = str.indexOf(keyword);
+    if (index !== -1) {
+        return str;
+    } else {
+        return "";
+    }
+}

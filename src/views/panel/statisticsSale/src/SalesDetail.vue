@@ -149,16 +149,16 @@ let NumberProductViewsChart: echarts.ECharts;
 const SalesDetailOptions = ref<any>({
     title: {
         text: "金额明细",
-        left: "center"
+        left: "center",
     },
     tooltip: {
         trigger: "axis",
         axisPointer: {
             type: "cross",
             crossStyle: {
-                color: "#999"
-            }
-        }
+                color: "#999",
+            },
+        },
         // trigger: "axis",
         // axisPointer: {
         //     type: "shadow"
@@ -167,11 +167,11 @@ const SalesDetailOptions = ref<any>({
     legend: {
         data: ["支付金额", "退款金额"],
         left: "center",
-        bottom: "bottom"
+        bottom: "bottom",
     },
     xAxis: {
         type: "category",
-        data: []
+        data: [],
     },
     yAxis: [
         {
@@ -179,14 +179,14 @@ const SalesDetailOptions = ref<any>({
             name: "金额",
             nameTextStyle: {
                 // 设置名称样式，包括颜色
-                color: "#7cb5ec" // 名称颜色为红色
+                color: "#7cb5ec", // 名称颜色为红色
             },
             nameGap: 20, // 设置名称与轴线之间的距离，即位置
             axisLabel: {
                 color: "#7cb5ec",
-                formatter: "{value} 元"
-            }
-        }
+                formatter: "{value} 元",
+            },
+        },
     ],
     series: [
         {
@@ -195,16 +195,16 @@ const SalesDetailOptions = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#64a9ff"
+                color: "#64a9ff",
             },
             color: "#5CA5FF",
             emphasis: {
-                scale: !1
+                scale: !1,
             },
             tooltip: {
                 valueFormatter: function (value: string) {
                     return value + "元";
-                }
+                },
             },
             areaStyle: {
                 color: {
@@ -217,16 +217,16 @@ const SalesDetailOptions = ref<any>({
                         // 渐变颜色
                         {
                             offset: 0,
-                            color: "rgba(92, 165, 255,0.50)"
+                            color: "rgba(92, 165, 255,0.50)",
                         },
                         {
                             offset: 1,
-                            color: "rgba(92, 165, 255,0.00)"
-                        }
+                            color: "rgba(92, 165, 255,0.00)",
+                        },
                     ],
-                    global: false
-                }
-            }
+                    global: false,
+                },
+            },
             // yAxisIndex: 2 // 指定使用哪个y轴
         },
         {
@@ -235,16 +235,16 @@ const SalesDetailOptions = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "rgba(0, 190, 189,0.50)"
+                color: "rgba(0, 190, 189,0.50)",
             },
             color: "rgba(0, 190, 189,0.50)",
             emphasis: {
-                scale: !1
+                scale: !1,
             },
             tooltip: {
                 valueFormatter: function (value: string) {
                     return value + "元";
-                }
+                },
             },
             areaStyle: {
                 color: {
@@ -257,39 +257,39 @@ const SalesDetailOptions = ref<any>({
                         // 渐变颜色
                         {
                             offset: 0,
-                            color: "rgba(0, 190, 189,0.50)"
+                            color: "rgba(0, 190, 189,0.50)",
                         },
                         {
                             offset: 1,
-                            color: "rgba(0, 190, 189,0.00)"
-                        }
+                            color: "rgba(0, 190, 189,0.00)",
+                        },
                     ],
-                    global: false
-                }
-            }
+                    global: false,
+                },
+            },
             // yAxisIndex: 2 // 指定使用哪个y轴
-        }
-    ]
+        },
+    ],
 });
 const NumberProductViewsOptions = ref<any>({
     title: {
         text: "商品明细",
-        left: "center"
+        left: "center",
     },
     tooltip: {
         trigger: "axis",
         axisPointer: {
-            type: "shadow"
-        }
+            type: "shadow",
+        },
     },
     legend: {
         data: ["商品浏览量"],
         left: "center",
-        bottom: "bottom"
+        bottom: "bottom",
     },
     xAxis: {
         type: "category",
-        data: []
+        data: [],
     },
     yAxis: [
         {
@@ -297,15 +297,15 @@ const NumberProductViewsOptions = ref<any>({
             name: "浏览量",
             nameTextStyle: {
                 // 设置名称样式，包括颜色
-                color: "#64a9ff" // 名称颜色为红色
+                color: "#64a9ff", // 名称颜色为红色
             },
             nameGap: 20, // 设置名称与轴线之间的距离，即位置
             axisLabel: {
                 color: "#64a9ff",
-                formatter: "{value} 次"
+                formatter: "{value} 次",
             },
-            min: "10"
-        }
+            min: "10",
+        },
     ],
     series: [
         {
@@ -314,7 +314,7 @@ const NumberProductViewsOptions = ref<any>({
             barWidth: "50%",
             showBackground: false,
             backgroundStyle: {
-                color: "rgba(0, 127, 255,0.1)"
+                color: "rgba(0, 127, 255,0.1)",
             },
             itemStyle: {
                 // borderRadius: [35, 35, 0, 0],
@@ -329,18 +329,18 @@ const NumberProductViewsOptions = ref<any>({
                         {
                             //第一节下面
                             offset: 0,
-                            color: "#007FFF"
+                            color: "#007FFF",
                         },
                         {
                             offset: 1,
-                            color: "#539FE5"
-                        }
-                    ]
-                }
+                            color: "#539FE5",
+                        },
+                    ],
+                },
             },
-            data: []
-        }
-    ]
+            data: [],
+        },
+    ],
 });
 
 const handleChartResize = () => {
@@ -357,7 +357,7 @@ const initChart = () => {
 
 const filterParams = reactive<statisticsSalesFilterParams>({
     start_time: formattedDate(getDays(30, "sub"), "YYYY-MM-DD"),
-    end_time: formattedDate(new Date(), "YYYY-MM-DD")
+    end_time: formattedDate(new Date(), "YYYY-MM-DD"),
 });
 const filterState = ref<statisticsSalesFilterState>();
 const getData = async () => {
@@ -430,7 +430,7 @@ onUnmounted(() => {
 
         .main-panel-item-value {
             font-size: 24px;
-            color: #555;
+            color: #333;
             display: block;
             font-weight: bold;
             padding: 10px 0;

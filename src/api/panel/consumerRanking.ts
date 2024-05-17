@@ -1,5 +1,4 @@
 import request from "@/utils/request";
-import requestExport from "@/utils/export";
 import type { consumerRankingFilterParams, consumerRankingFilterState } from "@/types/panel/consumerRanking.d.ts";
 
 // 会员消费排行
@@ -12,8 +11,10 @@ export const getUserConsumptionRanking = (params: consumerRankingFilterParams) =
 };
 
 export const exportUserConsumptionRanking = (params: consumerRankingFilterParams) => {
-    return requestExport({
+    return request({
         url: "panel/statistics_user/user_consumption_ranking",
+        method: "get",
+        responseType: 'arraybuffer',
         params
     });
 };

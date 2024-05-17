@@ -4,28 +4,28 @@
             <a-spin :spinning="loading">
                 <div class="lyecs-table-list bar-top-item">
                     <el-row :gutter="15">
-                        <el-col :xs="24" :sm="12" :md="6" :lg="6" class="itme-box">
+                        <el-col :xs="12" :sm="12" :md="6" :lg="6" class="itme-box">
                             <div class="bar_panel panel-bar-left"><i class="main_pel_m iconfont-admin icon-base-daifukuan"></i></div>
                             <div class="data_box">
                                 <div class="title">待付款订单</div>
                                 <div class="count">{{ filterState?.console_data.await_pay ?? 0 }}</div>
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="12" :md="6" :lg="6" class="itme-box">
+                        <el-col :xs="12" :sm="12" :md="6" :lg="6" class="itme-box">
                             <div class="bar_panel panel-bar-left"><em class="main_pel_m iconfont-admin icon-base-daifahuo"></em></div>
                             <div class="data_box">
                                 <div class="title">待发货订单</div>
                                 <div class="count">{{ filterState?.console_data.await_ship ?? 0 }}</div>
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="12" :md="6" :lg="6" class="itme-box">
+                        <el-col :xs="12" :sm="12" :md="6" :lg="6" class="itme-box">
                             <div class="bar_panel panel-bar-left"><em class="main_pel_m iconfont-admin icon-base-tuihuanhuo"></em></div>
                             <div class="data_box">
                                 <div class="title">待售后订单</div>
                                 <div class="count">{{ filterState?.console_data.await_after_sale ?? 0 }}</div>
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="12" :md="6" :lg="6" class="itme-box">
+                        <el-col :xs="12" :sm="12" :md="6" :lg="6" class="itme-box">
                             <div class="bar_panel panel-bar-left"><em class="main_pel_m iconfont-admin icon-base-daipingjia"></em></div>
                             <div class="data_box">
                                 <div class="title">待回复订单</div>
@@ -66,9 +66,10 @@
                                 </div>
                                 <div class="yesterday-data clearfix">
                                     <p class="name">昨日全天</p>
-                                    <!-- <p class="yesterday-value num">
-                                        {{ filterState.yesterday_order_amount ? '<em class="title">dollar_sign</em>' + filterState.yesterday_order_amount : '-' }}
-                                    </p> -->
+                                    <p class="yesterday-value num">
+                                        {{ filterState?.yesterday_order_amount ? '<em class="title">dollar_sign</em>' + filterState?.yesterday_order_amount :
+                                        '-' }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="index-cell index-cell-1">
@@ -97,7 +98,7 @@
                                 </div>
                                 <div class="yesterday-data clearfix">
                                     <p class="name">昨日全天</p>
-                                    <!-- <p class="yesterday-value num">{{ filterState.yesterday_visit_count ?? "-" }}</p> -->
+                                    <p class="yesterday-value num">{{ filterState?.yesterday_visit_count ?? "-" }}</p>
                                 </div>
                             </div>
                             <div class="index-cell index-cell-2" style="border-left: 1px #f0f2f5 solid">
@@ -126,7 +127,7 @@
                                 </div>
                                 <div class="yesterday-data clearfix">
                                     <p class="name">昨日全天</p>
-                                    <!-- <p class="yesterday-value num">{{ filterState.yesterday_user_count ?? "-" }}</p> -->
+                                    <p class="yesterday-value num">{{ filterState?.yesterday_user_count ?? "-" }}</p>
                                 </div>
                             </div>
                             <div class="index-cell index-cell-3" style="border-left: 0">
@@ -155,7 +156,7 @@
                                 </div>
                                 <div class="yesterday-data clearfix">
                                     <p class="name">昨日全天</p>
-                                    <!-- <p class="yesterday-value num">{{ filterState.yesterday_view_count ?? "-" }}</p> -->
+                                    <p class="yesterday-value num">{{ filterState?.yesterday_view_count ?? "-" }}</p>
                                 </div>
                             </div>
                             <div class="index-cell index-cell-4" style="border-left: 1px #f0f2f5 solid; border-bottom: 1px #f0f2f5 solid">
@@ -184,14 +185,13 @@
                                 </div>
                                 <div class="yesterday-data clearfix">
                                     <p class="name">昨日全天</p>
-                                    <!-- <p class="yesterday-value num">{{ filterState.yesterday_order_count ?? "-" }}</p> -->
+                                    <p class="yesterday-value num">{{ filterState?.yesterday_order_count ?? "-" }}</p>
                                 </div>
                             </div>
                             <div class="index-cell index-cell-5" style="border-bottom: 1px #f0f2f5 solid">
-                                <router-link :to="{ path: '/panel/statistics_order/list'}">
+                                <router-link :to="{ path: '/panel/statistics_order/list' }">
                                     <a class="check-more lyecs-openPage">查看更多销售统计</a>
                                 </router-link>
-                                
                             </div>
                         </div>
                     </div>
@@ -256,7 +256,7 @@ const accessStatisticsOptons = ref<any>({
             type: "line",
             smooth: true,
             lineStyle: {
-                color: "#64a9ff"
+                color: "#1456f0"
             },
             areaStyle: {
                 color: {
@@ -278,7 +278,7 @@ const accessStatisticsOptons = ref<any>({
                     global: !1
                 }
             },
-            color: "#5CA5FF",
+            color: "#1456f0",
             emphasis: {
                 scale: !1
             }
@@ -331,7 +331,7 @@ const ordersReceivedStatisticsOptons = ref<any>({
                 borderRadius: [8, 8, 0, 0]
             },
             itemStyle: {
-                color: "#30a5ff"
+                color: "#1456f0"
             },
             barWidth: "50%",
             data: []
@@ -427,7 +427,7 @@ onUnmounted(() => {
 }
 
 .bar-top-item .itme-box:nth-child(1) .bar_panel {
-    background: #30a5ff;
+    background: var(--tig-primary);
 }
 
 .bar-top-item .itme-box:nth-child(2) .bar_panel {
@@ -560,10 +560,9 @@ onUnmounted(() => {
 }
 
 .store-data-con .index-cell {
-    float: left;
     width: 50%;
     height: 160px;
-    padding: 20px 14px;
+    padding: 20px 14px 0;
     text-align: center;
     box-sizing: border-box;
 }
@@ -693,6 +692,8 @@ onUnmounted(() => {
 }
 
 .store-data-con .content {
+    display: flex;
+    flex-wrap: wrap;
     margin: 0;
 }
 
@@ -738,6 +739,30 @@ onUnmounted(() => {
     .chart-menu-item {
         width: 48%;
         height: 100%;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .lyecs-table-list-admin .store-data-con .index-cell {
+        width: 50% !important;
+        border-left: 1px #fff solid !important;
+        border-right: 1px #fff solid !important;
+        height: 138px;
+        padding: 18px 14px 0;
+    }
+    .index-cell:nth-child(2n -1) {
+        border-right: 1px solid rgb(240, 242, 245) !important;
+    }
+    .chart-menu {
+        flex-wrap: wrap;
+    }
+    .chart-menu-item {
+        width: 100% !important;
+    }
+    .bar-top-item .itme-box .data_box {
+        padding: 15px 0 15px 12px;
+    }
+    .store-data-con .index-cell .yesterday-data {
+        margin-top: 20px;
     }
 }
 </style>

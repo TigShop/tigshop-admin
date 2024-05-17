@@ -42,7 +42,7 @@
                             <el-button plain @click="handlesearch">搜索</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button plain @click="handleExport">导出EXCEL</el-button>
+                            <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                         </el-form-item>
                     </div>
                 </el-form>
@@ -59,6 +59,7 @@ import { formatDate } from "@/utils/util";
 import type { newMemberFilterParams, newMemberFilterState } from "@/types/panel/newMembers.d";
 import { getAddUserTrends, exportAddUserTrends } from "@/api/panel/newMembers";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 
 const selectDate = reactive<any>({
     "1": "",
@@ -173,8 +174,17 @@ const handlesearch = () => {
     getData();
 };
 
-const handleExport = () => {
-    exportAddUserTrends({ ...filterParams, is_export: "1" });
+
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await exportAddUserTrends({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'新增会员数导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
 };
 
 const handleChartResize = () => {

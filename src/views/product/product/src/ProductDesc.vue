@@ -5,17 +5,25 @@
                 <DialogForm type="gallery" class="item-bg" @okCallback="addPic" :params="{ isMultiple: true }">
                     <a class="add-item info-pic-add"><i class="iconfont icon-tianjiatupian"></i>添加图片</a>
                 </DialogForm>
-                <a class="add-item info-text-add" @click="addText"><i class="iconfont icon-wenben" style="font-size:14px"></i>添加文本</a>
+                <a class="add-item info-text-add" @click="addText"><i class="iconfont icon-wenben" style="font-size: 14px"></i>添加文本</a>
                 <span>点击按钮添加图片或者文本，您还可以通过拖拽进行排序</span>
             </div>
             <div class="goods-info-edit-con">
-                <draggable class="info-edit-con-list" item-key="" :list="<any>descArr" ghost-class="ghost" chosen-class="chosenClass" animation="300" @start="" @end="">
+                <draggable
+                    class="info-edit-con-list"
+                    item-key=""
+                    :list="<any>descArr"
+                    ghost-class="ghost"
+                    chosen-class="chosenClass"
+                    animation="300"
+                    @start=""
+                    @end=""
+                >
                     <template #item="{ element, index }">
                         <div class="info-edit-list-item" draggable="false" style="">
                             <div class="edit-list-item-img" v-if="element.type == 'pic'">
-                                <a class="lyecs-dialogImage" draggable="false"><img :src="imageFormat(element.pic)" draggable="false">
-                                </a>
-                                <DialogForm type="gallery" class="item-bg" @okCallback="editPic" :params="{ isMultiple: false }" :data="{ index: index}">
+                                <a class="lyecs-dialogImage" draggable="false"><img :src="imageFormat(element.pic)" draggable="false" /> </a>
+                                <DialogForm type="gallery" class="item-bg" @okCallback="editPic" :params="{ isMultiple: false }" :data="{ index: index }">
                                     <div class="btn-edit">修改</div>
                                 </DialogForm>
                             </div>
@@ -35,89 +43,86 @@
         </div>
     </el-form-item>
     <el-form-item label="H5预览">
-        <div class="goods-detail-preview-warp" v-html="previewHtml">
-        </div>
+        <div class="goods-detail-preview-warp" v-html="previewHtml"></div>
     </el-form-item>
 </template>
 <script setup lang="ts">
 // Author by 老杨
 import { ref, onMounted, computed } from "vue";
 import { DialogForm } from "@/components/dialog";
-import { Editor } from '@/components/editor'
-import { Modal } from 'ant-design-vue'
+import { Editor } from "@/components/editor";
+import { Modal } from "ant-design-vue";
 import draggable from "vuedraggable";
 import { imageFormat } from "@/utils/format";
 const props = defineProps({
-    descArr: { type: [Object, Array], default: [] },
+    descArr: { type: [Object, Array], default: [] }
 });
-const descArr:any = ref(props.descArr || []);
+const descArr: any = ref(props.descArr || []);
 
-const visible = ref(false)
+const visible = ref(false);
 const editorHtml = ref({
     html: ""
-})
-const editTextIndex = ref<number>(0)
-const emit = defineEmits([
-    "update:descArr",
-]);
+});
+const editTextIndex = ref<number>(0);
+const emit = defineEmits(["update:descArr"]);
 onMounted(() => {
     emit("update:descArr", descArr);
 });
-const addPic = (result:any) => {
+const addPic = (result: any) => {
     for (let idx in result) {
         descArr.value.push({
-            'pic': result[idx].pic_url,
-            'type': 'pic',
-        })
+            pic: result[idx].pic_url,
+            type: "pic"
+        });
     }
-}
-const editPic = (result:any,data:any) => {
+};
+const editPic = (result: any, data: any) => {
     editTextIndex.value = data.index;
     descArr.value[editTextIndex.value] = {
-        'pic': result[0].pic_url,
-        'type': 'pic',
-    }
-}
+        pic: result[0].pic_url,
+        type: "pic"
+    };
+};
 const previewHtml = computed(() => {
-    let htmlArr = []
+    let htmlArr = [];
     for (let idx in descArr.value) {
-        if (descArr.value[idx].type == 'pic') {
-            htmlArr.push('<div class="desc-pic-item"><img link="' + imageFormat(descArr.value[idx].pic) + '"></div>')
+        if (descArr.value[idx].type == "pic") {
+            htmlArr.push('<div class="desc-pic-item"><img src="' + imageFormat(descArr.value[idx].pic) + '"></div>');
         } else {
-            htmlArr.push(descArr.value[idx].html)
+            htmlArr.push(descArr.value[idx].html);
         }
     }
-    return htmlArr.join('<div data-division=1></div>');
-})
+    return htmlArr.join("<div data-division=1></div>");
+});
 const addText = () => {
-    console.log(editTextIndex.value)
-    visible.value = true
-    editorHtml.value.html = ""
-}
-const editText = (index:number) => {
-    console.log(editTextIndex.value)
-    editorHtml.value.html = descArr.value[index].html
-    editTextIndex.value = index
-    visible.value = true
-}
-const del = (index:number) => {
-    descArr.value.splice(index, 1)
-}
+    console.log(editTextIndex.value);
+    visible.value = true;
+    editorHtml.value.html = "";
+};
+const editText = (index: number) => {
+    console.log(editTextIndex.value);
+    editorHtml.value.html = descArr.value[index].html;
+    editTextIndex.value = index;
+    visible.value = true;
+};
+const del = (index: number) => {
+    descArr.value.splice(index, 1);
+};
 const onOk = () => {
     if (editTextIndex.value > 0) {
         descArr.value[editTextIndex.value] = {
-            'html': editorHtml.value.html,
-            'type': 'text',
-        }
+            html: editorHtml.value.html,
+            type: "text"
+        };
     } else {
         descArr.value.push({
-            'html': editorHtml.value.html,
-            'type': 'text',
-        })
+            html: editorHtml.value.html,
+            type: "text"
+        });
     }
-    console.log(descArr.value)
-    visible.value = false
-}
+    console.log(descArr.value);
+    visible.value = false;
+};
 </script>
 
 <style lang="less" scoped>
@@ -132,21 +137,23 @@ const onOk = () => {
 .goods-info-edit-act {
     margin-bottom: 10px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .goods-info-edit-act :deep .add-item {
-    transition: all .3s;
+    transition: all 0.3s;
     margin-right: 10px;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, .06);
+    background: rgba(0, 0, 0, 0.06);
     border: 0;
     padding: 5px 20px;
+    word-break: keep-all;
     color: #333;
 }
 
 .goods-info-edit-act :deep .add-item:hover {
-    background: rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, 0.1);
     color: #333;
 }
 
@@ -241,7 +248,7 @@ const onOk = () => {
     left: 0;
     width: 100%;
     height: 24px;
-    background: rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, 0.6);
     font-size: 14px;
     line-height: 24px;
     color: #fff;
@@ -261,8 +268,8 @@ const onOk = () => {
 }
 
 .goods-detail-preview-warp :deep .desc-pic-item img {
-    max-width: 100%;display: block;
-    width:100%;
+    max-width: 100%;
+    display: block;
+    width: 100%;
 }
-
 </style>

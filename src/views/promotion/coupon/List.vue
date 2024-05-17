@@ -9,11 +9,17 @@
                             <div>
                                 <div class="title">满减券</div>
                                 <div class="desc">
-                                    <p>例：满100元减20元<br>便于合理控制活动成本</p>
+                                    <p>例：满100元减20元<br />便于合理控制活动成本</p>
                                 </div>
                             </div>
-                            <DialogForm isDrawer @okCallback="loadFilter" title="添加满减券" width="800px"
-                                path="promotion/coupon/Info" :params="{ act: 'add', coupon_type: 1 }">
+                            <DialogForm
+                                isDrawer
+                                @okCallback="loadFilter"
+                                title="添加满减券"
+                                width="800px"
+                                path="promotion/coupon/Info"
+                                :params="{ act: 'add', coupon_type: 1 }"
+                            >
                                 <el-button type="primary">立即新建</el-button>
                             </DialogForm>
                         </div>
@@ -21,11 +27,17 @@
                             <div>
                                 <div class="title">折扣券</div>
                                 <div class="desc">
-                                    <p>例：满100元打9折<br>提高店铺销量和客单价</p>
+                                    <p>例：满100元打9折<br />提高店铺销量和客单价</p>
                                 </div>
                             </div>
-                            <DialogForm isDrawer @okCallback="loadFilter" title="添加折扣券" width="800px"
-                                path="promotion/coupon/Info" :params="{ act: 'add', coupon_type: 2 }">
+                            <DialogForm
+                                isDrawer
+                                @okCallback="loadFilter"
+                                title="添加折扣券"
+                                width="800px"
+                                path="promotion/coupon/Info"
+                                :params="{ act: 'add', coupon_type: 2 }"
+                            >
                                 <el-button type="primary">立即新建</el-button>
                             </DialogForm>
                         </div>
@@ -33,11 +45,17 @@
                             <div>
                                 <div class="title">新人专享券</div>
                                 <div class="desc">
-                                    <p>仅店铺新客可领，提高新客<br>首单转化</p>
+                                    <p>仅店铺新客可领，提高新客<br />首单转化</p>
                                 </div>
                             </div>
-                            <DialogForm isDrawer @okCallback="loadFilter" title="添加新人专享券" width="800px"
-                                path="promotion/coupon/Info" :params="{ act: 'add', is_new_user: 1 }">
+                            <DialogForm
+                                isDrawer
+                                @okCallback="loadFilter"
+                                title="添加新人专享券"
+                                width="800px"
+                                path="promotion/coupon/Info"
+                                :params="{ act: 'add', is_new_user: 1 }"
+                            >
                                 <el-button type="primary">立即新建</el-button>
                             </DialogForm>
                         </div>
@@ -45,11 +63,17 @@
                             <div>
                                 <div class="title">会员专享券</div>
                                 <div class="desc">
-                                    <p>限会员可领的优惠券，丰富会<br>员权益，凸显会员身份价值</p>
+                                    <p>限会员可领的优惠券，丰富会<br />员权益，凸显会员身份价值</p>
                                 </div>
                             </div>
-                            <DialogForm isDrawer @okCallback="loadFilter" title="添加会员专享券" width="800px"
-                                path="promotion/coupon/Info" :params="{ act: 'add', is_new_user: 2 }">
+                            <DialogForm
+                                isDrawer
+                                @okCallback="loadFilter"
+                                title="添加会员专享券"
+                                width="800px"
+                                path="promotion/coupon/Info"
+                                :params="{ act: 'add', is_new_user: 2 }"
+                            >
                                 <el-button type="primary">立即新建</el-button>
                             </DialogForm>
                         </div>
@@ -77,8 +101,7 @@
                                 <el-space>
                                     <el-input name="keyword" v-model="filterParams.keyword" placeholder="输入优惠券名称">
                                         <template #append>
-                                            <el-button @click="onSearchSubmit"><span
-                                                    class="iconfont icon-chakan1"></span></el-button>
+                                            <el-button @click="onSearchSubmit"><span class="iconfont icon-chakan1"></span></el-button>
                                         </template>
                                     </el-input>
                                 </el-space>
@@ -88,15 +111,25 @@
                 </div>
                 <div class="table-container">
                     <a-spin :spinning="loading">
-                        <el-table :data="filterState" row-key="coupon_id" @selection-change="onSelectChange" :total="total"
-                            @sort-change="onSortChange" :loading="loading">
+                        <el-table
+                            :data="filterState"
+                            row-key="coupon_id"
+                            @selection-change="onSelectChange"
+                            :total="total"
+                            @sort-change="onSortChange"
+                            :loading="loading"
+                        >
                             <el-table-column type="selection" width="32" />
                             <el-table-column label="优惠券名称" prop="coupon_id" :width="200">
                                 <template #default="{ row }">
-                                    <div style="position: relative;">
-                                        <PopForm label="优惠券名称" type="textarea" :requestApi="updateCouponFiled"
+                                    <div style="position: relative">
+                                        <PopForm
+                                            label="优惠券名称"
+                                            type="textarea"
+                                            :requestApi="updateCouponFiled"
                                             v-model:org-value="row.coupon_name"
-                                            :params="{ id: row.coupon_id, field: 'coupon_name' }">
+                                            :params="{ id: row.coupon_id, field: 'coupon_name' }"
+                                        >
                                             <div>{{ row.coupon_name }}</div>
                                         </PopForm>
                                     </div>
@@ -104,44 +137,63 @@
                             </el-table-column>
                             <el-table-column label="发放类型">
                                 <template #default="{ row }">
-                                    {{ row.coupon_type == 1 ? '满减券' : '折扣券' }}
+                                    {{ row.coupon_type == 1 ? "满减券" : "折扣券" }}
                                     <span v-if="row.is_new_user == 1" class="green">(新人专享)</span>
-                                    <span v-if="row.limit_user_rank" class="green">(会员专享)</span>
+                                    <span v-if="row.limit_user_rank.length" class="green">(会员专享)</span>
                                 </template>
                             </el-table-column>
                             <el-table-column label="优惠券金额(折扣)" prop="coupon_money" sortable="custom">
                                 <template #default="{ row }">
-                                    <PopForm v-if="row.coupon_type == 1" label="优惠券金额" type="input" :requestApi="updateCouponFiled"
+                                    <PopForm
+                                        v-if="row.coupon_type == 1"
+                                        label="优惠券金额"
+                                        type="input"
+                                        :requestApi="updateCouponFiled"
                                         v-model:org-value="row.coupon_money"
-                                        :params="{ id: row.coupon_id, field: 'coupon_money' }">
-                                        <div>{{ row.coupon_money || '0' }}</div>
+                                        :params="{ id: row.coupon_id, field: 'coupon_money' }"
+                                    >
+                                        <div>{{ row.coupon_money || "0" }}</div>
                                     </PopForm>
-                                    <PopForm v-if="row.coupon_type == 2" label="优惠券折扣" type="input" :requestApi="updateCouponFiled"
+                                    <PopForm
+                                        v-if="row.coupon_type == 2"
+                                        label="优惠券折扣"
+                                        type="input"
+                                        :requestApi="updateCouponFiled"
                                         v-model:org-value="row.coupon_discount"
-                                        :params="{ id: row.coupon_id, field: 'coupon_discount' }">
-                                        <div>{{ row.coupon_discount || '0' }}折</div>
+                                        :params="{ id: row.coupon_id, field: 'coupon_discount' }"
+                                    >
+                                        <div>{{ row.coupon_discount || "0" }}折</div>
                                     </PopForm>
                                 </template>
                             </el-table-column>
                             <el-table-column label="订单金额限制" prop="min_order_amount" sortable="custom">
                                 <template #default="{ row }">
-                                    <PopForm label="订单金额限制" type="input" :requestApi="updateCouponFiled"
+                                    <PopForm
+                                        label="订单金额限制"
+                                        type="input"
+                                        :requestApi="updateCouponFiled"
                                         v-model:org-value="row.min_order_amount"
-                                        :params="{ id: row.coupon_id, field: 'min_order_amount' }">
-                                        <div>{{ row.min_order_amount || '0' }}</div>
+                                        :params="{ id: row.coupon_id, field: 'min_order_amount' }"
+                                    >
+                                        <div>{{ row.min_order_amount || "0" }}</div>
                                     </PopForm>
                                 </template>
                             </el-table-column>
                             <el-table-column label="首页显示" prop="is_show" sortable="custom">
                                 <template #default="{ row }">
-                                    <Switch v-model:checked="row.is_show" :requestApi="updateCouponFiled"
-                                        :params="{ id: row.coupon_id, field: 'is_show' }" />
+                                    <Switch v-model:checked="row.is_show" :requestApi="updateCouponFiled" :params="{ id: row.coupon_id, field: 'is_show' }" />
                                 </template>
                             </el-table-column>
                             <el-table-column label="操作" fixed="right">
                                 <template #default="{ row }">
-                                    <DialogForm isDrawer @okCallback="loadFilter" title="编辑优惠券" width="800px"
-                                        path="promotion/coupon/Info" :params="{ act: 'edit', id: row.coupon_id }">
+                                    <DialogForm
+                                        isDrawer
+                                        @okCallback="loadFilter"
+                                        title="编辑优惠券"
+                                        width="800px"
+                                        path="promotion/coupon/Info"
+                                        :params="{ act: 'detail', id: row.coupon_id }"
+                                    >
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                     <el-divider direction="vertical" />
@@ -166,14 +218,15 @@
                         </el-table>
                     </a-spin>
                     <div class="pagination-con" v-if="total > 0">
-                        <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total"
-                            @callback="loadFilter" />
+                        <Pagination v-model:page="filterParams.page" v-model:size="filterParams.size" :total="total" @callback="loadFilter" />
                     </div>
                 </div>
                 <div class="selected-action-warp" v-if="selectedIds.length > 0">
                     <div class="selected-action">
                         <el-space>
-                            <span>已选择：<b>{{ selectedIds.length }}</b> 项</span>
+                            <span
+                                >已选择：<b>{{ selectedIds.length }}</b> 项</span
+                            >
                             <el-popconfirm title="您确认要批量删除所选数据吗？" @confirm="onBatchSubmit('del')">
                                 <template #reference><el-button>批量删除</el-button></template>
                             </el-popconfirm>
@@ -186,18 +239,18 @@
 </template>
 
 <script setup lang="ts">
-import '@/style/css/list.less'
-import { DialogForm } from '@/components/dialog'
-import { PopForm } from '@/components/pop-form'
-import { ref, reactive, onMounted } from 'vue';
-import { DeleteRecord, Switch, Pagination } from '@/components/list';
-import { Image } from '@/components/image';
-import { message } from 'ant-design-vue'
+import "@/style/css/list.less";
+import { DialogForm } from "@/components/dialog";
+import { PopForm } from "@/components/pop-form";
+import { ref, reactive, onMounted } from "vue";
+import { DeleteRecord, Switch, Pagination } from "@/components/list";
+import { Image } from "@/components/image";
+import { message } from "ant-design-vue";
 import { useConfigStore } from "@/store/config";
-import { CouponFilterState, CouponFilterParams } from '@/types/promotion/coupon.d';
+import { CouponFilterState, CouponFilterParams } from "@/types/promotion/coupon.d";
 import { getCouponList, batchSubmit, updateCouponFiled, delCoupon } from "@/api/promotion/coupon";
-import { SelectStore } from '@/components/select'
-const config:any = useConfigStore();
+import { SelectStore } from "@/components/select";
+const config: any = useConfigStore();
 // 基本参数定义
 const filterState = ref<CouponFilterState[]>();
 const loading = ref<boolean>(true);
@@ -205,10 +258,10 @@ const total = ref<number>(0);
 const selectedIds = ref<number[]>([]);
 const filterParams = reactive<CouponFilterParams>({
     page: 1,
-    size: config.get('page_size'),
-    sort_field: '',
-    sort_order: '',
-    keyword: '',
+    size: config.get("page_size"),
+    sort_field: "",
+    sort_order: "",
+    keyword: "",
     is_show: -1,
     store_id: 0
 });
@@ -228,19 +281,19 @@ const loadFilter = async () => {
     } finally {
         loading.value = false;
     }
-}
+};
 onMounted(() => {
     loadFilter();
 });
 
 // 参数查询
 const onSearchSubmit = () => {
-    loadFilter()
+    loadFilter();
 };
 // 修改排序
 const onSortChange = ({ prop, order }: { prop: string; order?: string }) => {
     filterParams.sort_field = prop;
-    filterParams.sort_order = order == 'ascending' ? 'asc' : order == 'descending' ? 'desc' : '';
+    filterParams.sort_order = order == "ascending" ? "asc" : order == "descending" ? "desc" : "";
     loadFilter();
 };
 
@@ -268,13 +321,13 @@ const onSelectChange = (e: any) => {
     -ms-flex-pack: start;
     justify-content: flex-start;
     overflow: hidden;
-    z-index: -1
+    z-index: -1;
 }
 
 .bonus-wrap .card-wrap__container {
-    transition: transform .6s ease-in-out;
+    transition: transform 0.6s ease-in-out;
     display: -ms-flexbox;
-    display: flex
+    display: flex;
 }
 
 .bonus-wrap .item-bg {
@@ -285,30 +338,30 @@ const onSelectChange = (e: any) => {
     display: flex;
     -ms-flex-direction: column;
     flex-direction: column;
-    background: rgba(51, 136, 255, .07);
+    background: rgba(51, 136, 255, 0.07);
     margin-right: 15px;
     text-align: center;
     -ms-flex-align: center;
     align-items: center;
     -ms-flex-pack: justify;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .bonus-wrap .coupon-cards-item {
     min-width: 166px;
-    width: 170px
+    width: 170px;
 }
 
 .bonus-wrap .coupon-cards-item .title {
     font-size: 16px;
-    color: #333
+    color: #333;
 }
 
 .bonus-wrap .coupon-cards-item .desc {
     padding-top: 10px;
     line-height: 18px;
     font-size: 12px;
-    color: #666
+    color: #666;
 }
 
 .bonus-wrap .coupon-cards-item button {
@@ -321,13 +374,28 @@ const onSelectChange = (e: any) => {
     font-size: 14px;
     color: #323233;
     line-height: 20px;
-    margin-bottom: 16px
+    margin-bottom: 16px;
 }
 
 .bonus-wrap .item-bg2 {
     background: #fff;
     border: 1px solid #ebedf0;
     box-sizing: border-box;
-    width: 223px !important
+    width: 223px !important;
+}
+
+@media only screen and (max-width: 767px) {
+    .bonus-wrap .card-wrap__container {
+        flex-wrap: wrap;
+    }
+    .bonus-wrap .item-bg {
+        width: 47% !important;
+        box-sizing: border-box;
+        margin: 0;
+        margin-top: 10px;
+    }
+    .bonus-wrap .item-bg:nth-child(2n) {
+        margin-left: 3%;
+    }
 }
 </style>

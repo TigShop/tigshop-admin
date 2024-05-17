@@ -34,6 +34,7 @@ export interface UserRechargeOrderFormState {
     id?: number;
     user_id?: number;
     amount: number;
+    discount_money?: number;
     username?: string;
     add_time?: string;
     finished_time?: string;

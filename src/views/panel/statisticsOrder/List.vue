@@ -22,8 +22,7 @@
                                 v-model="selectDate['2']"
                                 value-format="YYYY-MM"
                                 type="month"
-                                :editable="false"
-                            />
+                                :editable="false" />
                             <el-date-picker
                                 v-if="filterParams.date_type === '1'"
                                 v-model="selectDate['1']"
@@ -31,14 +30,13 @@
                                 value-format="YYYY"
                                 style="width: 200px"
                                 :editable="false"
-                                :shortcuts="yearShortcuts"
-                            />
+                                :shortcuts="yearShortcuts" />
                         </el-form-item>
                         <el-form-item class="mr-10">
                             <el-button plain @click="handleSearch">搜索</el-button>
                         </el-form-item>
                         <el-form-item>
-                            <el-button plain @click="handleExport">导出EXCEL</el-button>
+                            <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                         </el-form-item>
                     </div>
                 </el-form>
@@ -152,6 +150,7 @@ import OrderNumberStatistics from "./src/OrderNumberStatistics.vue";
 import type { statisticsOrdeFilterState, statisticsOrdeFilterParams } from "@/types/panel/statisticsOrde";
 import { getSalesstatisticsIndexs, getStatisticsOrdexport } from "@/api/panel/statisticsOrde";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 const handleClick = (tab: TabsPaneContext, event: Event) => {
     getData();
 };
@@ -159,29 +158,29 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 const filterParams = reactive<statisticsOrdeFilterParams>({
     statistic_type: "1",
     start_end_time: "",
-    date_type: "1"
+    date_type: "1",
 });
 
 const selectDate = reactive<any>({
     "1": "",
-    "2": ""
+    "2": "",
 });
 
 const timeSorterList = [
     {
         label: "按年筛选",
-        value: "1"
+        value: "1",
     },
     {
         label: "按月筛选",
-        value: "2"
-    }
+        value: "2",
+    },
 ];
 
 const shortcuts = [
     {
         text: "本月",
-        value: new Date()
+        value: new Date(),
     },
     {
         text: "上月",
@@ -189,7 +188,7 @@ const shortcuts = [
             const date = new Date();
             date.setTime(date.getTime() - 3600 * 1000 * 24 * 30);
             return date;
-        }
+        },
     },
     {
         text: "本年一月",
@@ -197,8 +196,8 @@ const shortcuts = [
             const date = new Date();
             const firstMonthOfYear = new Date(date.getFullYear(), 0, 1);
             return firstMonthOfYear;
-        }
-    }
+        },
+    },
 ];
 
 const yearShortcuts = [
@@ -206,26 +205,26 @@ const yearShortcuts = [
         text: "本年",
         value: () => {
             return getDateYearsAgo(0);
-        }
+        },
     },
     {
         text: "去年",
         value: () => {
             return getDateYearsAgo(1);
-        }
+        },
     },
     {
         text: "三年前",
         value: () => {
             return getDateYearsAgo(3);
-        }
+        },
     },
     {
         text: "五年前",
         value: () => {
             return getDateYearsAgo(5);
-        }
-    }
+        },
+    },
 ];
 
 const getDateYearsAgo = (years: number) => {
@@ -255,11 +254,18 @@ const getData = async () => {
 const handleSearch = () => {
     getData();
 };
-const handleExport = () => {
-    console.log({ ...filterParams, is_export: "1" });
-    getStatisticsOrdexport({ ...filterParams, is_export: "1" });
-};
 
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await getStatisticsOrdexport({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'销售统计导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
+};
 onMounted(() => {
     const nowDate = formatDate(new Date());
     if (nowDate) {
@@ -302,7 +308,7 @@ onMounted(() => {
 
         .main-panel-item-value {
             font-size: 24px;
-            color: #555;
+            color: #333;
             display: block;
             font-weight: bold;
             padding: 10px 0;

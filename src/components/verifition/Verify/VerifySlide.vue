@@ -251,7 +251,7 @@ export default {
                     "token": backToken.value
                 }
                 request({
-                    url: 'common/verification/check/',
+                    url: 'common/verification/check',
                     method: 'post',
                     data: data
                 }).then((result) => {
@@ -328,8 +328,8 @@ export default {
                 captchaType: captchaType.value
             }
             request({
-                url: 'common/verification/captcha/',
-                method: 'post',
+                url: 'common/verification/captcha',
+                method: 'get',
                 data: data
             }).then(result => {
                 backImgBase.value = result.originalImageBase64

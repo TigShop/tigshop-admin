@@ -48,6 +48,7 @@ export interface AdminUserFormState {
     username?: string;
     mobile?: string;
     avatar?: string;
+    def_avatar?: string;
     password?: string;
     pwd_confirm?: string;
     old_password?: string;

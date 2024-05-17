@@ -2,10 +2,10 @@
 import type {UserRankFilterState} from "@/types/user/userRank";
 
 export interface UserFilterParams {
-    page?: number,
-    size?: number,
-    sort_field?: string,
-    sort_order?: string,
+    page?: number;
+    size?: number;
+    sort_field?: string;
+    sort_order?: string;
     from_tag?: number;
     balance?: number;
     points_gt?: number;
@@ -51,6 +51,7 @@ export interface UserFormResult {
 // 获取详情返回参数类型
 export interface UserFormState {
     user_id?: number;
+
     username?: string;
     nickname?: string;
     from_tag?: number;
@@ -73,6 +74,7 @@ export interface UserFormState {
     password?: string;
     pwd_confirm?: string;
     avatar: string;
+
 }
 
 
@@ -90,3 +92,27 @@ export interface UserFundManagementFormState {
 	type_growth_points?: number;
 	growth_points?: number;
 }
+
+export interface UserFundFilterResult {
+    filter_result: UserFundList[];
+    filter: UserFilterParams;
+    total: number;
+}
+
+export interface UserFundList {
+    change_type_name: string;
+    before_balance: string;
+    before_frozen_balance: string
+    log_id: number;
+    user_id: number;
+    balance: string;
+    frozen_balance: string;
+    change_time: string;
+    change_desc: string;
+    change_type: number;
+    username: string;
+    after_balance: string;
+    after_frozen_balance: string;
+}
+
+

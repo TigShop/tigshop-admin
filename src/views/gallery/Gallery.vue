@@ -25,12 +25,12 @@
                                                 @okCallback="editRecordCallback(item.gallery_id, true)"
                                                 title="编辑相册"
                                                 path="gallery/GalleryEdit"
-                                                :params="{ act: 'edit', id: item.gallery_id }">
+                                                :params="{ act: 'detail', id: item.gallery_id }">
                                                 <div>编辑相册</div>
                                             </DialogForm>
                                         </el-dropdown-item>
                                         <el-dropdown-item>
-                                            <div @click="delRootGallery(item.gallery_id)">删除</div>
+                                            <div @click="delRootGallery(item.gallery_id, key)">删除</div>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
@@ -56,7 +56,7 @@
                             <el-space>
                                 <Upload
                                     name="file"
-                                    :action="requestUrl.prefix + '/setting/gallery_pic/upload_img/?gallery_id=' + galleryId"
+                                    :action="requestUrl.prefix + '/setting/gallery_pic/upload_img?gallery_id=' + galleryId"
                                     :headers="requestUrl.headers"
                                     @change="handleChange"
                                     :showUploadList="false"
@@ -105,7 +105,7 @@
                                                 @okCallback="editRecordCallback(gallery.gallery_id, false)"
                                                 title="编辑相册"
                                                 path="gallery/GalleryEdit"
-                                                :params="{ act: 'edit', id: gallery.gallery_id }">
+                                                :params="{ act: 'detail', id: gallery.gallery_id }">
                                                 <a class="btn-edit ico-font">&#xe610;</a>
                                             </DialogForm>
                                             <a-popconfirm title="您确认要删掉该相册吗？" @confirm="delGallery(gallery.gallery_id, key)" placement="bottom">
@@ -185,6 +185,8 @@ import type { UploadChangeParam } from "ant-design-vue";
 import { imageFormat } from "@/utils/format";
 import { AnyNaptrRecord } from "dns";
 import { Pagination } from "@/components/list";
+import {getGalleryList, getGalleryPicList, updateGalleryField, updateGalleryPicField, delGalleryPicField, delGalleryField} from "@/api/setting/gallery";
+import type {GalleryFormState} from "@/types/setting/gallery.d";
 
 const props = defineProps({
     isMultiple: {
@@ -197,7 +199,7 @@ const topGalleryId = ref(0);
 // 当前相册ID
 const galleryId = ref(0);
 // 相册目录
-const gallery = ref();
+const gallery = ref<GalleryFormState[]>([]);
 // 当前相册图片列表
 const galleryPicList = ref([]);
 // 新添加的图片
@@ -250,15 +252,14 @@ const handleChange = (info: UploadChangeParam) => {
 };
 
 // 加载目录和全部相册
-const loadGallery = () => {
-    request({
-        url: "setting/gallery/index/",
-        method: "get",
-        params: { gallery_id: galleryId.value },
-    }).then((result: any) => {
+const loadGallery = async () => {
+    try {
+        const result = await getGalleryList({ gallery_id: galleryId.value });
         gallery.value = result.filter_result;
         galleryChange(galleryId.value);
-    });
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 onMounted(() => {
     loadGallery();
@@ -273,29 +274,24 @@ const pageChange = (curPage: number) => {
     galleryChange(galleryId.value, curPage);
 };
 // 加载相册，仅改变图片选择区域
-const galleryChange = (gallery_id: number, page_id: number = 1) => {
+const galleryChange = async (gallery_id: number, page_id: number = 1) => {
     loading.value = true;
     page.value = page_id;
-    request({
-        url: "setting/gallery_pic/index/",
-        method: "get",
-        params: { gallery_id, page: page_id, sort_order: sort_order.value },
-    })
-        .then((result: any) => {
-            uploadPicList.value = [];
-            galleryPicList.value = result.filter_result;
-            childGalleryList.value = result.child_gallery_list;
-            picTotal.value = result.total;
-            galleryId.value = gallery_id;
-            galleryInfo.value = result.gallery_info;
-        })
-        .catch((error) => {
-            message.error(error.message);
-        })
-        .finally(() => {
-            loading.value = false;
-        });
+    try {
+        const result = await getGalleryPicList({ gallery_id, page: page_id, sort_order: sort_order.value });
+        uploadPicList.value = [];
+        galleryPicList.value = result.filter_result;
+        childGalleryList.value = result.child_gallery_list;
+        picTotal.value = result.total;
+        galleryId.value = gallery_id;
+        galleryInfo.value = result.gallery_info;
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
 };
+
 const changeSort = (value: any) => {
     sort_order.value = value;
     galleryChange(galleryId.value);
@@ -317,85 +313,59 @@ const addGalleryCallback = (parentId: number) => {
     }
 };
 // 修改相册名称
-const changGalleryName = (event: any, gallery_id: number) => {
-    request({
-        url: "setting/gallery/update_field/",
-        method: "post",
-        data: { id: gallery_id, val: event.target.value, field: "gallery_name" },
-    })
-        .then((result: any) => {
-            message.success(result.message);
-        })
-        .catch((error) => {
-            message.error(error.message);
-        });
+const changGalleryName = async (event: any, gallery_id: number) => {
+    try {
+        const result = await updateGalleryField({ id: gallery_id, val: event.target.value, field: "gallery_name" });
+        message.success(result.message);
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 // 修改图片名称
-const changPicName = (event: any, pic_id: number) => {
-    request({
-        url: "setting/gallery_pic/update_field/",
-        method: "post",
-        data: { id: pic_id, val: event.target.value, field: "pic_name" },
-    })
-        .then((result: any) => {
-            message.success(result.message);
-        })
-        .catch((error) => {
-            message.error(error.message);
-        });
+const changPicName = async (event: any, pic_id: number) => {
+    try {
+        const result = await updateGalleryPicField({ id: pic_id, val: event.target.value, field: "pic_name" });
+        message.success(result.message);
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
 // 删除图片
-const delPic = (pic_id: number) => {
-    request({
-        url: "setting/gallery_pic/del/",
-        method: "post",
-        data: { id: pic_id },
-    })
-        .then((result: any) => {
-            message.success(result.message);
-            loadGallery();
-        })
-        .catch((error) => {
-            message.error(error.message);
-        });
+const delPic = async (pic_id: number) => {
+    try {
+        const result = await delGalleryPicField({ id: pic_id });
+        message.success(result.message);
+        topGalleryId.value = 0;
+        galleryId.value = 0;
+        loadGallery();
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
+
 // 删除相册
-const delGallery = (gallery_id: number, key: number) => {
-    request({
-        url: "setting/gallery/del/",
-        method: "post",
-        data: { id: gallery_id },
-    })
-        .then((result: any) => {
-            childGalleryList.value.splice(<any>key, 1);
-            message.success(result.message);
-        })
-        .catch((error) => {
-            message.error(error.message);
-        });
+const delGallery = async (gallery_id: number, key: number) => {
+    try {
+        const result = await delGalleryField({ id: gallery_id });
+        message.success(result.message);
+        childGalleryList.value.splice(<any>key, 1);
+        if (galleryId.value == gallery_id) {
+            topGalleryId.value = 0;
+            galleryId.value = 0;
+        }
+        loadGallery();
+    } catch (error: any) {
+        message.error(error.message);
+    }
 };
+
 // 删除根相册
-const delRootGallery = (gallery_id: number) => {
+const delRootGallery = (gallery_id: number, key: number) => {
     Modal.confirm({
         title: "您确认要删除所选相册吗？",
         okType: "danger",
         onOk() {
-            request({
-                url: "setting/gallery/del/",
-                method: "post",
-                data: { id: gallery_id },
-            })
-                .then((result: any) => {
-                    message.success(result.message);
-                    if (galleryId.value == gallery_id) {
-                        topGalleryId.value = 0;
-                        galleryId.value = 0;
-                    }
-                    loadGallery();
-                })
-                .catch((error) => {
-                    message.error(error.message);
-                });
+            delGallery(gallery_id,key)
         },
     });
 };

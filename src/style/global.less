@@ -5,15 +5,22 @@
 @import "https://at.alicdn.com/t/c/font_4441878_29ep8jtwh2k.css";
 
 // 后台图标
-@import "https://at.alicdn.com/t/c/font_4375017_prfxehhzzwh.css";
+@import "https://at.alicdn.com/t/c/font_4375017_bbjab699lo.css";
 
 // 移动端图标
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
 
+:root {
+    --tig-primary: #1456f0;
+    --tig-text-hover: #336df4;
+    --tig-primary-light-3: #336df4;
+    --tig-primary-color: #1456f0;
+    --tig-red-text-color: #f23030;
 
-
-@primary-color: #1890ff;
-
+    --el-color-primary: var(--tig-primary);
+    --el-color-primary-light-3: var(--tig-primary-light-3);
+    --el-button-hover-border-color: var(--tig-primary);
+}
 .ant-drawer-content-wrapper {
     max-width: 100%;
 }
@@ -23,7 +30,7 @@ html {
     font-size: 12px;
     font-family: Helvetica, Arial, sans-serif;
     text-align: left;
-    background: #fff
+    background: #fff;
 }
 
 html,
@@ -97,15 +104,30 @@ th {
 body {
     line-height: 1;
     margin: 0;
-    color: rgba(0, 0, 0, .85);
+    color: rgba(0, 0, 0, 0.85);
     font-size: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
+    overflow-y: scroll;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        segoe ui,
+        Roboto,
+        helvetica neue,
+        Arial,
+        noto sans,
+        sans-serif,
+        apple color emoji,
+        segoe ui emoji,
+        segoe ui symbol,
+        noto color emoji;
     font-variant: tabular-nums;
     background-color: #fff;
     text-rendering: optimizeLegibility;
-    -moz-osx-font-smoothing: grayscale
+    -moz-osx-font-smoothing: grayscale;
 }
-em{font-style:normal}
+em {
+    font-style: normal;
+}
 
 html,
 body,
@@ -132,7 +154,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizelegibility;
 }
-
+a:hover {
+    color: var(--tig-text-hover);
+}
 ul,
 ol {
     list-style: none;
@@ -193,12 +217,12 @@ td {
 }
 
 a {
-    color: @primary-color;
+    color: var(--tig-primary);
     text-decoration: none;
     background-color: transparent;
     outline: none;
     cursor: pointer;
-    transition: color .3s;
+    transition: color 0.3s;
     -webkit-text-decoration-skip: objects;
 }
 
@@ -209,7 +233,9 @@ a {
 .f14 {
     font-size: 14px;
 }
-
+.cursor-pointer {
+    cursor: pointer;
+}
 .dollar,
 .decimal,
 .price_format {
@@ -218,11 +244,11 @@ a {
 
 .dollar {
     font-size: 80%;
-    padding-right: 2px
+    padding-right: 2px;
 }
 
 .green {
-    color: #31c19e
+    color: #31c19e;
 }
 
 .yellow {
@@ -230,11 +256,11 @@ a {
 }
 
 .gray {
-    color: #999
+    color: #999;
 }
 
 .red {
-    color: #f23030
+    color: var(--tig-red-text-color);
 }
 
 .mr10 {
@@ -256,7 +282,7 @@ a {
 .btn-link {
     white-space: nowrap;
     cursor: pointer;
-    color: #1890ff;
+    color: var(--tig-primary);
 }
 
 .content_wrapper {
@@ -278,7 +304,7 @@ a {
 }
 
 .ant-pagination-mini li.ant-pagination-item-active:hover {
-    border-color: @primary-color !important;
+    border-color: var(--tig-primary) !important;
 }
 
 .lyecs-modal-gallery .ant-modal-body {
@@ -310,9 +336,9 @@ button .iconfont {
 }
 
 .empty-warp .empty-bg::before {
-    content: '';
+    content: "";
     height: 150px;
-    background: url('./images/common/empty-bg.png') center center;
+    background: url("./images/common/empty-bg.png") center center;
     background-size: 160px 160px;
     background-repeat: no-repeat;
     width: 100%;
@@ -351,7 +377,6 @@ button .iconfont {
 .ant-popconfirm-message {
     font-size: 12px;
 }
-
 
 .lyecs-tabs .ant-tabs-tab-btn {
     font-size: 14px;
@@ -397,6 +422,13 @@ body .el-drawer__footer {
 
 // element样式重做
 body {
+    .el-button {
+        transition:
+            color 0.1s ease-in,
+            background-color 0.1s ease-in,
+            border-color 0.1s ease-in,
+            width 0.2s ease-in;
+    }
     .el-image-viewer__canvas img {
         background-color: #fff;
         padding: 20px;
@@ -430,11 +462,11 @@ body {
     }
 
     .el-table .sort-caret.ascending {
-        top: -4px
+        top: -4px;
     }
 
     .el-table .sort-caret.descending {
-        bottom: -1px
+        bottom: -1px;
     }
 
     .el-tabs__item {
@@ -457,7 +489,7 @@ body {
     }
 
     .el-dialog__headerbtn {
-        top: 0
+        top: 0;
     }
 
     .el-dialog__footer {
@@ -483,15 +515,20 @@ body {
     }
 
     // select
-    .el-select__wrapper{font-size: 12px;}
-    .el-select{
+    .el-select__wrapper {
+        font-size: 12px;
+    }
+    .el-select {
         min-width: 160px;
     }
     .el-select__popper.el-popper {
         border: none;
         margin-top: -8px;
         margin-bottom: -8px;
-        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+        box-shadow:
+            0 6px 16px 0 rgba(0, 0, 0, 0.08),
+            0 3px 6px -4px rgba(0, 0, 0, 0.12),
+            0 9px 28px 8px rgba(0, 0, 0, 0.05);
     }
 
     .el-select__popper .el-select-dropdown {
@@ -512,7 +549,7 @@ body {
         transition: background 0.3s ease;
     }
 
-    .el-select__popper .is-current>.el-tree-node__content {
+    .el-select__popper .is-current > .el-tree-node__content {
         background-color: #e6f7ff;
     }
 
@@ -553,7 +590,7 @@ body {
         border-style: solid;
         border-width: 1px;
         border-radius: 50%;
-        transition: all .3s;
+        transition: all 0.3s;
         background: #fff;
     }
 
@@ -566,42 +603,55 @@ body {
         height: 16px;
         margin-top: -8px;
         margin-left: -8px;
-        background-color: @primary-color;
+        background-color: var(--tig-primary);
         border-top: 0;
         border-left: 0;
         border-radius: 16px;
         transform: scale(0);
         opacity: 0;
-        transition: all .3s cubic-bezier(.78, .14, .15, .86);
+        transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
         content: " ";
-
     }
 
     .el-radio__input.is-checked .el-radio__inner {
-        border-color: @primary-color;
+        border-color: var(--tig-primary);
         background: #fff;
     }
 
     .el-radio__input.is-checked .el-radio__inner::after {
-        transform: scale(.5);
+        transform: scale(0.5);
         opacity: 1;
-        transition: all .3s cubic-bezier(.78, .14, .15, .86);
+        transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
     }
 
-    .el-radio__input.is-checked+.el-radio__label {
+    .el-radio__input.is-checked + .el-radio__label {
         color: inherit;
     }
-    .el-checkbox{--el-checkbox-input-height: 16px;--el-checkbox-input-width: 16px;}
-    .el-checkbox__inner{border-radius: 6px;}
-    .el-checkbox__inner::after{left: 4.5px;top: 1.5px;border-width: 2px;}
-    .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {top: 6px;}
-    .el-checkbox__input.is-checked+.el-checkbox__label {
+    .el-checkbox {
+        --el-checkbox-input-height: 16px;
+        --el-checkbox-input-width: 16px;
+    }
+    .el-checkbox__inner {
+        border-radius: 6px;
+    }
+    .el-checkbox__inner::after {
+        left: 4.5px;
+        top: 1.5px;
+        border-width: 2px;
+    }
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
+        top: 6px;
+    }
+    .el-checkbox__input.is-checked + .el-checkbox__label {
         color: inherit;
     }
 
     // tips
     .el-popper.is-light {
-        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+        box-shadow:
+            0 6px 16px 0 rgba(0, 0, 0, 0.08),
+            0 3px 6px -4px rgba(0, 0, 0, 0.12),
+            0 9px 28px 8px rgba(0, 0, 0, 0.05);
         border: 0;
     }
 
@@ -624,13 +674,12 @@ body {
     }
 
     .el-slider__input {
-        width: 60px
+        width: 60px;
     }
 
     .el-slider__button-wrapper {
         top: -16px;
     }
-
 }
 
 // 分页
@@ -675,7 +724,6 @@ body .el-tabs__content {
     margin-bottom: 20px;
     line-height: 24px;
     white-space: normal;
-    
 }
 
 .error-notice-warp {
@@ -685,4 +733,25 @@ body .el-tabs__content {
     margin-bottom: 20px;
     line-height: 26px;
     white-space: normal;
+}
+
+@media only screen and (max-width: 767px) {
+    .el-form-item__label {
+        max-width: 92px;
+        text-align: right;
+        line-height: 16px;
+        padding-top: 7px;
+    }
+    .main-panel ul {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    .filtrate-menu {
+        flex-wrap: wrap;
+        .asterisk-left {
+            width: 100%;
+        }
+    }
+    .ant-drawer .ant-drawer-body {
+        padding: 20px;
+    }
 }

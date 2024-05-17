@@ -56,6 +56,11 @@
                                     {{ priceFormat(row.amount)}}
                                 </template>
                             </el-table-column>
+                            <el-table-column label="赠送金额" prop="discount_money" >
+                                <template #default="{ row }">
+                                    {{ priceFormat(row.discount_money)}}
+                                </template>
+                            </el-table-column>
                             <el-table-column label="到款状态" >
                                 <template #default="{ row }">
                                     {{ row.status_type }}
@@ -64,7 +69,7 @@
                             <el-table-column label="操作时间" prop="add_time" ></el-table-column>
                             <el-table-column :width="150" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.order_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.order_id }" isDrawer
                                                 path="finance/userRechargeOrder/Info"
                                                 title="查看申请" width="600px"
                                                 @okCallback="loadFilter">

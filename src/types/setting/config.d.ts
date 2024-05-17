@@ -77,6 +77,7 @@ export interface BaseFormState {
     child_area_need_region?: number;
     shipping_tpl_fee_merge?: number;
     auto_cancel_order_hour?: number;
+    auto_cancel_order_minute?: number;
     recover_cancel_order?: number;
     use_bonus?: number;
     // use_surplus?: number;
@@ -151,11 +152,22 @@ export interface BaseFormState {
     kuaidi100_limit?: number;
     kuaidi100_key?: string;
     storage_type?: number;
-    storage_url?: string;
-    storage_access_key_id?: string;
-    storage_access_key_secret?: string;
-    storage_bucket?: string;
-    storage_region?: string;
+    storage_local_url?: string;
+    storage_oss_url?: string;
+    storage_cos_url?: string;
+
+    storage_oss_access_key_id?: string;
+    storage_cos_secret_id?: string;
+
+    storage_oss_access_key_secret?: string;
+    storage_cos_secret_key?: string;
+
+    storage_oss_bucket?: string;
+    storage_cos_bucket?: string;
+
+    storage_oss_region?: string;
+    storage_cos_region?: string;
+
     onebound_key?: string;
     onebound_secret?: string;
     use_wechat: number;
@@ -180,4 +192,9 @@ export interface PaymentFormState {
     alipay_appid?: string;
     alipay_rsa_private_key?: string;
     alipay_rsa_public_key?: string;
+    offline_pay_bank?: string;
+    offline_pay_company?: string;
+    wechat_pay_certificate?: number;
+    wechat_pay_private_key?: number;
+    wechat_pay_platform_certificate?: number;
 }

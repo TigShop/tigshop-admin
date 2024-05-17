@@ -4,14 +4,14 @@ import type {AfterSalesServiceFilterResult} from "@/types/setting/afterSalesServ
 
 export const getAfterSalesServiceList = () => {
     return request<AfterSalesServiceFilterResult>({
-        url: 'setting/mail_templates/index/',
+        url: 'setting/mail_templates/list',
         method: 'get'
     });
 }
 
 export const updateAfterSalesService = (data: object) => {
     return request({
-        url: 'setting/mail_templates/update/',
+        url: 'setting/mail_templates/update',
         method: 'post',
         data
     });

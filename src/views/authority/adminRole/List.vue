@@ -42,7 +42,7 @@
                             <el-table-column label="描述" prop="role_desc"></el-table-column>
                             <el-table-column :width="120" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm v-if="row.role_id>1" :params="{ act: 'edit', id: row.role_id }" isDrawer
+                                    <DialogForm v-if="row.role_id>1" :params="{ act: 'detail', id: row.role_id }" isDrawer
                                                 path="authority/adminRole/Info"
                                                 title="编辑管理员权限组" width="800px"
                                                 @okCallback="loadFilter">

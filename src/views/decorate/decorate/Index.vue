@@ -1,22 +1,30 @@
 <template>
-    <div class="decorate-page">
+    <div class="decorate-page" :class="{ 'decorate-page-pc': props.decorateType === 2 }">
         <div class="decorate-topbar-warp">
             <div class="decorate-topbar-con">
                 <div class="topbar-left">
                     <div class="topbar-logo"></div>
-                    <div class="topbar-now-txt">当前页面：首页装修 -</div>
+                    <div class="topbar-now-txt cursor-pointer" @click="onLogout()">
+                        <i class="iconfont-admin icon-tuichu" style="margin-right: 8px"></i>退出编辑
+                    </div>
+                    <div class="topbar-now-txt"><span class="tit">正在装修：</span>{{ decorateTitle }}</div>
                 </div>
                 <el-space class="topbar-right">
-                    <el-button>另存为新模板</el-button>
-                    <el-button>模板库</el-button>
-                    <el-button>预览</el-button>
-                    <el-button @click="onSave()">存至草稿</el-button>
-                    <el-button @click="onPublish()" type="primary">保存并发布</el-button>
+                    <el-button class="btn" text @click="onPreview()">预览</el-button>
+                    <el-button class="btn" text @click="onSavetoDraft()">存至草稿</el-button>
+                    <el-button class="ml10" @click="onPublish()" type="primary">保存并发布</el-button>
                 </el-space>
             </div>
         </div>
-        <ToolBar v-model:modules="modules"></ToolBar>
+
+        <ToolBar v-model:modules="modules" v-if="props.decorateType === 1"></ToolBar>
+        <PcToolBar v-model:modules="modules" v-if="props.decorateType === 2"></PcToolBar>
         <perfect-scrollbar class="decorate-page-wrap">
+            <Alert v-if="hasDraftData" class="decorate-page-alert" message="该页面有一条草稿记录，您可以还原草稿继续编辑。" type="warning" show-icon closable>
+                <template #action>
+                    <el-button @click="continueEditDraft">继续编辑</el-button>
+                </template>
+            </Alert>
             <div
                 class="decorate-page-window"
                 :style="
@@ -25,7 +33,7 @@
                 <div class="theme-modules-warp">
                     <div
                         @click="onEditPage"
-                        :class="'list-item modules-item modules-item-topbar' + (modules.pageModule.active ? ' module-item-active' : '')"
+                        :class="'list-item modules-item modules-item-topbar' + (editVisiable === 'page' ? ' module-item-active' : '')"
                         draggable="false">
                         <Page v-model:module="modules.pageModule"></Page>
                     </div>
@@ -49,20 +57,20 @@
                                     (!element.is_show ? 'modules-item-hide ' : '') +
                                     ' modules-item-' +
                                     element.type +
-                                    (element.active ? ' module-item-active' : '')
+                                    (index === editModuleIndex && editVisiable === 'list' ? ' module-item-active' : '')
                                 "
                                 draggable="false"
                                 @click="onEditComponent(index)">
                                 <Modules
                                     v-if="element.type"
                                     v-model:module="element.module"
-                                    :moduleType="element.type"
+                                    v-model:moduleType="element.type"
                                     :moduleIndex="element.module_index"
                                     :decorateId="id"></Modules>
                                 <div class="module-label">
                                     <div class="label-name">{{ element.label }}</div>
                                 </div>
-                                <div class="module-operate" v-if="element.active == true && editVisiable == 'list'">
+                                <div class="module-operate" v-if="index === editModuleIndex && editVisiable == 'list'">
                                     <div class="module-operate-item" @click.stop="onModuleUp(index)">
                                         <i class="ico-decorate icon-dec-shangyi"></i>
                                         <div class="opt-tip">上移</div>
@@ -97,9 +105,9 @@
         </perfect-scrollbar>
         <div class="decorate-edit-wrap">
             <editComponent
-                v-if="editVisiable == 'list' && modules.moduleList[editModuleIndex]"
+                v-if="editModuleIndex !== null && editVisiable == 'list' && modules.moduleList[editModuleIndex]"
                 v-model:module="modules.moduleList[editModuleIndex].module"></editComponent>
-            <PageEdit v-if="editVisiable == 'page'" v-model:module="modules.pageModule"></PageEdit>
+            <PageEdit v-if="editVisiable === 'page'" v-model:module="modules.pageModule"></PageEdit>
         </div>
     </div>
 </template>
@@ -107,19 +115,30 @@
 import { ref, defineAsyncComponent, onMounted, shallowRef, computed } from "vue";
 import { useRouter } from "vue-router";
 import request from "@/utils/request";
+import { loadDraftData, saveDraft } from "@/api/decorate/decorate";
 import ToolBar from "./src/ToolBar.vue";
+import PcToolBar from "./src/PcToolBar.vue";
 import Modules from "./src/Modules.vue";
 import Page from "./src/modules/Page.vue";
 import PageEdit from "./src/modulesEdit/PageEdit.vue";
 import draggable from "vuedraggable";
-import { message } from "ant-design-vue";
+import { message, Alert } from "ant-design-vue";
 import { cloneDeep } from "lodash";
 import { toPascalCase } from "@/utils/util";
+import { urlWapFormat, urlFormat } from "@/utils/format";
 import { ModulesType, EditResult } from "@/types/decorate/decorate.d";
 import "./src/css/decorate.less";
 import "./src/css/module.less";
+const props = defineProps({
+    decorateType: {
+        type: Number,
+        default: 1,
+    },
+});
 const query = useRouter().currentRoute.value.query;
 const id = ref<number>(Number(query.id));
+const decorateTitle = ref<string>("");
+const hasDraftData = ref(false);
 const modules = ref<ModulesType>({
     // 页面模块
     pageModule: {
@@ -137,46 +156,47 @@ const editVisiable = ref<string>("");
 // 动态编辑组件
 const editComponent = shallowRef();
 // 当前编辑的组件index
-const editModuleIndex = ref<number>(0);
+const editModuleIndex = ref<number | null>(null);
 onMounted(() => {
     // 获取详情数据
     request<EditResult>({
-        url: "decorate/edit/",
+        url: "decorate/decorate/detail",
         method: "get",
         params: {
             id: id.value,
+            decorate_type: props.decorateType,
         },
     }).then((result) => {
-        modules.value.moduleList = result.item.data.moduleList || [];
+        modules.value.moduleList = result.item.data.moduleList ?? [];
+        decorateTitle.value = result.item.decorate_title ?? "";
         Object.assign(modules.value.pageModule, result.item.data.pageModule || {});
-        console.log(modules.value);
+        hasDraftData.value = result.has_draft_data;
     });
 });
 // 组件编辑
 const _import = (path: string) => defineAsyncComponent(() => import(`./src/modulesEdit/${path}.vue`));
 const onEditComponent = (index: number) => {
     editModuleIndex.value = index;
-    modules.value.moduleList = modules.value.moduleList.map((item) => ({ ...item, active: false }));
-    modules.value.moduleList[index].active = true;
+    modules.value.moduleList = modules.value.moduleList.map((item) => ({ ...item }));
     editComponent.value = _import(toPascalCase(modules.value.moduleList[index].type) + "Edit");
     editVisiable.value = "list";
-    modules.value.pageModule.active = false;
 };
 // 页面编辑
 const onEditPage = () => {
     editVisiable.value = "page";
-    modules.value.moduleList = modules.value.moduleList.map((item) => ({ ...item, active: false }));
-    modules.value.pageModule.active = true;
+    modules.value.moduleList = modules.value.moduleList.map((item) => ({ ...item }));
 };
 // 上移
 const onModuleUp = (index: number) => {
     if (index == 0) return;
     modules.value.moduleList.splice(index - 1, 0, modules.value.moduleList.splice(index, 1)[0]);
+    editModuleIndex.value = index - 1;
 };
 // 下移
 const onModuleDown = (index: number) => {
     if (index + 1 == modules.value.moduleList.length) return;
     modules.value.moduleList.splice(index + 1, 0, modules.value.moduleList.splice(index, 1)[0]);
+    editModuleIndex.value = index + 1;
 };
 // 显示/隐藏
 const onModuleShow = (index: number) => {
@@ -188,39 +208,36 @@ const onModuleCopy = (index: number) => {
     copiedItem.module_index = Date.now();
     // 在目标元素后面插入复制的元素
     modules.value.moduleList.splice(index + 1, 0, copiedItem);
+    editModuleIndex.value = index + 1;
 };
 // 删除
 const onModuleDel = (index: number) => {
     modules.value.moduleList.splice(index, 1);
 };
 
-const onEnd = () => {
-    console.log(modules.value);
+const onEnd = (e:any) => {
+    console.log(e);
+    editModuleIndex.value = e.newIndex;
 };
 const onAdd = (e: any) => {
     onEditComponent(e.newIndex);
 };
-const onSave = () => {
-    console.log(modules.value);
-    // return;
-    request({
-        url: "decorate/save/",
-        method: "post",
-        data: {
+const onSavetoDraft = async () => {
+    try {
+        const result = await saveDraft({
             id: id.value,
             data: modules.value,
-        },
-    })
-        .then((result) => {
-            message.success(result.message);
-        })
-        .catch((error) => {
-            message.error(error.message);
         });
+        message.success(result.message);
+        hasDraftData.value = false;
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+    }
 };
-const onPublish = () => {
+const onPublish = async () => {
     request({
-        url: "decorate/publish/",
+        url: "decorate/decorate/publish",
         method: "post",
         data: {
             id: id.value,
@@ -229,6 +246,7 @@ const onPublish = () => {
     })
         .then((result) => {
             message.success(result.message);
+            hasDraftData.value = false;
         })
         .catch((error) => {
             message.error(error.message);
@@ -255,4 +273,55 @@ const format = computed(() => {
         background_size: "background-size:" + backgroundSize[modules.value.pageModule.background_size] + ";",
     };
 });
+const continueEditDraft = async () => {
+    try {
+        const result = await loadDraftData(id.value);
+        modules.value.moduleList.length = 0;
+        modules.value.moduleList = result.data.moduleList ?? [];
+        modules.value.pageModule = result.data.pageModule ?? [];
+        hasDraftData.value = false;
+        editVisiable.value = "";
+        editModuleIndex.value = null;
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+    }
+};
+const onPreview = async () => {
+    try {
+        // 先发布
+        const result = await saveDraft({
+            id: id.value,
+            data: modules.value,
+        });
+
+        message.success(result.message);
+        hasDraftData.value = false;
+        // 1秒后执行
+        setTimeout(() => {
+            if (props.decorateType == 1) {
+                window.open(urlWapFormat("/?preview_id=" + id.value));
+            } else if (props.decorateType == 2) {
+                window.open(urlFormat("/?preview_id=" + id.value));
+            }
+        }, 800);
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+    }
+};
+const onLogout = () => {
+    if (props.decorateType == 1) {
+        window.location.href = "/decorate/mobile_decorate/list/";
+    } else {
+        window.location.href = "/decorate/pc_decorate/list/";
+    }
+};
 </script>
+<style lang="less" scoped>
+.decorate-page-alert {
+    margin: 30px auto;
+    max-width: 500px;
+    font-size: 14px;
+}
+</style>

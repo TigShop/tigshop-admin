@@ -10,8 +10,7 @@
             module.pic_radio_style +
             ' '
         "
-        :style="frameFormat.box_padding + frameFormat.box_padding_top + frameFormat.box_padding_bottom"
-    >
+        :style="frameFormat.box_padding + frameFormat.box_padding_top + frameFormat.box_padding_bottom">
         <div class="module-ad-content" :style="frameFormat.background_color + ' ' + frameFormat.box_radius">
             <CommonTitle v-if="title?.show_title" v-model="title"></CommonTitle>
             <div class="module-ad-empty empty-image_ad" v-if="module.pic_list.length == 0">
@@ -75,7 +74,7 @@ const defaultModule = ref({
     pic_radio_style: 1,
     is_flux_width: 0,
     frame: defaultFrame,
-    title: defaultTitle
+    title: defaultTitle,
 });
 mergeDefaultModule(module.value, defaultModule.value);
 const { frame, title } = module.value;
@@ -84,7 +83,7 @@ const frameFormat = computed(() => {
 });
 const format = computed(() => {
     return {
-        img_padding: "padding:" + module.value?.img_padding + "px;"
+        img_padding: "padding:" + module.value?.img_padding + "px;",
     };
 });
 const swiperPageColor = computed(() => {
@@ -94,11 +93,11 @@ const swiperOption = ref<any>({
     autoplay: {
         delay: 3000,
         disableOnInteraction: false, //用户操作swiper之后，是否禁止autoplay
-        pauseOnMouseEnter: true //鼠标置于swiper是否时暂停自动切换
+        pauseOnMouseEnter: true, //鼠标置于swiper是否时暂停自动切换
     },
     pagination: {
-        clickable: true
-    }
+        clickable: true,
+    },
 });
 </script>
 <style lang="less" scoped>

@@ -99,7 +99,8 @@ const clear = () => {
 }
 // 删除
 const del = (key:any) => {
-    modelValue.value?.splice(key, 1)
+    let del_article_id = articleList.value[key].article_id;
+    modelValue.value = modelValue.value.filter(num => num !== del_article_id);
     articleList.value.splice(<any>key, 1)
 }
 defineExpose({

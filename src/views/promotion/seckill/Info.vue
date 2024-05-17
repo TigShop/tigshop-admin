@@ -92,9 +92,9 @@
                             type="datetime"
                             value-format="YYYY-MM-DD HH:mm:ss"></SelectTimeInterval>
                     </el-form-item>
-                    <el-form-item label="限购数量" prop="seckill_limit_num">
-                        <el-input v-model="formState.seckill_limit_num" />
-                    </el-form-item>
+<!--                    <el-form-item label="限购数量" prop="seckill_limit_num">-->
+<!--                        <el-input v-model="formState.seckill_limit_num" />-->
+<!--                    </el-form-item>-->
                     <el-form-item v-show="!props.isDialog" :wrapper-col="{ offset: 4, span: 16 }">
                         <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit">提交</el-button>
                     </el-form-item>
@@ -135,7 +135,7 @@ const loadingProduct = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === "add" ? "insert" : "update";
+const operation = action.value === "add" ? "create" : "update";
 const formRef = shallowRef();
 const formState = ref<SeckillFormState>({
     seckill_item: []
@@ -178,8 +178,13 @@ const rules = reactive<FormRules<typeof formState>>({
 });
 
 onMounted(() => {
-    // 获取详情数据
-    fetchSeckill();
+    if (action.value === "detail") {
+        // 获取详情数据
+        fetchSeckill();
+    } else {
+        loading.value = false;
+        loadingProduct.value = false;
+    }
 });
 const fetchSeckill = async () => {
     try {
@@ -252,7 +257,7 @@ const loadList = async (id: number) => {
     loadingProduct.value = true;
     if (id) {
         try {
-            const result = await getProduct("edit", { id: id });
+            const result = await getProduct("detail", { id: id });
             if (result.item.product_list?.length === 0) {
                 let temp: any = {};
                 temp.seconds_seckill = 1;

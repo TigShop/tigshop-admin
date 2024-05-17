@@ -10,7 +10,7 @@
                 <div class="tab-box" v-if="type == 'pc_user_login'">
                     <div class="flex">
                         <div class="decorateWrap">
-                            <div><img src="@/style/images/decorate/example/pc_user_bg.jpg" /></div>
+                            <div><img class="img" src="@/style/images/decorate/example/pc_user_bg.jpg" /></div>
                         </div>
                         <div class="right-box-warp">
                             <div class="dec-spread-title">
@@ -48,7 +48,9 @@
                                     </div>
                                 </div>
                             </a-spin>
-                            <div class="dec-edit-save"><a-button :loading="confirmLoading" @click="onSubmit" type="primary" size="large" class="save-btn">保存</a-button></div>
+                            <div class="dec-edit-save">
+                                <a-button :loading="confirmLoading" @click="onSubmit" type="primary" size="large" class="save-btn">保存</a-button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,8 +74,8 @@ const module = ref<DecorateDiscreteFormState>({
     background_color: "",
     background_pic: {
         pic_url: "",
-        pic_thumb: ""
-    }
+        pic_thumb: "",
+    },
 });
 // 表单通过验证后提交
 onMounted(() => {
@@ -83,7 +85,7 @@ onMounted(() => {
 const fetchDecorateDiscrete = async () => {
     try {
         const result = await getDecorateDiscrete({
-            decorate_sn: type.value
+            decorate_sn: type.value,
         });
         Object.assign(module.value, result.item.data);
     } catch (error: any) {
@@ -97,7 +99,7 @@ const onSubmit = async () => {
         confirmLoading.value = true;
         const result = await updateDecorateDiscrete({
             decorate_sn: type.value,
-            data: module.value
+            data: module.value,
         });
         message.success(result.message);
     } catch (error: any) {

@@ -8,12 +8,13 @@
                             <h3>主题配色</h3>
                             <div class="color-list">
                                 <div
-                                  v-for="item in ColorList"
-                                  :style="{ border: item.check ? '1px solid #0080f9' : '1px solid transparent' }"
-                                  class="color-card"
-                                  @click="selectItem(item.theme_id)">
-                                    <div :style="{ backgroundColor: item.color1 }"></div>
-                                    <div :style="{ backgroundColor: item.color2 }"></div>
+                                    v-for="item in ColorList"
+                                    :style="{ border: item.check ? '1px solid #0080f9' : '1px solid transparent' }"
+                                    class="color-card"
+                                    @click="selectItem(item.theme_id)"
+                                >
+                                    <div :style="{ background: item['--main-bg'] }"></div>
+                                    <div :style="{ background: item['--vice-bg'] }"></div>
                                 </div>
                             </div>
                             <a-button :loading="confirmLoading" class="form-submit-btn" type="primary" @click="onSubmit">保存</a-button>
@@ -23,18 +24,71 @@
                             <div class="example">
                                 <div class="card info">
                                     <div class="info-item1">
-                                        <p :style="{ color: formState.color1 }" class="text">¥299-599</p>
-                                        <p :style="{ color: formState.color1, backgroundColor: formState.color3 }" class="bg-card">会员价</p>
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
                                     </div>
                                     <div class="info-item2">
+                                        <p :style="{ color: formState['--price'] }" class="text">由Tigshop配送并提供售后服务</p>
+                                    </div>
+                                    <div class="info-item3">
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">9折</div>
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">满100-10</div>
+                                        <div :style="{ color: formState['--vice-text'],background: formState['--vice-bg'] }" class="cu-card">满300-40</div>
+                                    </div>
+                                    <div class="info-item4">
+                                        <p :style="{ color: formState['--price'] }" class="text">商品介绍</p>
+                                    </div>
+                                    <div class="info-item5">
+                                        <p :style="{ color: formState['--main-text'], background: formState['--main-bg'] }" class="text">3</p>
+                                    </div>
+                                    <div class="info-item6">
                                         <div>
-                                            <div :style="{ color: formState.color4, backgroundColor: formState.color2 }">加入购物车</div>
-                                            <div :style="{ color: 'white', backgroundColor: formState.color1 }">立即购买</div>
+                                            <div :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }">加入购物车</div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">立即购买</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card buy"></div>
-                                <div class="card check"></div>
+                                <div class="card buy">
+                                    <div class="buy-item1">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
+                                    </div>
+                                    <div class="buy-item2">
+                                        <div :style="{ color: formState['--general'],borderColor: formState['--main-bg'] }" class="cu-card">金色</div>
+                                    </div>
+                                    <div class="buy-item3">
+                                        <div :style="{ color: formState['--general'],borderColor: formState['--main-bg'] }" class="cu-card">XS</div>
+                                    </div>
+                                    <div class="buy-item4">
+                                        <p :style="{ color: '#39bf3e' }" class="text">充足</p>
+                                    </div>
+                                    <div class="buy-item5">
+                                        <div>
+                                            <div :style="{ color: formState['--vice-text'], background: formState['--vice-bg'] }">加入购物车</div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">立即购买</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card check">
+                                    <div class="check-item1">
+                                        <p :style="{ color: '#fff', background: formState['--main-bg'] }" class="text">自营</p>
+                                    </div>
+                                    <div class="check-item2">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount) }}</p>
+                                    </div>
+                                    <div class="check-item3">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ points }}</p>
+                                    </div>
+                                    <div class="check-item4">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ balance }}</p>
+                                    </div>
+                                    <div class="check-item5">
+                                        <p :style="{ color: formState['--price'] }" class="text">{{ priceFormat(amount_ou) }}</p>
+                                    </div>
+                                    <div class="check-item6">
+                                        <div>
+                                            <div :style="{ color: formState['--main-text'], background: formState['--main-bg'] }">提交</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -45,49 +99,291 @@
 </template>
 <script lang="ts" setup>
 import "@/style/css/list.less";
-import {onMounted, ref, shallowRef} from "vue";
+import {onMounted, ref} from "vue";
 import {message} from "ant-design-vue";
 import type {ColorList, ThemeStyleFormState} from "@/types/decorate/themeStyle.d";
 import {getConfig, updateConfig} from "@/api/setting/config";
-// import {getThemeStyle, updateThemeStyle} from "@/api/decorate/themeStyle";
+import {priceFormat} from "@/utils/format";
 // 父组件回调
 const emit = defineEmits(["submitCallback", "update:confirmLoading", "close"]);
 const confirmLoading = ref(false);
-
+const amount = ref(395)
+const points = ref(6666)
+const balance = ref(29999.00)
+const amount_ou = ref(231.10)
 const loading = ref<boolean>(true);
 const formState = ref<ThemeStyleFormState>({
-    theme_id: 0,
-    color1: "",
-    color2: "",
-    color3: "",
-    color4: "",
+    theme_id: 0
 });
 const ColorList = ref<ColorList[]>([
-    {check: false, theme_id: 1, color1: "#4A90E2", color2: "#D6EAFC", color3: "#E5F2FF", color4: "#4A90E2"},
-    {check: false, theme_id: 2, color1: "#FF4444", color2: "#FFCCCC", color3: "#FFF2F2", color4: "#FFFFFF"},
-    {check: false, theme_id: 3, color1: "#FF5E15", color2: "#FF9302", color3: "#FFEDE6", color4: "#FFFFFF"},
-    {check: false, theme_id: 4, color1: "#FF547B", color2: "#FFE6E9", color3: "#FFF2F5", color4: "#FF547B"},
-    {check: false, theme_id: 5, color1: "#FF4444", color2: "#555555", color3: "#FFF2F2", color4: "#FFFFFF"},
-    {check: false, theme_id: 6, color1: "#FCC600", color2: "#1D262E", color3: "#FFF4CD", color4: "#FFFFFF"},
-    {check: false, theme_id: 7, color1: "#65C4AA", color2: "#D9F7EF", color3: "#F2FFFC", color4: "#65C4AA"},
-    {check: false, theme_id: 8, color1: "#09BB07", color2: "#383838", color3: "#E6F8E6", color4: "#FFFFFF"},
-    {check: false, theme_id: 9, color1: "#63BE72", color2: "#E2F4E3", color3: "#F0F8F0", color4: "#09BB07"},
-    {check: false, theme_id: 10, color1: "#C3A769", color2: "#F3EEE1", color3: "#F9F6F0", color4: "#C3A769"},
-    {check: false, theme_id: 11, color1: "#2F2F34", color2: "#EBECF2", color3: "#EAEAEA", color4: "#2F2F34"},
-    {check: false, theme_id: 12, color1: "#884CFF", color2: "#EFE6FF", color3: "#F3EDFF", color4: "#884CFF"},
-    {check: false, theme_id: 13, color1: "#EE0A24", color2: "#FF9518", color3: "#FDE6E9", color4: "#FFFFFF"},
+    {
+        check: false,
+        theme_id: 1,
+        "--general": "#4a90e2",
+        "--main-bg": "#4a90e2",
+        "--main-bg-gradient": "#4a90e2",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#D6E9FC",
+        "--vice-text": "#0080FF",
+        "--icon": "#0080FF",
+        "--price": "#0080FF",
+        "--tag-text": "#0080FF",
+        "--tag-bg": "#E5F2FF",
+        "--primary-light-3": "#80b1eb",
+        "--primary-light-5": "#a5c8f1",
+        "--primary-light-7": "#c9def6",
+        "--primary-light-8": "#dbe9f9",
+        "--primary-light-9": "#edf4fc",
+        "--primary-dark-2": "#3b73b5"
+    },
+    {
+        check: false,
+        theme_id: 2,
+        "--general": "#ff4444",
+        "--main-bg": "#ff4444",
+        "--main-bg-gradient": "#ff4444",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#ff8855",
+        "--vice-text": "#fff",
+        "--icon": "#FC0000",
+        "--price": "#FC0000",
+        "--tag-text": "#CF0000",
+        "--tag-bg": "#FFF2F2",
+        "--primary-light-3": "#ff7c7c",
+        "--primary-light-5": "#ffa2a2",
+        "--primary-light-7": "#ffc7c7",
+        "--primary-light-8": "#ffdada",
+        "--primary-light-9": "#ffecec",
+        "--primary-dark-2": "#cc3636"
+    },
+    {
+        check: false,
+        theme_id: 3,
+        "--general": "#ff5e15",
+        "--main-bg": "#ff5e15",
+        "--main-bg-gradient": "#ff5e15",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FF9300",
+        "--vice-text": "#ffffff",
+        "--icon": "#ff5e15",
+        "--price": "#ff5e15",
+        "--tag-text": "#ff5e15",
+        "--tag-bg": "#FFEDE6",
+        "--primary-light-3": "#ff8e5b",
+        "--primary-light-5": "#ffaf8a",
+        "--primary-light-7": "#ffcfb9",
+        "--primary-light-8": "#ffdfd0",
+        "--primary-light-9": "#ffefe8",
+        "--primary-dark-2": "#cc4b11"
+    },
+    {
+        check: false,
+        theme_id: 4,
+        "--general": "#ff547b",
+        "--main-bg": "#ff547b",
+        "--main-bg-gradient": "#ff547b",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FFE6E8",
+        "--vice-text": "#ff547b",
+        "--icon": "#ff547b",
+        "--price": "#ff547b",
+        "--tag-text": "#ff547b",
+        "--tag-bg": "#FFF2F5",
+        "--primary-light-3": "#ff87a3",
+        "--primary-light-5": "#ffaabd",
+        "--primary-light-7": "#ffccd7",
+        "--primary-light-8": "#ffdde5",
+        "--primary-light-9": "#ffeef2",
+        "--primary-dark-2": "#cc4362"
+    },
+    {
+        check: false,
+        theme_id: 5,
+        "--general": "#FF4444",
+        "--main-bg": "#FF4444",
+        "--main-bg-gradient": "#FF4444",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#555555",
+        "--vice-text": "#ffffff",
+        "--icon": "#FC0000",
+        "--price": "#FC0000",
+        "--tag-text": "#CF0000",
+        "--tag-bg": "#FFF2F2",
+        "--primary-light-3": "#ff7c7c",
+        "--primary-light-5": "#ffa2a2",
+        "--primary-light-7": "#ffc7c7",
+        "--primary-light-8": "#ffdada",
+        "--primary-light-9": "#ffecec",
+        "--primary-dark-2": "#cc3636"
+    },
+    {
+        check: false,
+        theme_id: 6,
+        "--general": "#FCC600",
+        "--main-bg": "#FCC600",
+        "--main-bg-gradient": "#FCC600",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#1D262E",
+        "--vice-text": "#ffffff",
+        "--icon": "#FCC600",
+        "--price": "#FCC600",
+        "--tag-text": "#FCC600",
+        "--tag-bg": "#FFF4CD",
+        "--primary-light-3": "#fdd74d",
+        "--primary-light-5": "#fee380",
+        "--primary-light-7": "#feeeb3",
+        "--primary-light-8": "#fef4cc",
+        "--primary-light-9": "#fff9e6",
+        "--primary-dark-2": "#ca9e00"
+    },
+    {
+        check: false,
+        theme_id: 7,
+        "--general": "#65c4aa",
+        "--main-bg": "#65c4aa",
+        "--main-bg-gradient": "#65c4aa",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#D9F6EF",
+        "--vice-text": "#65c4aa",
+        "--icon": "#65c4aa",
+        "--price": "#65c4aa",
+        "--tag-text": "#65c4aa",
+        "--tag-bg": "#F2FFFC",
+        "--primary-light-3": "#93d6c4",
+        "--primary-light-5": "#b2e2d5",
+        "--primary-light-7": "#d1ede6",
+        "--primary-light-8": "#e0f3ee",
+        "--primary-light-9": "#f0f9f7",
+        "--primary-dark-2": "#519d88"
+    },
+    {
+        check: false,
+        theme_id: 8,
+        "--general": "#09bb07",
+        "--main-bg": "#09bb07",
+        "--main-bg-gradient": "#09bb07",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#383838",
+        "--vice-text": "#ffffff",
+        "--icon": "#09BB07",
+        "--price": "#09BB07",
+        "--tag-text": "#09BB07",
+        "--tag-bg": "#E6F8E6",
+        "--primary-light-3": "#53cf51",
+        "--primary-light-5": "#84dd83",
+        "--primary-light-7": "#b5ebb5",
+        "--primary-light-8": "#cef1cd",
+        "--primary-light-9": "#e6f8e6",
+        "--primary-dark-2": "#079606"
+    },
+    {
+        check: false,
+        theme_id: 9,
+        "--general": "#63be72",
+        "--main-bg": "#63be72",
+        "--main-bg-gradient": "#63be72",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#E1F4E3",
+        "--vice-text": "#6CBE72",
+        "--icon": "#6CBE72",
+        "--price": "#6CBE72",
+        "--tag-text": "#6CBE72",
+        "--tag-bg": "#F0F8F0",
+        "--primary-light-3": "#92d29c",
+        "--primary-light-5": "#b1dfb9",
+        "--primary-light-7": "#d0ecd5",
+        "--primary-light-8": "#e0f2e3",
+        "--primary-light-9": "#eff9f1",
+        "--primary-dark-2": "#4f985b"
+    },
+    {
+        check: false,
+        theme_id: 10,
+        "--general": "#c3a769",
+        "--main-bg": "#c3a769",
+        "--main-bg-gradient": "#c3a769",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#F3EEE1",
+        "--vice-text": "#C3A769",
+        "--icon": "#C3A769",
+        "--price": "#C3A769",
+        "--tag-text": "#C3A769",
+        "--tag-bg": "#F9F6F0",
+        "--primary-light-3": "#d5c196",
+        "--primary-light-5": "#e1d3b4",
+        "--primary-light-7": "#ede5d2",
+        "--primary-light-8": "#f3ede1",
+        "--primary-light-9": "#f9f6f0",
+        "--primary-dark-2": "#9c8654"
+    },
+    {
+        check: false,
+        theme_id: 11,
+        "--general": "#2f2f34",
+        "--main-bg": "#2f2f34",
+        "--main-bg-gradient": "#2f2f34",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#EBECF2",
+        "--vice-text": "#2F2F34",
+        "--icon": "#2F2F34",
+        "--price": "#2F2F34",
+        "--tag-text": "#2F2F34",
+        "--tag-bg": "#EAEAEA",
+        "--primary-light-3": "#6d6d71",
+        "--primary-light-5": "#97979a",
+        "--primary-light-7": "#c1c1c2",
+        "--primary-light-8": "#d5d5d6",
+        "--primary-light-9": "#eaeaeb",
+        "--primary-dark-2": "#26262a"
+    },
+    {
+        check: false,
+        theme_id: 12,
+        "--general": "#884cff",
+        "--main-bg": "#884cff",
+        "--main-bg-gradient": "#884cff",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#EFE6FF",
+        "--vice-text": "#884cff",
+        "--icon": "#884cff",
+        "--price": "#884cff",
+        "--tag-text": "#884cff",
+        "--tag-bg": "#F3EDFF",
+        "--primary-light-3": "#ac82ff",
+        "--primary-light-5": "#c4a6ff",
+        "--primary-light-7": "#dbc9ff",
+        "--primary-light-8": "#e7dbff",
+        "--primary-light-9": "#f3edff",
+        "--primary-dark-2": "#6d3dcc"
+    },
+    {
+        check: false,
+        theme_id: 13,
+        "--general": "#EE0A24",
+        "--main-bg": "#EE0A24",
+        "--main-bg-gradient": "#EE0A24",
+        "--main-text": "#ffffff",
+        "--vice-bg": "#FF9518FF",
+        "--vice-text": "#ffffff",
+        "--icon": "#EE0A24",
+        "--price": "#EE0A24",
+        "--tag-text": "#EE0A24",
+        "--tag-bg": "#FDE6E9",
+        "--primary-light-3": "#f35466",
+        "--primary-light-5": "#f78592",
+        "--primary-light-7": "#fab6bd",
+        "--primary-light-8": "#fcced3",
+        "--primary-light-9": "#fde7e9",
+        "--primary-dark-2": "#be081d"
+    }
 ]);
 const selectItem = (theme_id: number) => {
     ColorList.value.forEach((item) => {
         // 如果当前项是被点击的项，则将其 check 设置为 true
         // 否则，将其他项的 check 设置为 false
         if (item.theme_id === theme_id) {
+            Object.assign(formState.value, item);
             item.check = true;
-            formState.value.theme_id = item.theme_id;
-            formState.value.color1 = item.color1;
-            formState.value.color2 = item.color2;
-            formState.value.color3 = item.color3;
-            formState.value.color4 = item.color4;
         } else {
             item.check = false;
         }
@@ -97,10 +393,10 @@ const selectItem = (theme_id: number) => {
 const loadFilter = async () => {
     try {
         const result = await getConfig({
-            code: "theme_style",
+            code: "theme_style"
         });
         Object.assign(formState.value, result.item);
-        selectItem(Number(formState.value.theme_id))
+        selectItem(Number(formState.value.theme_id));
     } catch (error: any) {
         message.error(error.message);
     } finally {
@@ -116,14 +412,16 @@ onMounted(() => {
 // 表单通过验证后提交
 const onSubmit = async () => {
     try {
-        emit('update:confirmLoading', true);
-        const result = await updateConfig({code: "theme_style",data:{...formState.value}});
-        emit('submitCallback', result);
+        emit("update:confirmLoading", true);
+        console.log(formState.value);
+        delete formState.value.check;
+        const result = await updateConfig({code: "theme_style", data: {...formState.value}});
+        emit("submitCallback", result);
         message.success(result.message);
     } catch (error: any) {
         message.error(error.message);
     } finally {
-        emit('update:confirmLoading', false);
+        emit("update:confirmLoading", false);
     }
 };
 // 表单提交
@@ -182,6 +480,7 @@ defineExpose({onFormSubmit});
             display: flex;
             flex-direction: row;
             gap: 10px;
+            flex-wrap: wrap;
 
             .bg-card {
                 font-size: 8px;
@@ -192,30 +491,87 @@ defineExpose({onFormSubmit});
             }
 
             .card {
-                width: 230px;
-                height: 410px;
+                width: 225px;
+                height: 460px;
                 border: 0.1px solid #e0e0e0;
                 position: relative; /* 设置父容器为相对定位 */
             }
 
             .info {
-                background-image: url("@/style/images/decorate/themeStyle/temp1.png");
+                background-image: url("@/style/images/decorate/themeStyle/temp1.jpg");
                 background-position: center center;
                 background-size: cover;
 
                 .info-item1 {
                     position: absolute;
-                    left: 10px;
-                    top: 300px;
+                    left: 9px;
+                    top: 245px;
                     display: flex;
                     flex-direction: row;
-                    font-size: 14px;
-                    font-weight: 500;
-                    gap: 3px;
                     align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
                 }
 
                 .info-item2 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 40px;
+                    top: 350px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        font-size: 6px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item3 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 32px;
+                    top: 385px;
+                    display: flex;
+                    overflow: hidden;
+                    gap: 4px;
+
+                    .cu-card {
+                        padding: 2px 6px;
+                        font-size: 6px;
+                    }
+                }
+
+                .info-item4 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 40px;
+                    top: 418px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        font-size: 7.5px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item5 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    left: 54px;
+                    top: 433px;
+                    display: flex;
+                    overflow: hidden;
+
+                    .text {
+                        padding: 0 1px;
+                        border-radius: 50%;
+                        font-size: 7px;
+                        font-weight: 500;
+                    }
+                }
+
+                .info-item6 {
                     position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
                     bottom: 4px;
                     right: 4px;
@@ -227,7 +583,7 @@ defineExpose({onFormSubmit});
                         display: flex;
 
                         & > div {
-                            padding: 8px 12px;
+                            padding: 6px 20px;
                             font-size: 8px;
                         }
                     }
@@ -235,15 +591,184 @@ defineExpose({onFormSubmit});
             }
 
             .buy {
-                background: url("@/style/images/decorate/themeStyle/temp2.png");
-                background-position: center center;
+                background: url("@/style/images/decorate/themeStyle/temp2.jpg") center center;
                 background-size: cover;
+
+                .buy-item1 {
+                    position: absolute;
+                    left: 66px;
+                    top: 176px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
+                }
+
+                .buy-item2 {
+                    position: absolute;
+                    left: 76px;
+                    top: 267px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    & > div {
+                        border: 0.5px solid;
+                        padding: 3.5px 6px;
+                        font-size: 7.7px;
+                        border-radius: 2px;
+                        font-weight: 500;
+                        background-color: #f7f8fa;
+                    }
+                }
+
+                .buy-item3 {
+                    position: absolute;
+                    left: 9px;
+                    top: 360.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    & > div {
+                        border: 0.5px solid;
+                        padding: 3.5px 6px;
+                        font-size: 7.7px;
+                        border-radius: 2px;
+                        font-weight: 500;
+                        background-color: #f7f8fa;
+                    }
+                }
+
+                .buy-item4 {
+                    position: absolute;
+                    right: 5px;
+                    top: 398px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+
+                    .text {
+                        font-size: 7px;
+                        font-weight: bold;
+                    }
+                }
+
+                .buy-item5 {
+                    position: absolute; /* 设置绝对定位，相对于最近的相对定位父容器 */
+                    bottom: 4px;
+                    right: 2px;
+                    display: flex;
+                    border-radius: 18px;
+                    overflow: hidden;
+
+                    & > div {
+                        display: flex;
+
+                        & > div {
+                            padding: 6px 37px;
+                            font-size: 8px;
+                        }
+                    }
+                }
             }
 
             .check {
-                background: url("@/style/images/decorate/themeStyle/temp3.png");
-                background-position: center center;
+
+                background: url("@/style/images/decorate/themeStyle/temp3.jpg") center center;
                 background-size: cover;
+
+                .check-item1 {
+                    position: absolute;
+                    left: 5px;
+                    top: 102px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+
+                    .text {
+                        padding: 1px 2px;
+                        border-radius: 2px;
+                        font-size: 7px;
+                    }
+                }
+
+                .check-item2 {
+                    position: absolute;
+                    left: 58px;
+                    top: 155.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item3 {
+                    position: absolute;
+                    left: 74px;
+                    top: 254.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item4 {
+                    position: absolute;
+                    left: 74px;
+                    top: 277.5px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 8px;
+                    }
+                }
+
+                .check-item5 {
+                    position: absolute;
+                    left: 6px;
+                    bottom: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    .text {
+                        font-size: 10px;
+                        font-weight: bold;
+                    }
+                }
+
+                .check-item6 {
+                    position: absolute;
+                    right: 8px;
+                    bottom: 3px;
+                    display: flex;
+                    border-radius: 18px;
+                    overflow: hidden;
+
+                    & > div {
+                        display: flex;
+
+                        & > div {
+                            padding: 6px 20px;
+                            font-size: 8px;
+                        }
+                    }
+                }
             }
         }
     }

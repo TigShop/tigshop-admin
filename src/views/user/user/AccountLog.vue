@@ -2,14 +2,19 @@
     <div>
         <div class="list-table-tool lyecs-search-warp">
             <div class="notice-warp">
-                <p> 当前会员：mengde  可用资金帐户：¥0.00  冻结资金帐户：¥0.00  等级积分帐户：0  消费积分帐户：0</p>
+                <p class="flex flex-justify-between">
+                    <span>当前会员：{{ formState.username }}</span>
+                    <span>可用资金帐户：{{ priceFormat(formState.balance) }}</span>
+                    <span>冻结资金帐户：{{ priceFormat(formState.frozen_balance) }}</span>
+                    <span>成长积分帐户：{{ formState.growth_points }}</span>
+                    <span>消费积分帐户：{{ formState.points }}</span>
+                </p>
             </div>
             <el-form :model="filterParams">
                 <div class="list-table-tool-row">
                     <div class="list-table-tool-col">
                         <el-space>
                             <el-select v-model="filterParams.from_tag">
-                                <el-option :value="0" label="所有账户"/>
                                 <el-option :value="1" label="可用资金账户"/>
                                 <el-option :value="2" label="冻结资金账户"/>
                                 <el-option :value="3" label="成长积分账户"/>
@@ -35,19 +40,69 @@
         </div>
         <div class="table-container">
             <a-spin :spinning="loading">
-                <el-table :data="filterState" :loading="loading" :total="total" row-key="user_id">
-                    <el-table-column label="余额" prop="balance" sortable="custom">
+                <el-table :data="filterState" :loading="loading" :total="total" row-key="log_id" @sort-change="onSortChange">
+                    <el-table-column label="变动时间" prop="change_time" sortable="custom">
                         <template #default="{ row }">
                             <ul>
-                                <li>{{ row.balance }}</li>
-                                <li v-if="row.frozen_balance>0" style="color: #999999">(冻结：{{ row.frozen_balance }})</li>
+                                <li>{{ row.change_time }}</li>
                             </ul>
                         </template>
                     </el-table-column>
-                    <el-table-column label="消费积分" prop="points" sortable="custom"></el-table-column>
-                    <el-table-column label="累计消费次数" prop="order_count" sortable="custom"></el-table-column>
-                    <el-table-column label="累计消费金额" prop="order_amount" sortable="custom"></el-table-column>
-                    <el-table-column :width="160" label="注册日期" prop="reg_time" sortable="custom"></el-table-column>
+                    <el-table-column label="变动原因" prop="reg_time" >
+                        <template #default="{ row }">
+                            <ul>
+                                <li>{{ row.change_desc }}</li>
+                            </ul>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="可用资金" prop="balance" >
+                        <template #default="{ row }">
+                            <div v-if="row.balance > 0">
+                                <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.balance }}</span>
+                                <span v-else-if="row.change_type===2" style="color:#FF0000">-{{ row.balance }}</span>
+                                <span v-else>{{ row.balance }}</span>
+                            </div>
+                            <div v-else>
+                                0.00
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="冻结资金" prop="frozen_balance">
+                        <template #default="{ row }">
+                            <div v-if="row.frozen_balance > 0">
+                                <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.frozen_balance }}</span>
+                                <span v-else-if="row.change_type===2" style="color:#FF0000">-{{ row.frozen_balance }}</span>
+                                <span v-else>{{ row.frozen_balance }}</span>
+                            </div>
+                            <div v-else>
+                                0.00
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="成长积分" prop="points">
+                        <template #default="{ row }">
+                            <div v-if="filter.from_tag == 3">
+                                <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.points }}</span>
+                                <span v-else-if="row.change_type===2" style="color:#FF0000">-{{ row.points }}</span>
+                                <span v-else>{{ row.points }}</span>
+                            </div>
+                            <div v-else>
+                                0.00
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="消费积分" prop="points">
+                        <template #default="{ row }">
+                            <div v-if="filter.from_tag == 4">
+                                <span v-if="row.change_type===1" style="color:#0000FF">+{{ row.points }}</span>
+                                <span v-else-if="row.change_type===2" style="color:#FF0000">-{{ row.points }}</span>
+                                <span v-else>{{ row.points }}</span>
+                            </div>
+                            <div v-else>
+                                0.00
+                            </div>
+                        </template>
+                    </el-table-column>
                     <template #empty>
                         <div class="empty-warp">
                             <div v-if="!loading" class="empty-bg">暂无数据</div>
@@ -82,9 +137,10 @@ import {onMounted, reactive, ref} from 'vue';
 import {Pagination} from '@/components/list';
 import {message} from 'ant-design-vue'
 import {useConfigStore} from "@/store/config";
-import {UserFilterParams, UserFilterState} from '@/types/user/user.d';
-import {getUserList} from "@/api/user/user";
+import {UserFilterParams, UserFormState, UserFundList} from '@/types/user/user.d';
+import {getUser, getUserFundList} from "@/api/user/user";
 import { useRouter } from "vue-router";
+import { priceFormat } from "@/utils/format";
 
 const config:any = useConfigStore();
 
@@ -95,7 +151,7 @@ const props = defineProps({
     },
     type: {
         type: Number,
-        default: 0
+        default: 1
     },
     isDialog: Boolean
 });
@@ -103,9 +159,10 @@ const query = useRouter().currentRoute.value.query;
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
 const type = ref<number>(props.isDialog ? props.type : Number(query.type));
 // 基本参数定义
-const filterState = ref(<UserFilterState[]>[]);
+const filterState = ref(<UserFundList[]>[]);
 const loading = ref<boolean>(true);
 const total = ref<number>(0);
+const filter = ref<any>({});
 const selectedIds = ref<number[]>([]);
 const filterParams = reactive<UserFilterParams>({   //初使化用于查询的参数
     page: 1,
@@ -113,13 +170,19 @@ const filterParams = reactive<UserFilterParams>({   //初使化用于查询的�
     keyword: '',
     from_tag: type.value
 });
+const formState = ref<UserFormState>({
+    balance: 0,
+    frozen_balance: 0,
+    avatar: "",
+});
 // 获取列表的查询结果
 const loadFilter = async () => {
     loading.value = true;
     try {
-        const result = await getUserList({ user_id: id.value, ...filterParams });
+        const result = await getUserFundList({ user_id: id.value, ...filterParams });
         filterState.value = result.filter_result;
         total.value = result.total;
+        filter.value = result.filter;
     } catch (error: any) {
         message.error(error.message);
     } finally {
@@ -127,8 +190,26 @@ const loadFilter = async () => {
     }
 
 }
+
+const fetchUser = async () => {
+    try {
+        const result = await getUser('detail', { id: id.value });
+        Object.assign(formState.value, result.item);
+    } catch (error: any) {
+        message.error(error.message);
+    } finally {
+        loading.value = false;
+    }
+}
+// 修改排序
+const onSortChange = ({prop, order}: { prop: string; order?: string }) => {
+    filterParams.sort_field = prop;
+    filterParams.sort_order = order == 'ascending' ? 'asc' : order == 'descending' ? 'desc' : '';
+    loadFilter();
+};
 onMounted(() => {
     loadFilter();
+    fetchUser();
 });
 
 // 参数查询
@@ -136,6 +217,7 @@ const onSearchSubmit = () => {
     loadFilter()
 };
 const onBatchSubmit = (str:string) => {};
+
 
 </script>
 <style lang="less" scoped>

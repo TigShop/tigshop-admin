@@ -106,7 +106,7 @@
                             </el-table-column>
                             <el-table-column label="操作" fixed="right" :width="150">
                                 <template #default="{ row }">
-                                    <DialogForm isDrawer @okCallback="loadFilter" title="编辑文章" width="600px" path="content/article/Info" :params="{ act: 'edit', id: row.article_id }">
+                                    <DialogForm isDrawer @okCallback="loadFilter" title="编辑文章" width="600px" path="content/article/Info" :params="{ act: 'detail', id: row.article_id }">
                                         <a class="btn-link">编辑</a>
                                     </DialogForm>
                                     <el-divider direction="vertical" />

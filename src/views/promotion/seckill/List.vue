@@ -26,7 +26,6 @@
                             <el-table-column type="selection" width="32"/>
                             <el-table-column label="秒杀名称" prop="seckill_name" sortable="custom"></el-table-column>
                             <el-table-column label="商品名称" prop="product_name"></el-table-column>
-                            <el-table-column :width="100" label="限购数量" prop="seckill_limit_num"></el-table-column>
                             <el-table-column label="秒杀开始时间" prop="seckill_start_time" sortable="custom" width="160"></el-table-column>
                             <el-table-column label="秒杀结束时间" prop="seckill_end_time" sortable="custom" width="160"></el-table-column>
                             <el-table-column :width="100" label="秒杀状态" prop="status_name">
@@ -36,7 +35,7 @@
                             </el-table-column>
                             <el-table-column :width="100" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.seckill_id }" isDrawer
+                                    <DialogForm :params="{ act: 'detail', id: row.seckill_id }" isDrawer
                                                 title="编辑限时秒杀" width="800px"
                                                 path="promotion/seckill/Info"
                                                 @okCallback="loadFilter">
@@ -85,8 +84,7 @@ import {message} from "ant-design-vue";
 import {useConfigStore} from "@/store/config";
 import {SeckillFilterParams, SeckillFilterState} from "@/types/promotion/seckill.d";
 import {batchSubmit, delSeckill, getSeckillList} from "@/api/promotion/seckill";
-
-const config = useConfigStore();
+const config:any = useConfigStore();
 // 基本参数定义
 const filterState = ref<SeckillFilterState[]>([]);
 const loading = ref<boolean>(true);
@@ -140,6 +138,6 @@ const onBatchSubmit = async (action: string) => {
 };
 // 多选操作
 const onSelectChange = (e: SeckillFilterState[]) => {
-    selectedIds.value = e.map((item) => item.seckill_id);
+    selectedIds.value = e.map((item:any) => item.seckill_id);
 };
 </script>

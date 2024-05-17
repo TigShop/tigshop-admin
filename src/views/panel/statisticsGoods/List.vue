@@ -18,7 +18,7 @@
                         <el-button plain @click="handleSearch">搜索</el-button>
                     </el-form-item>
                     <el-form-item class="mr-10">
-                        <el-button plain @click="handleExport">导出EXCEL</el-button>
+                        <el-button plain @click="handleExport" :loading="Exportloading">导出EXCEL</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -73,6 +73,7 @@ import { getGoodsTopSales, exportGoodsTopSales } from "@/api/panel/statisticsGoo
 import type { statisticsGoodsFilterParams, FilterResult } from "@/types/panel/statisticsGoods.d.ts";
 import { imageFormat, urlFormat, priceFormat } from "@/utils/format";
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 const config = useConfigStore();
 
 const loading = ref<boolean>(false);
@@ -105,9 +106,19 @@ const handleSearch = () => {
     getData();
 };
 
-const handleExport = () => {
-    exportGoodsTopSales({ ...filterParams, is_export: "1" });
+
+const Exportloading = ref<boolean>(false)
+const handleExport = async () => {
+  Exportloading.value = true;
+  try {
+    const result = await exportGoodsTopSales({ ...filterParams, is_export: "1" });
+    Exportloading.value = false;
+    requestExport(result,'销售排行导出')
+  } catch (error:any) {
+    message.error(error.message)
+  }
 };
+
 
 // 修改排序
 const onSortChange = ({ prop, order }: { prop: string; order?: string }) => {

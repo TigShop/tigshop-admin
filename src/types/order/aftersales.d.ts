@@ -13,6 +13,8 @@ export interface AftersalesFilterParams {
 // 获取列表返回参数类型
 export interface AftersalesFilterResult {
     filter_result: AftersalesFilterState[];
+    status_list: any[];
+    type_list: any[];
     filter: {
         page: number;
     };
@@ -22,6 +24,8 @@ export interface AftersalesFilterResult {
 // 获取详情返回参数类型
 export interface AftersalesFilterState {
     aftersale_id?: number;
+    aftersales_sn?: number;
+    order_sn?: number;
     order_item_id?: number;
     aftersale_type?: number;
     status?: number;
@@ -33,9 +37,26 @@ export interface AftersalesFilterState {
     shipping_time?: string;
     tracking_no?: string;   
     logistics_name?: string;   
-
+    user_name?: string;   
+    aftersale_reason?: string;   
+    aftersales_type_name?: string;   
+    status_name?: string;   
+    aftersales_items: productList[]
 }
-
+export interface productList {
+    aftersales_item_id?: number;
+	order_item_id?: number;
+	number?: number;
+	aftersale_id?: number;
+	order_sn?: string;
+	product_name?: string;
+	order_id?: number;
+	pic_thumb?: string;
+	product_sn?: string;
+	product_id?: number;
+	quantity?: number;
+	price?: number;
+}
 export interface AftersalesFormResult {
     item: FormState;
 }
@@ -46,7 +67,7 @@ export interface FormState {
     add_time?:string;
     shipping_time?:string;
     aftersales_type_config?:object[];
-    aftersales_log?:object[];
+    aftersales_log?:aftersales_log[];
     aftersales_type_name?:string;
     description?:string;
     logistics_name?:string;
@@ -61,8 +82,33 @@ export interface FormState {
     product_sn?:string;
     reply?:string;
     status?:number;
+    refund_amount?:number;
+    suggest_refund_amount?:number;
     status_name?:string;
     status_config?: object[];
     tracking_no?:string;
     user_name?:string;
+    aftersale_reason?:string;
+    refuse_reason?:string[];
+    aftersales_items?: productList[];
+}
+
+export interface aftersales_log {
+    log_id?: number;
+	aftersale_id?: number;
+	log_info?: string;
+	add_time?: string;
+	admin_name?: string;
+	refund_money?: string;
+	refund_type?: number;
+	refund_desc?: string;
+	user_name?: string;
+	return_pic?: Return_pic[];
+}
+
+export interface Return_pic {
+	pic_id?: number;
+	pic_thumb?: string;
+	pic_url?: string;
+	pic_name?: string;
 }

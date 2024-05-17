@@ -14,7 +14,7 @@
                                 <SelectGoodsRange v-model:rangeType="formState.deal_range"  v-model:rangeIds="formState.range_ids" type="productBatch"></SelectGoodsRange>
                             </el-form-item>
                             <el-form-item label=" ">
-                                <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit()">提交</el-button>
+                                <el-button ref="submitBtn" class="form-submit-btn" type="primary" @click="onSubmit()" :loading="Exportloading">提交</el-button>
                                 <el-button ref="submitBtn" class="form-submit-btn">重置</el-button>
                             </el-form-item>
                         </el-form>
@@ -32,11 +32,13 @@ import SelectGoodsRange from "@/components/select/src/SelectGoodsRange.vue";
 import {ProductBatchExportFormState} from '@/types/product/productBatch.d';
 import {productBatchExportSubmit} from '@/api/product/productBatch';
 import { message } from "ant-design-vue";
+import requestExport from "@/utils/export";
 const formState = reactive<ProductBatchExportFormState>({   //初使化用于查询的参数
     deal_range: 0,
     deal_type: 0,
     range_ids: []
 });
+const Exportloading = ref<boolean>(false)
 const onSubmit = async () => {
     if(formState.deal_range == 1 && formState.range_ids.length < 1){
         message.error('请选择分类');
@@ -50,12 +52,17 @@ const onSubmit = async () => {
         message.error('请选择商品');
         return;
     }
+    Exportloading.value = true;
     try {
+        const result = await productBatchExportSubmit({...formState});
+        Exportloading.value = false;
+        requestExport(result,'商品批量导出')
       await productBatchExportSubmit({...formState});
     } catch (error:any) {
         message.error(error.message);
     }
 };
+
 
 </script>
 <style lang="less" scoped>

@@ -60,15 +60,22 @@ const loading = ref<boolean>(true);
 const query = useRouter().currentRoute.value.query;
 const action = ref<string>(props.isDialog ? props.act : String(query.act));
 const id = ref<number>(props.isDialog ? props.id : Number(query.id));
-const operation = action.value === 'add' ? 'insert' : 'update';
+const operation = action.value === 'add' ? 'create' : 'update';
 const formRef = shallowRef();
-const formState = ref<ProductServicesFormState>({});
+const formState = ref<ProductServicesFormState>({
+  sort_order: 50,
+  default_on:1
+});
 
 onMounted(() => {
-    // 获取详情数据
-    fetchExample();
+  if (action.value === "detail") {
+        // 获取详情数据
+        fetchProductServicesList();
+    } else {
+        loading.value = false;
+    }
 });
-const fetchExample = async () => {
+const fetchProductServicesList = async () => {
     try {
         const result = await getProductServices(action.value, { id: id.value });
         Object.assign(

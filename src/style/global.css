@@ -1,7 +1,17 @@
 @import "https://at.alicdn.com/t/c/font_2712500_jd8i8ai7b8k.css";
 @import "https://at.alicdn.com/t/c/font_4441878_29ep8jtwh2k.css";
-@import "https://at.alicdn.com/t/c/font_4375017_prfxehhzzwh.css";
+@import "https://at.alicdn.com/t/c/font_4375017_bbjab699lo.css";
 @import "https://at.alicdn.com/t/c/font_4483982_yjn36f1byz.css";
+:root {
+  --tig-primary: #1456f0;
+  --tig-text-hover: #336df4;
+  --tig-primary-light-3: #336df4;
+  --tig-primary-color: #1456f0;
+  --tig-red-text-color: #f23030;
+  --el-color-primary: var(--tig-primary);
+  --el-color-primary-light-3: var(--tig-primary-light-3);
+  --el-button-hover-border-color: var(--tig-primary);
+}
 .ant-drawer-content-wrapper {
   max-width: 100%;
 }
@@ -84,6 +94,7 @@ body {
   margin: 0;
   color: rgba(0, 0, 0, 0.85);
   font-size: 12px;
+  overflow-y: scroll;
   font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol, noto color emoji;
   font-variant: tabular-nums;
   background-color: #fff;
@@ -113,6 +124,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
+}
+a:hover {
+  color: var(--tig-text-hover);
 }
 ul,
 ol {
@@ -162,7 +176,7 @@ td {
   -moz-osx-font-smoothing: grayscale;
 }
 a {
-  color: #1890ff;
+  color: var(--tig-primary);
   text-decoration: none;
   background-color: transparent;
   outline: none;
@@ -175,6 +189,9 @@ a {
 }
 .f14 {
   font-size: 14px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .dollar,
 .decimal,
@@ -195,7 +212,7 @@ a {
   color: #999;
 }
 .red {
-  color: #f23030;
+  color: var(--tig-red-text-color);
 }
 .mr10 {
   margin-right: 10px;
@@ -212,7 +229,7 @@ a {
 .btn-link {
   white-space: nowrap;
   cursor: pointer;
-  color: #1890ff;
+  color: var(--tig-primary);
 }
 .content_wrapper {
   padding: 20px;
@@ -229,7 +246,7 @@ a {
   background-color: inherit !important;
 }
 .ant-pagination-mini li.ant-pagination-item-active:hover {
-  border-color: #1890ff !important;
+  border-color: var(--tig-primary) !important;
 }
 .lyecs-modal-gallery .ant-modal-body {
   padding: 0;
@@ -255,9 +272,9 @@ button .iconfont {
   color: #999;
 }
 .empty-warp .empty-bg::before {
-  content: '';
+  content: "";
   height: 150px;
-  background: url('images/common/empty-bg.png') center center;
+  background: url("images/common/empty-bg.png") center center;
   background-size: 160px 160px;
   background-repeat: no-repeat;
   width: 100%;
@@ -316,6 +333,9 @@ body .el-drawer__footer {
 }
 .ant-modal-body .content_wrapper {
   padding: 0;
+}
+body .el-button {
+  transition: color 0.1s ease-in, background-color 0.1s ease-in, border-color 0.1s ease-in, width 0.2s ease-in;
 }
 body .el-image-viewer__canvas img {
   background-color: #fff;
@@ -453,7 +473,7 @@ body .el-radio__inner::after {
   height: 16px;
   margin-top: -8px;
   margin-left: -8px;
-  background-color: #1890ff;
+  background-color: var(--tig-primary);
   border-top: 0;
   border-left: 0;
   border-radius: 16px;
@@ -463,7 +483,7 @@ body .el-radio__inner::after {
   content: " ";
 }
 body .el-radio__input.is-checked .el-radio__inner {
-  border-color: #1890ff;
+  border-color: var(--tig-primary);
   background: #fff;
 }
 body .el-radio__input.is-checked .el-radio__inner::after {
@@ -555,4 +575,24 @@ body .el-tabs__content {
   margin-bottom: 20px;
   line-height: 26px;
   white-space: normal;
+}
+@media only screen and (max-width: 767px) {
+  .el-form-item__label {
+    max-width: 92px;
+    text-align: right;
+    line-height: 16px;
+    padding-top: 7px;
+  }
+  .main-panel ul {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .filtrate-menu {
+    flex-wrap: wrap;
+  }
+  .filtrate-menu .asterisk-left {
+    width: 100%;
+  }
+  .ant-drawer .ant-drawer-body {
+    padding: 20px;
+  }
 }

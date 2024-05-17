@@ -2,7 +2,7 @@ import request from "@/utils/request";
 // 登录
 export const adminSignin = (data: object) => {
     return request({
-        url: "login/signin/",
+        url: "login/signin",
         method: "post",
         data,
     });
@@ -11,7 +11,7 @@ export const adminSignin = (data: object) => {
 // 发送短信验证码
 export const sendMobileCode = (data: object) => {
     return request({
-        url: "login/send_mobile_code/",
+        url: "login/send_mobile_code",
         method: "post",
         data,
     });

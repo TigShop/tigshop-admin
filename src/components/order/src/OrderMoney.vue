@@ -2,14 +2,30 @@
     <div class="div-main">
         <div class="text-right">
             <div> + 商品总金额：<span class="money-style">{{ priceFormat(modelValue.product_amount) }}</span></div>
+            <div> + 订单运费：<span class="money-style">{{ priceFormat(modelValue.shipping_fee) }}</span></div>
             <div v-if="modelValue.coupon_amount > 0">
-                - 优惠券：<span class="money-style">{{ priceFormat(modelValue.coupon_amount) }}</span>
+                - 优惠券抵扣：<span class="money-style">{{ priceFormat(modelValue.coupon_amount) }}</span>
             </div>
-
+            <div v-if="modelValue.discount_amount > 0">
+                - 优惠券折扣：<span class="money-style">{{ priceFormat(modelValue.discount_amount) }}</span>
+            </div>
+            <div v-if="modelValue.points_amount > 0">
+                - 积分抵扣：<span class="money-style">{{ priceFormat(modelValue.points_amount) }}</span>
+            </div>
+            <div v-if="modelValue.balance > 0">
+                - 余额抵扣：<span class="money-style">{{ priceFormat(modelValue.balance) }}</span>
+            </div>
+            <div v-if="modelValue.online_paid_amount > 0">
+                - 线上支付：<span class="money-style">{{ priceFormat(modelValue.online_paid_amount) }}</span>
+            </div>
+            <div v-if="modelValue.offline_paid_amount > 0">
+                - 线下支付：<span class="money-style">{{ priceFormat(modelValue.offline_paid_amount) }}</span>
+            </div>
         </div>
         <div class="text-right">= 订单总金额：<span class="money-style">{{ priceFormat(modelValue.total_amount) }}</span></div>
         <div class="text-right">实收金额：<span class="money-style">{{ priceFormat(modelValue.paid_amount) }}</span></div>
         <div class="text-right">= 未付款金额：<span class="money-style">{{ priceFormat(modelValue.unpaid_amount) }}</span></div>
+        <div class="text-right" v-if="modelValue.refund_amount > 0">售后协商金额：<span class="money-style">{{ priceFormat(modelValue.refund_amount) }}</span></div>
     </div>
 </template>
 <script lang="ts" setup>
@@ -26,6 +42,11 @@ const props = defineProps({
             total_amount: 0,
             paid_amount: 0,
             unpaid_amount: 0,
+            discount_amount: 0,
+            points_amount: 0,
+            balance: 0,
+            online_paid_amount: 0,
+            offline_paid_amount: 0,
         }
     }
 })
@@ -38,10 +59,8 @@ const props = defineProps({
 
     .text-right {
         width: 100%;
-        text-align: right;
         line-height: 26px;
-        display: flex;
-        justify-content: right;
+        text-align: right;
         font-size: 12px;
     }
 

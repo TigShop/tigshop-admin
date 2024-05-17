@@ -72,7 +72,7 @@
                             </el-table-column> -->
                             <el-table-column :width="100" fixed="right" label="操作">
                                 <template #default="{ row }">
-                                    <DialogForm :params="{ act: 'edit', id: row.message_id }" isDrawer path="setting/config/messageType/Info"
+                                    <DialogForm :params="{ act: 'detail', id: row.message_id }" isDrawer path="setting/config/messageType/Info"
                                                 title="编辑消息设置" width="700px"
                                                 @okCallback="loadFilter">
                                         <a class="btn-link">编辑</a>

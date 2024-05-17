@@ -55,7 +55,7 @@
                                 </el-table-column>
                                 <el-table-column :width="150" fixed="right" label="操作">
                                     <template #default="{ row }">
-                                        <DialogForm :params="{ act: 'edit', type: activeKey, id: row.id }" :title="'编辑商城' + type_name + '导航栏'" isDrawer path="decorate/pcNavigation/Info" width="600px"
+                                        <DialogForm :params="{ act: 'detail', type: activeKey, id: row.id }" :title="'编辑商城' + type_name + '导航栏'" isDrawer path="decorate/pcNavigation/Info" width="600px"
                                             @okCallback="loadFilter">
                                             <a class="btn-link">编辑</a>
                                         </DialogForm>

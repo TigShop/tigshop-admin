@@ -35,25 +35,25 @@
                             <div class="extra">首页描述，该设置与SEO有关，建议长度不要超过50字符</div>
                         </el-form-item>
                         <el-form-item label="商城LOGO" prop="shop_logo">
-                            <FormAddGallery v-model:photo="formState.shop_logo" />
-                            <div class="extra">请根据首页模板设置对应大小的LOGO，高清需要上传双倍大小</div>
+                            <FormAddGallery v-model:photo="formState.shop_logo" style="width: 100%" />
+                            <div class="extra">请根据页面设置对应大小的LOGO，高清需要上传双倍大小</div>
                         </el-form-item>
                         <el-form-item label="ico图标上传" prop="ico_img">
-                            <FormAddGallery v-model:photo="formState.ico_img" />
+                            <FormAddGallery v-model:photo="formState.ico_img" style="width: 100%" />
                             <div class="extra">推荐使用高清128*128像素，格式为png或ico</div>
                         </el-form-item>
                         <el-form-item label="会员默认头像" prop="default_avatar">
-                            <FormAddGallery v-model:photo="formState.default_avatar" />
+                            <FormAddGallery v-model:photo="formState.default_avatar" style="width: 100%" />
                             <div class="extra">请上传1:1的200*200像素以内的图片</div>
                         </el-form-item>
                         <div class="title">全局设置</div>
                         <el-form-item label="PC端域名" prop="pc_domain">
                             <el-input v-model="formState.pc_domain" maxlength="40" placeholder="" />
-                            <div class="extra">格式参考：www.tigshop.com（不要带http//或https://，后面不要带“/”），填写后查看商城或查看商品默认跳PC端</div>
+                            <div class="extra">格式参考：https://www.tigshop.com（没有https则填http，后面不要带“/”），填写后查看商城或查看商品默认跳PC端</div>
                         </el-form-item>
                         <el-form-item label="H5端域名" prop="h5_domain">
                             <el-input v-model="formState.h5_domain" maxlength="40" placeholder="" />
-                            <div class="extra">格式参考：m.tigshop.com（不要带http//或https://，后面不要带“/”），PC端域名未填写时，会跳转H5端</div>
+                            <div class="extra">格式参考：https://m.tigshop.com（没有https则填http，后面不要带“/”），PC端域名未填写时，会跳转H5端</div>
                         </el-form-item>
                         <el-form-item label="是否开启商品缓存" prop="is_open_goods_cache">
                             <el-radio-group v-model="formState.is_open_goods_cache" class="itemWidth">
@@ -87,7 +87,8 @@
                             <el-input
                                 v-model="formState.style_version"
                                 maxlength="40"
-                                @input="formState.style_version = formState.style_version.replace(/[^\d]/g, '')" />
+                                @input="formState.style_version = formState.style_version.replace(/[^\d]/g, '')"
+                            />
                             <div class="extra">用于清除JS、CSS缓存</div>
                         </el-form-item>
                         <el-form-item label="访问统计" prop="visit_stats">
@@ -104,7 +105,7 @@
                             </el-radio-group>
                             <div class="extra">当识别到设备为移动设备时，访问PC端时自动跳转至手机H5端</div>
                         </el-form-item>
-                        <div class="title">Redis设置</div>
+                        <!-- <div class="title">Redis设置</div>
                         <el-form-item label="缓存是否使用Redis" prop="is_open_redis">
                             <el-radio-group v-model="formState.is_open_redis" class="itemWidth">
                                 <el-radio :value="1">是</el-radio>
@@ -131,15 +132,15 @@
                         </el-form-item>
                         <el-form-item label="Redis服务器密码" prop="redis_host_password">
                             <el-input v-model="formState.redis_host_password" />
-                        </el-form-item>
-                        <div class="title">消息队列设置</div>
+                        </el-form-item> -->
+                        <!-- <div class="title">消息队列设置</div>
                         <el-form-item label="是否开启消息队列" prop="is_open_queue">
                             <el-radio-group v-model="formState.is_open_queue" class="itemWidth">
                                 <el-radio :value="1">是</el-radio>
                                 <el-radio :value="0">否</el-radio>
                             </el-radio-group>
                             <div class="extra">消息队列默认使用Redis驱动，请开启前务必配置好Redis服务器，并且在终端项目根目录执行php lyecs queue:listen</div>
-                        </el-form-item>
+                        </el-form-item> -->
                         <div class="title">登录设置</div>
                         <el-form-item label="短信登录方式" prop="mobile_login_need_reg">
                             <el-radio-group v-model="formState.mobile_login_need_reg" class="itemWidth">
@@ -280,7 +281,7 @@
                         </el-form-item>
                         <div class="title">缩略图设置</div>
                         <el-form-item label="水印上传" prop="watermark">
-                            <FormAddGallery v-model:photo="formState.watermark" />
+                            <FormAddGallery v-model:photo="formState.watermark" style="width: 100%" />
                             <div class="extra">为保证透明效果，格式推荐为png</div>
                         </el-form-item>
                         <el-form-item label="水印位置" prop="watermark_place">
@@ -412,12 +413,13 @@
                             </div>
                         </el-form-item>
                         <div class="title">订单设置</div>
-                        <el-form-item label="未付款订单" prop="auto_cancel_order_hour">
+                        <el-form-item label="未付款订单" prop="auto_cancel_order_minute">
                             <div class="itemWidth">
-                                <el-input v-model="formState.auto_cancel_order_hour" style="width: 120px" />
-                                <span class="ml8">小时自动取消</span>
+                                <span class="mr8">订单超</span>
+                                <el-input v-model="formState.auto_cancel_order_minute" style="width: 60px" />
+                                <span class="ml8">分钟未支付自动取消</span>
                             </div>
-                            <div class="extra">未支付的订单会自动取消，请填写小时，比如8则代表8小时未付款则取消订单，为0或空则不限制</div>
+                            <div class="extra">未支付的订单会自动取消，请填写分钟，比如10则代表10分钟未付款则取消订单，为0或空则不限制</div>
                         </el-form-item>
                         <el-form-item label="已取消订单能否恢复" prop="recover_cancel_order">
                             <el-radio-group v-model="formState.recover_cancel_order" class="itemWidth">
@@ -686,7 +688,7 @@
                                 <div class="extra">设置流程：1、注册账号；2、会话->渠道设置->网站渠道，点击新增网站；3、在编辑里获取sign的值</div>
                             </div>
                             <div v-if="formState.kefu_type == 2">
-                                <div class="extra">提示：企业微信客服不支持PC端直接访问，所以PC端会以弹窗的方式显示扫描二维码；</div>
+                                <div class="extra">提示：PC端打开企业微信客服会唤起PC端微信，如果未安装PC端微信也可查看二维码后扫码使用;</div>
                                 <div class="extra">企业微信客服设置地址：https://work.weixin.qq.com/wework_admin/frame#/apps</div>
                                 <div class="extra">设置流程：1、注册账号；2、应用管理->应用->微信客服->客服帐号->创建账号；3、客服账号获取帐号ID</div>
                             </div>
@@ -717,13 +719,12 @@
                         <div v-if="formState.kefu_type == 3">
                             <el-form-item label="客服链接" prop="kefu_code">
                                 <el-input v-model="formState.kefu_code" />
-                                <div class="extra">如果是脚本控制的链接，请在此处填入： javascript:;</div>
+                                <div class="extra">如果是脚本控制的链接，请在此处填入： 请填写http开头的客服链接;</div>
                             </el-form-item>
                             <el-form-item label="客服链接打开方式" prop="kefu_code_blank">
                                 <el-radio-group v-model="formState.kefu_code_blank">
-                                    <el-radio :value="0">当前页面</el-radio>
-                                    <el-radio :value="1">新页面</el-radio>
-                                    <el-radio :value="2">新页面弹窗</el-radio>
+                                    <el-radio :value="0">打开链接地址</el-radio>
+                                    <el-radio :value="1">内嵌弹窗打开</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </div>
@@ -811,7 +812,7 @@
                                 <div class="extra">您也可以下载至本地服务器，只需填写能访问到iconfont的完整域名和存放路径</div>
                             </div>
                         </el-form-item>
-                        <div class="title">第三方登录</div>
+                        <!-- <div class="title">第三方登录</div>
                         <el-form-item label="QQ登陆 KEY" prop="qq_login_key">
                             <el-input v-model="formState.qq_login_key" />
                             <div class="extra">请填写第三方提供的id KEY，不填则不显示，申请链接：https://connect.qq.com</div>
@@ -824,8 +825,8 @@
                         <el-form-item label="LYECS物流KEY" prop="lyecs_api_key">
                             <el-input v-model="formState.lyecs_api_key" />
                             <div class="extra">请通过LYECS获取物流API KEY，每一个物流单号（不限查询次数）会消耗一点API账户余额</div>
-                        </el-form-item>
-                        <div class="title">快递100订阅</div>
+                        </el-form-item> -->
+                        <!-- <div class="title">快递100订阅</div>
                         <el-form-item label="是否开启快递100订阅" prop="kuaidi100_limit">
                             <el-radio-group v-model="formState.kuaidi100_limit" class="itemWidth">
                                 <el-radio :value="1">开启</el-radio>
@@ -835,32 +836,53 @@
                         </el-form-item>
                         <el-form-item label="快递100下发Key" prop="kuaidi100_key">
                             <el-input v-model="formState.kuaidi100_key" />
-                        </el-form-item>
+                        </el-form-item> -->
                         <div class="title">存储设置</div>
                         <el-form-item label="存储类型" prop="storage_type">
                             <el-radio-group v-model="formState.storage_type" class="itemWidth">
                                 <el-radio :value="0">本地存储</el-radio>
                                 <el-radio :value="1">阿里云OSS存储</el-radio>
-                                <el-radio :value="2">腾讯云OSS存储</el-radio>
+                                <el-radio :value="2">腾讯云COS存储</el-radio>
                             </el-radio-group>
                             <div class="extra">开启云存储后，图片会直接通过接口上传至指定云存储，不会再保存在本地。</div>
                         </el-form-item>
-                        <el-form-item label="图片存储路径" prop="storage_url">
-                            <el-input v-model="formState.storage_url" />
+                        <el-form-item label="图片存储路径" prop="storage_local_url" v-if="formState.storage_type == 0">
+                            <el-input v-model="formState.storage_local_url" />
+                            <div class="extra">参考格式： https://oss.tigshop.com/</div>
+                        </el-form-item>
+                        <el-form-item label="图片存储路径" prop="storage_oss_url" v-if="formState.storage_type == 1">
+                            <el-input v-model="formState.storage_oss_url" />
+                            <div class="extra">参考格式： https://oss.tigshop.com/</div>
+                        </el-form-item>
+                        <el-form-item label="图片存储路径" prop="storage_cos_url" v-if="formState.storage_type == 2">
+                            <el-input v-model="formState.storage_cos_url" />
                             <div class="extra">参考格式： https://oss.tigshop.com/</div>
                         </el-form-item>
                         <template v-if="formState.storage_type != 0">
-                            <el-form-item label="AccessKeyId" prop="storage_access_key_id">
-                                <el-input v-model="formState.storage_access_key_id" />
+                            <el-form-item label="AccessKeyId" prop="storage_oss_access_key_id" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_access_key_id" />
                             </el-form-item>
-                            <el-form-item label="AccessKeySecret" prop="storage_access_key_secret">
-                                <el-input v-model="formState.storage_access_key_secret" />
+                            <el-form-item label="SecretId" prop="storage_cos_secret_id" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_secret_id" />
                             </el-form-item>
-                            <el-form-item label="空间名称" prop="storage_bucket">
-                                <el-input v-model="formState.storage_bucket" />
+                            <el-form-item label="AccessKeySecret" prop="storage_oss_access_key_secret" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_access_key_secret" />
                             </el-form-item>
-                            <el-form-item label="空间地区" prop="storage_region">
-                                <el-input v-model="formState.storage_region" />
+                            <el-form-item label="KeySecret" prop="storage_cos_secret_key" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_secret_key" />
+                            </el-form-item>
+                            <el-form-item label="空间名称" prop="storage_oss_bucket" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_bucket" />
+                            </el-form-item>
+                            <el-form-item label="空间名称" prop="storage_cos_bucket" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_bucket" />
+                            </el-form-item>
+                            <el-form-item label="空间地区" prop="storage_oss_region" v-if="formState.storage_type == 1">
+                                <el-input v-model="formState.storage_oss_region" />
+                                <div class="extra"></div>
+                            </el-form-item>
+                            <el-form-item label="空间地区" prop="storage_cos_region" v-if="formState.storage_type == 2">
+                                <el-input v-model="formState.storage_cos_region" />
                                 <div class="extra"></div>
                             </el-form-item>
                         </template>
@@ -904,7 +926,7 @@ const formState = ref<BaseFormState>({
     use_alipay: 0,
     use_surplus: 0,
     use_offline: 0,
-    use_another: 0,
+    use_another: 0
 });
 const onTabChange = (val: string) => {
     activeKey.value = val;
@@ -918,7 +940,7 @@ const loading = ref<boolean>(true);
 const loadFilter = async () => {
     try {
         const result = await getConfig({
-            code: "base",
+            code: "base"
         });
         Object.assign(formState.value, result.item);
         countryList.value = result.countrys || [];
@@ -935,7 +957,7 @@ const onSubmit = async () => {
     try {
         const result = await saveConfig({
             code: "base",
-            ...formState.value,
+            ...formState.value
         });
         message.success(result.message);
     } catch (error: any) {

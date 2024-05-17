@@ -92,7 +92,7 @@ const page = ref(1)
 function loadList() {
     if (gifts.value.length > 0) {
         request({
-            url: 'product/list/',
+            url: 'product/product/list',
             method: 'get',
             params: {
                 ids: ids.value,
