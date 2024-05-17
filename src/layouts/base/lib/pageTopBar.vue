@@ -548,6 +548,9 @@ const onLogout = () => {
         cursor: pointer;
         color: #333;
     }
+    .page-top-warp {
+        border-radius: 0;
+    }
     .page-top-warp .wap-refresh-btn {
         padding: 0 20px;
         display: block;
