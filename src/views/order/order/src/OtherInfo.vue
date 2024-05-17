@@ -71,26 +71,6 @@ const formState = reactive<any>({});  //表单数据
 
 onMounted(async () => {
   loading.value = false;
-  // 获取详情数据
-  // request({
-  //   url: 'brand/' + action.value + '/',
-  //   method: 'get',
-  //   params: {
-  //     id: id.value
-  //   }
-  // }).then((result: any) => {
-  //   loading.value = false;
-  //   if (result.errcode > 0) {
-  //     message.error(result.message)
-  //     emit('close');
-  //     return;
-  //   }
-  //   // 合并前端的初使参数和获取到的参数
-  //   Object.assign(
-  //       formState,
-  //       result.item
-  //   )
-  // });
 });
 
 // 表单通过验证后提交

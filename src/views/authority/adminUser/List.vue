@@ -28,8 +28,8 @@
                         <el-table :data="filterState" :loading="loading" :total="total" row-key="admin_id"
                                   @selection-change="onSelectChange" @sort-change="onSortChange">
                             <el-table-column type="selection" width="32"/>
-                            <el-table-column label="管理员名称" prop="username" sortable="custom"></el-table-column>
-                            <el-table-column label="权限组" prop="role_name" sortable="custom">
+                            <el-table-column label="管理员名称" prop="username"></el-table-column>
+                            <el-table-column label="权限组" prop="role_name">
                                 <template #default="{ row }">
                                     <span :class="row.role_name ? 'green' : 'gray'">{{ row.role_name || '-' }}</span>
                                 </template>

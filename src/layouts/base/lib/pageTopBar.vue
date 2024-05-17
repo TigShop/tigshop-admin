@@ -116,6 +116,7 @@ import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import { extractContent, getAssetsFile } from "@/utils/util";
 import { Image } from "@/components/image";
+import {cleanUp} from "@/api/common/common";
 const router = useRouter();
 const menusStore = useMenusStore();
 interface searchFrom {
@@ -153,12 +154,9 @@ const { setUserInfo, logout } = useUserStore();
 const userInfo = computed(() => useUserStore().userInfo);
 const unreadMsg = ref(0);
 // 清除缓存
-const clearCache = () => {
-    request({
-        url: "common/cache_manage/cleanup",
-        method: "post",
-        params: {}
-    }).then((result: any) => {
+const clearCache = async () => {
+    try {
+        const result = await cleanUp();
         const config = useConfigStore();
         const cateGory = useCategoryStore();
         // 更新后台设置项
@@ -170,8 +168,10 @@ const clearCache = () => {
             message: "缓存已清除",
             description: "缓存清除后可刷新页面更新效果"
         });
-    });
-};
+    } catch (error: any) {
+        message.error(error.message);
+    }
+}
 const onLogout = () => {
     logout();
 };

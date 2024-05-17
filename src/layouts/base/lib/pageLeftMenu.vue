@@ -70,24 +70,24 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, watchEffect, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import request from "@/utils/request";
+import { useRouter } from "vue-router";
 import { useMenusStore } from "@/store/menu";
+import type {MainMenu} from "@/types/common/common.d";
 
 const menusStore = useMenusStore();
-// 菜单
-const menus = ref({} as any);
 // 路由
 const router = useRouter();
-const store = <any>useMenusStore();
-const routerMatched = ref(<any>[]);
+const store = useMenusStore();
+const routerMatched = ref<any>([]);
 // 伸缩子菜单
 const childMenuShow = ref(true);
-const showChildStatus = ref<any>([]);
+const showChildStatus = ref<any[]>([]);
 // 获取当前路由用于匹配菜单选中状态
 routerMatched.value = router.currentRoute.value.matched;
+// 菜单
+const menus = ref<MainMenu[]>(store.mainMenu);
 // 加载菜单
-menus.value = reactive(store.mainMenu);
+// menus.value = reactive(store.mainMenu);
 onMounted(() => {
     updateCurrentStatus(menus.value);
 });

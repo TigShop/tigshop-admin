@@ -1,9 +1,14 @@
 import { defineStore } from "pinia";
+import type {MainMenu} from "@/types/common/common.d";
+export interface useMenus {
+	mainMenu:MainMenu[];
+    menuActive: boolean
+}
 
 export const useMenusStore = defineStore("menus", {
     state: () => {
-        return {
-            mainMenu: null,
+        return<useMenus> {
+            mainMenu: [],
             menuActive: false
         };
     },

@@ -17,6 +17,7 @@ import pageHeader from "./pageHeader.vue";
     z-index: 10;
     left: 268px;
     right: 0;
+    padding-top: 60px;
 }
 
 .main-layout-box {
@@ -33,6 +34,7 @@ import pageHeader from "./pageHeader.vue";
 @media only screen and (max-width: 767px) {
     .main-warp {
         left: 0 !important;
+        padding-top: 0px !important;
     }
 }
 </style>
